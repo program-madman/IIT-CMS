@@ -20,6 +20,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         log.info("RequestURI : " + request.getRequestURI());
         filterChain.doFilter(servletRequest, servletResponse);
+
     }
 
     @Override
