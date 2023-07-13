@@ -5,7 +5,7 @@
 * 定义基础响应输出 BaseResponse
 * 定义全局异常处理 GlobalExceptionHandler
 
-# 继承Springboot jdbcTemplate模板连接mysql数据库
+# 集成Springboot jdbcTemplate模板连接mysql数据库
 * 添加pom依赖
 * 配置文件定义，连接数据库，修改application.yml文件
 * 添加controller
