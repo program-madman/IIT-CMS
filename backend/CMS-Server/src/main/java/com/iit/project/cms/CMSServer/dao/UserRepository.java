@@ -23,4 +23,9 @@ public class UserRepository {
         String sql = "insert into user(id, name) values(?,?)";
         return jdbcTemplate.update(sql, user.getId(), user.getName());
     }
+
+    public int deleteUserById(User user) {
+        String sql = "delete from user where id = ?";
+        return jdbcTemplate.update(sql, user.getId());
+    }
 }
