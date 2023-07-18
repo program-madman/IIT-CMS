@@ -62,7 +62,7 @@ public class UserRepository extends JdbcRepository {
     }
 
     public User getUserByUserName(String username) {
-        String sql = "select * from user where user_name=?";
+        String sql = "SELECT * FROM user WHERE user_name=?";
         List<User> result = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class), username);
         if (result.size() > 0) {
             return result.get(0);
