@@ -1,4 +1,4 @@
-package com.iit.project.cms.CMSServer.service;
+package com.iit.project.cms.CMSServer.service.user;
 
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
@@ -6,7 +6,8 @@ import com.iit.project.cms.CMSServer.dao.user.UserRepository;
 import com.iit.project.cms.CMSServer.dto.user.LoginRequest;
 import com.iit.project.cms.CMSServer.dto.user.LoginResponse;
 import com.iit.project.cms.CMSServer.dto.user.RegisterRequest;
-import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.user.User;
+import com.iit.project.cms.CMSServer.service.IUserService;
 import com.iit.project.cms.CMSServer.util.CmsPasswordEncoder;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;

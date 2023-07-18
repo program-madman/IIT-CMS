@@ -1,4 +1,4 @@
-package com.iit.project.cms.CMSServer.entity;
+package com.iit.project.cms.CMSServer.entity.user;
 
 import lombok.Data;
 

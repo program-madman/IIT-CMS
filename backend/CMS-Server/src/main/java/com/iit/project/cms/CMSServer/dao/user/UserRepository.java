@@ -2,7 +2,7 @@ package com.iit.project.cms.CMSServer.dao.user;
 
 
 import com.iit.project.cms.CMSServer.dao.JdbcRepository;
-import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +10,6 @@ import java.util.List;
 
 @Repository
 public class UserRepository extends JdbcRepository {
-    /**
-     * 创建新用户并将用户信息保存到数据库中。
-     *
-     * @param user 要创建的用户对象
-     * @return true 表示用户创建成功，false 表示创建失败
-     */
     public boolean createUser(User user) {
         String sql = "INSERT INTO user (dept_id, role_id, first_name, last_name, sign_up, user_name, password, " +
                 "age, phone_number, house_number, register_time, avatar, user_type, gender, country, state, " +
@@ -30,12 +24,6 @@ public class UserRepository extends JdbcRepository {
         return rowsAffected > 0; // 返回是否插入成功
     }
 
-    /**
-     * 根据用户ID查询用户信息。
-     *
-     * @param userId 用户ID
-     * @return 用户对象，如果找不到对应的用户，返回null
-     */
     public User getUserById(Long userId) {
         String sql = "SELECT * FROM user WHERE user_id = ?";
         try {
@@ -45,22 +33,11 @@ public class UserRepository extends JdbcRepository {
         }
     }
 
-    /**
-     * 获取所有用户信息。
-     *
-     * @return 包含所有用户信息的列表
-     */
     public List<User> getAllUsers() {
         String sql = "SELECT * FROM user";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
     }
 
-    /**
-     * 更新用户信息。
-     *
-     * @param user 要更新的用户对象
-     * @return true 表示更新成功，false 表示更新失败
-     */
     public boolean updateUser(User user) {
         String sql = "UPDATE user SET dept_id = ?, role_id = ?, first_name = ?, last_name = ?, sign_up = ?, " +
                 "user_name = ?, password = ?, age = ?, phone_number = ?, house_number = ?, register_time = ?, " +
@@ -76,12 +53,6 @@ public class UserRepository extends JdbcRepository {
         return rowsAffected > 0; // 返回是否更新成功
     }
 
-    /**
-     * 根据用户ID删除用户。
-     *
-     * @param userId 用户ID
-     * @return true 表示删除成功，false 表示删除失败
-     */
     public boolean deleteUser(Long userId) {
         String sql = "DELETE FROM user WHERE user_id = ?";
 

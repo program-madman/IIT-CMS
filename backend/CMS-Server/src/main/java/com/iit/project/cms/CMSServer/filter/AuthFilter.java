@@ -5,7 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.common.HttpServletRequestParameterWrapper;
-import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.user.User;
 import com.iit.project.cms.CMSServer.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 
