@@ -5,8 +5,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.common.HttpServletRequestParameterWrapper;
-import com.iit.project.cms.CMSServer.common.IBaseError;
 import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -44,6 +44,10 @@ public class AuthFilter implements Filter {
         HttpServletRequestParameterWrapper requestParameterWrapper = new HttpServletRequestParameterWrapper(request);
         String tokenInHeader = requestParameterWrapper.getHeader(KEY_HEADER_TOKEN);
         if (tokenInHeader == null) {
+            authFailed(response);
+            return;
+        }
+        if (!TokenUtil.isValidJwt(tokenInHeader)) {
             authFailed(response);
             return;
         }
