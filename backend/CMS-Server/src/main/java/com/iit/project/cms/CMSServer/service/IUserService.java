@@ -1,12 +1,19 @@
 package com.iit.project.cms.CMSServer.service;
 
+import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.dto.user.LoginRequest;
+import com.iit.project.cms.CMSServer.dto.user.RegisterRequest;
 import com.iit.project.cms.CMSServer.entity.User;
-
-import java.util.Collection;
-import java.util.List;
 
 public interface IUserService {
 
-    List<User> getUsers();
-    int createUser(User user);
+    BaseResponse login(LoginRequest request);
+
+    BaseResponse logout();
+
+    BaseResponse register(RegisterRequest request);
+
+    BaseResponse getUsers();
+
+    BaseResponse createUser(User user);
 }
