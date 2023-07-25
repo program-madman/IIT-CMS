@@ -31,7 +31,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         //跨域
-        cross(response);
+//        cross(response);
 
         //login
         if (request.getRequestURI().equals(URL_NO_AUTH_LOGIN) ||
