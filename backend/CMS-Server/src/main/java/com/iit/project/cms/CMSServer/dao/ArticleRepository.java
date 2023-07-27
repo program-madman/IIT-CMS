@@ -31,9 +31,10 @@ public class ArticleRepository extends JdbcRepository {
 
     public List<Article> getAllArticles(GetAllArticlesRequest request) {
         String userId = request.getUserId();
-
-        String sql = "SELECT * FROM article";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
+        String sql = "SELECT * FROM article \n" +
+                "WHERE article.user_id \n" +
+                "IN (SELECT user_id FROM user WHERE dept_id = (SELECT dept_id FROM user WHERE user_id = ?));";
+        return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
     public boolean updateArticle(Article article) {

@@ -1,6 +1,5 @@
 package com.iit.project.cms.CMSServer.dao;
 
-import com.iit.project.cms.CMSServer.dao.JdbcRepository;
 import com.iit.project.cms.CMSServer.entity.Department;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
