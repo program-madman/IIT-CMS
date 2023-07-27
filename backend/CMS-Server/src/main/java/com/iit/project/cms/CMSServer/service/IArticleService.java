@@ -1,14 +1,11 @@
 package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dto.article.CreateArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.DeleteArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.GetOneArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.UpdateArticleRequest;
+import com.iit.project.cms.CMSServer.dto.*;
 
 public interface IArticleService {
 
-    BaseResponse getAllArticles();
+    BaseResponse getAllArticles(GetAllArticlesRequest request);
 
     BaseResponse getArticleById(Long id);
 

@@ -1,4 +1,4 @@
-package com.iit.project.cms.CMSServer.dto.article;
+package com.iit.project.cms.CMSServer.dto;
 
 import lombok.Data;
 

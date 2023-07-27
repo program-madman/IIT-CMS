@@ -1,12 +1,9 @@
-package com.iit.project.cms.CMSServer.service.article;
+package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dao.article.ArticleRepository;
-import com.iit.project.cms.CMSServer.dto.article.CreateArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.DeleteArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.GetOneArticleRequest;
-import com.iit.project.cms.CMSServer.dto.article.UpdateArticleRequest;
-import com.iit.project.cms.CMSServer.entity.article.Article;
+import com.iit.project.cms.CMSServer.dao.ArticleRepository;
+import com.iit.project.cms.CMSServer.dto.*;
+import com.iit.project.cms.CMSServer.entity.Article;
 import com.iit.project.cms.CMSServer.service.IArticleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,8 @@ public class ArticleService implements IArticleService {
     private ArticleRepository articleRepository;
 
     @Override
-    public BaseResponse getAllArticles() {
-        List<Article> allArticles = articleRepository.getAllArticles();
+    public BaseResponse getAllArticles(GetAllArticlesRequest request) {
+        List<Article> allArticles = articleRepository.getAllArticles(request);
         return BaseResponse.success(allArticles);
     }
 

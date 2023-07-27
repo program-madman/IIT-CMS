@@ -1,7 +1,7 @@
-package com.iit.project.cms.CMSServer.dao.article;
+package com.iit.project.cms.CMSServer.dao;
 
-import com.iit.project.cms.CMSServer.dao.JdbcRepository;
-import com.iit.project.cms.CMSServer.entity.article.Article;
+import com.iit.project.cms.CMSServer.dto.GetAllArticlesRequest;
+import com.iit.project.cms.CMSServer.entity.Article;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +29,9 @@ public class ArticleRepository extends JdbcRepository {
         }
     }
 
-    public List<Article> getAllArticles() {
+    public List<Article> getAllArticles(GetAllArticlesRequest request) {
+        String userId = request.getUserId();
+
         String sql = "SELECT * FROM article";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }

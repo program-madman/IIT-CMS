@@ -1,4 +1,4 @@
-package com.iit.project.cms.CMSServer.entity.permission;
+package com.iit.project.cms.CMSServer.entity;
 import lombok.Data;
 
 import java.io.Serializable;

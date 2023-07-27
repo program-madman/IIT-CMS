@@ -1,9 +1,9 @@
 package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dto.user.LoginRequest;
-import com.iit.project.cms.CMSServer.dto.user.RegisterRequest;
-import com.iit.project.cms.CMSServer.entity.user.User;
+import com.iit.project.cms.CMSServer.dto.LoginRequest;
+import com.iit.project.cms.CMSServer.dto.RegisterRequest;
+import com.iit.project.cms.CMSServer.entity.User;
 
 public interface IUserService {
 

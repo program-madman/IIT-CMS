@@ -1,9 +1,9 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dto.user.LoginRequest;
-import com.iit.project.cms.CMSServer.dto.user.RegisterRequest;
-import com.iit.project.cms.CMSServer.entity.user.User;
+import com.iit.project.cms.CMSServer.dto.LoginRequest;
+import com.iit.project.cms.CMSServer.dto.RegisterRequest;
+import com.iit.project.cms.CMSServer.entity.User;
 import com.iit.project.cms.CMSServer.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

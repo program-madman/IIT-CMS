@@ -1,12 +1,12 @@
-package com.iit.project.cms.CMSServer.service.user;
+package com.iit.project.cms.CMSServer.service;
 
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dao.user.UserRepository;
-import com.iit.project.cms.CMSServer.dto.user.LoginRequest;
-import com.iit.project.cms.CMSServer.dto.user.LoginResponse;
-import com.iit.project.cms.CMSServer.dto.user.RegisterRequest;
-import com.iit.project.cms.CMSServer.entity.user.User;
+import com.iit.project.cms.CMSServer.dao.UserRepository;
+import com.iit.project.cms.CMSServer.dto.LoginRequest;
+import com.iit.project.cms.CMSServer.dto.LoginResponse;
+import com.iit.project.cms.CMSServer.dto.RegisterRequest;
+import com.iit.project.cms.CMSServer.entity.User;
 import com.iit.project.cms.CMSServer.service.IUserService;
 import com.iit.project.cms.CMSServer.util.CmsPasswordEncoder;
 import org.apache.commons.lang3.ObjectUtils;

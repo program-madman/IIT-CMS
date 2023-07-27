@@ -1,4 +1,4 @@
-package com.iit.project.cms.CMSServer.dto.article;
+package com.iit.project.cms.CMSServer.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class UpdateArticleRequest implements Serializable {
+public class CreateArticleRequest implements Serializable {
 
     private Long userId;
 

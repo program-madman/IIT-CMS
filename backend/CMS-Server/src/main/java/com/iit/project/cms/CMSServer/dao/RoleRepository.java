@@ -1,7 +1,6 @@
-package com.iit.project.cms.CMSServer.dao.permission;
+package com.iit.project.cms.CMSServer.dao;
 
-import com.iit.project.cms.CMSServer.dao.JdbcRepository;
-import com.iit.project.cms.CMSServer.entity.permission.Role;
+import com.iit.project.cms.CMSServer.entity.Role;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
