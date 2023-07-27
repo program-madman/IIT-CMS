@@ -16,8 +16,4 @@ public class CreateArticleRequest implements Serializable {
 
     private String content;
 
-    private Date publishTime;
-
-    private Date updateTime;
-
 }

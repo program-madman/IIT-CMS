@@ -7,9 +7,7 @@ public interface IArticleService {
 
     BaseResponse getAllArticles(GetAllArticlesRequest request);
 
-    BaseResponse getArticleById(Long id);
-
-    BaseResponse getOneArticle(GetOneArticleRequest request);
+    BaseResponse getArticleById(GetArticleDetailRequest request);
 
     BaseResponse createArticle(CreateArticleRequest request);
 

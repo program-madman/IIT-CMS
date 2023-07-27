@@ -4,6 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 @Data
-public class GetOneArticleRequest implements Serializable {
-    private Long id;
+public class GetArticleDetailRequest implements Serializable {
+    private Long articleId;
 }

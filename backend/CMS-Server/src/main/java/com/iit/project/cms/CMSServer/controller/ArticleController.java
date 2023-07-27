@@ -1,10 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dto.CreateArticleRequest;
-import com.iit.project.cms.CMSServer.dto.DeleteArticleRequest;
-import com.iit.project.cms.CMSServer.dto.GetAllArticlesRequest;
-import com.iit.project.cms.CMSServer.dto.UpdateArticleRequest;
+import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.service.IArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,10 @@ public class ArticleController {
         GetAllArticlesRequest request = new GetAllArticlesRequest();
         request.setUserId(uid);
         return articleService.getAllArticles(request);
+    }
+    @RequestMapping(value = "/getArticleById")
+    public BaseResponse getArticleById(@RequestBody GetArticleDetailRequest request) {
+        return articleService.getArticleById(request);
     }
 
     @RequestMapping(value = "/createArticle")
