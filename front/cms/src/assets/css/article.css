@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+.card {
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #e4e8eb;
+}
+.deptment {
+  opacity: 0.800000011920929;
+  color: #333333;
+  font-family: PingFang SC;
+  font-weight: medium;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+.article-type-text{
+  color: #FFFFFF;
+  font-family: PingFang SC;
+  font-weight: medium;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+.article-time-text{
+  color: #999999;
+  font-family: PingFang SC;
+  font-weight: regular;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+.article-title-text{
+  color: #212121;
+  font-family: PingFang SC;
+  font-weight: regular;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-bottom: 0px !important;
+}
+
+.article-intro-text{
+  opacity: 0.800000011920929;
+  color: #333333;
+  font-family: PingFang SC;
+  font-weight: regular;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-bottom: 0px !important;
+}
+
+.article-report-text{
+  color: #999999;
+  font-family: PingFang SC;
+  font-weight: regular;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+.article-operator-icon{
+  color: #1867C0 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  padding-bottom: 2px;
+}
+.article-operator-text{
+  color: #1867C0;
+  font-family: PingFang SC;
+  font-weight: regular;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
