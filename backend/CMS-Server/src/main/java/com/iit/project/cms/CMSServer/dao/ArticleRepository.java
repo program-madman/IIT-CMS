@@ -2,6 +2,7 @@ package com.iit.project.cms.CMSServer.dao;
 
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.entity.Article;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,32 +10,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class ArticleRepository extends JdbcRepository {
-    public boolean createArticle(Article article) {
+    public boolean createArticle(CreateArticleRequest article) {
+        try {
+            // 插入文章信息
+            String articleSql = "INSERT INTO article (user_id, title, content, category_name) " +
+                    "VALUES (?, ?, ?, ?)";
+            int r = jdbcTemplate.update(articleSql, article.getUserId(), article.getTitle(),
+                    article.getContent(), article.getCategoryName());
+            log.info("insert article result : " + r);
 
-        String sql = "INSERT INTO article (user_id, category_name, title, content, publish_time) " +
-                "VALUES (?, ?, ?, ?, NOW())";
+            // 插入附件信息
+            if (article.getAttachmentList() != null && !article.getAttachmentList().isEmpty()) {
+                String attachmentSql = "INSERT INTO attachment (file_name, file_type, size) " +
+                        "VALUES (?, ?, ?, ?)";
+                for (CreateAttachmentRequest attachment : article.getAttachmentList()) {
+                    jdbcTemplate.update(attachmentSql, attachment.getFileName(),
+                            attachment.getFileType(), attachment.getSize());
 
-        int rowsAffected = jdbcTemplate.update(sql, article.getUserId(), article.getCategoryName(),
-                article.getTitle(), article.getContent());
+                }
+            }
 
-        return rowsAffected > 0; // 返回是否插入成功
+            // 插入发送目标部门信息
+            if (article.getTargetDeptList() != null && !article.getTargetDeptList().isEmpty()) {
+                String deptSql = "INSERT INTO article_dept (department_name) " +
+                        "VALUES (?, ?)";
+                for (CreateDeptRequest department : article.getTargetDeptList()) {
+                    jdbcTemplate.update(deptSql, department.getDepartmentName());
+                }
+            }
+            return true; // 表示插入成功
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // 表示插入失败
+        }
     }
 
     public GetArticleDetailResponse getArticleById(GetArticleDetailRequest request) {
         Long articleId = request.getArticleId();
         // 查询文章基本信息
-        String articleInfoSql = "SELECT a.title AS articleTitle, a.content AS articleContent,\n" +
-                "CONCAT(u.first_name, ' ', u.last_name) AS authorName,\n" +
-                "DATE_FORMAT(a.publish_time, '%Y-%m-%d %H:%i:%s') AS publishTime,\n" +
-                "(SELECT COUNT(*) FROM article_read_status ars WHERE ars.article_id = a.article_id AND ars.is_read = 1) AS readCount,\n" +
-                "(SELECT COUNT(*) FROM comments cmt WHERE cmt.article_id = a.article_id) AS replayCount,\n" +
-                "(SELECT COUNT(*) FROM article_like al WHERE al.article_id = a.article_id) AS likeCount,\n" +
-                "(SELECT COUNT(*) FROM browsed_history bh WHERE bh.article_id = a.article_id) AS browseCount,\n" +
-                "(SELECT GROUP_CONCAT(DISTINCT d.dept_name SEPARATOR ', ') FROM audience aud INNER JOIN department d " +
-                "ON aud.dept_id = d.dept_id WHERE aud.article_id = a.article_id) AS targetDeptName\n" +
-                "FROM article a LEFT JOIN user u ON a.user_id = u.user_id\n" +
-                "WHERE a.article_id = ?;";
+        String articleInfoSql = "SELECT\n" +
+                "    a.title AS articleTitle,\n" +
+                "    a.content AS articleContent,\n" +
+                "    CONCAT(u.first_name, ' ', u.last_name) AS authorName,\n" +
+                "    DATE_FORMAT(a.publish_time, '%Y-%m-%d %H:%i:%s') AS publishTime,\n" +
+                "    (SELECT COUNT(*) FROM article_read_status ars WHERE ars.article_id = a.article_id) AS readCount,\n" +
+                "    (SELECT COUNT(*) FROM comments cmt WHERE cmt.article_id = a.article_id) AS replyCount,\n" +
+                "    (SELECT COUNT(*) FROM article_like al WHERE al.article_id = a.article_id) AS likeCount,\n" +
+                "    (SELECT COUNT(*) FROM browsed_history bh WHERE bh.article_id = a.article_id) AS browseCount,\n" +
+                "    (SELECT GROUP_CONCAT(DISTINCT d.dept_name SEPARATOR ', ') FROM audience aud INNER JOIN department d ON aud.dept_id = d.dept_id WHERE aud.article_id = a.article_id) AS targetDeptName\n" +
+                "FROM\n" +
+                "    article a\n" +
+                "LEFT JOIN\n" +
+                "    user u ON a.user_id = u.user_id\n" +
+                "WHERE\n" +
+                "    a.article_id = ?;";
         GetArticleDetailResponse response = jdbcTemplate.queryForObject(
                 articleInfoSql, new Object[]{articleId}, BeanPropertyRowMapper.newInstance(GetArticleDetailResponse.class)
         );

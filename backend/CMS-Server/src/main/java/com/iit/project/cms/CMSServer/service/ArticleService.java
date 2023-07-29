@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.iit.project.cms.CMSServer.common.ExceptionEnum.CREATE_ARTICLE_FAILED;
+
 @Service
 public class ArticleService implements IArticleService {
 
@@ -30,9 +32,11 @@ public class ArticleService implements IArticleService {
 
     @Override
     public BaseResponse createArticle(CreateArticleRequest request) {
-        Article article = new Article();
-        BeanUtils.copyProperties(request, article);
-        return BaseResponse.success(articleRepository.createArticle(article));
+        if (articleRepository.createArticle(request)) {
+            return BaseResponse.success();
+        } else {
+            return BaseResponse.error(CREATE_ARTICLE_FAILED);
+        }
     }
 
     @Override

@@ -11,8 +11,8 @@ SELECT
     a.content AS articleContent,
     CONCAT(u.first_name, ' ', u.last_name) AS authorName,
     DATE_FORMAT(a.publish_time, '%Y-%m-%d %H:%i:%s') AS publishTime,
-    (SELECT COUNT(*) FROM article_read_status ars WHERE ars.article_id = a.article_id AND ars.is_read = 1) AS readCount,
-    (SELECT COUNT(*) FROM comments cmt WHERE cmt.article_id = a.article_id) AS replayCount,
+    (SELECT COUNT(*) FROM article_read_status ars WHERE ars.article_id = a.article_id) AS readCount,
+    (SELECT COUNT(*) FROM comments cmt WHERE cmt.article_id = a.article_id) AS replyCount,
     (SELECT COUNT(*) FROM article_like al WHERE al.article_id = a.article_id) AS likeCount,
     (SELECT COUNT(*) FROM browsed_history bh WHERE bh.article_id = a.article_id) AS browseCount,
     (SELECT GROUP_CONCAT(DISTINCT d.dept_name SEPARATOR ', ') FROM audience aud INNER JOIN department d ON aud.dept_id = d.dept_id WHERE aud.article_id = a.article_id) AS targetDeptName
@@ -22,3 +22,7 @@ LEFT JOIN
     user u ON a.user_id = u.user_id
 WHERE
     a.article_id = 100;
+
+
+
+-- 创建文章 需要及联的插入其他表 --

@@ -32,7 +32,8 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/createArticle")
-    public BaseResponse createArticle(@RequestBody CreateArticleRequest request) {
+    public BaseResponse createArticle(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody CreateArticleRequest request) {
+        request.setUserId(Long.parseLong(uid));
         return articleService.createArticle(request);
     }
 

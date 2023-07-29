@@ -9,6 +9,7 @@ public class Symbol {
     public static final String KEY_ISSUE = "IIT_CMS";
     public static final String URL_NO_AUTH_LOGIN = "/user/login";
     public static final String URL_NO_AUTH_REGISTER = "/user/register";
+    public static final String FILE_UPLOAD_DIR = "./";
     public static final long TOKEN_EXPIRES_TIME = 2592000000L;
 
 
