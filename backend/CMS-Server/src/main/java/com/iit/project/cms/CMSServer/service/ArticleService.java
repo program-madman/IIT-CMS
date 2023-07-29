@@ -117,7 +117,7 @@ public class ArticleService implements IArticleService {
         if (favoriteRepository.addToFavorites(favorite)) {
             return BaseResponse.success();
         } else {
-            return BaseResponse.error("Add or Delete article to My Favorites failed!");
+            return BaseResponse.error("Add/Delete article to/from My Favorites failed!");
         }
     }
 
