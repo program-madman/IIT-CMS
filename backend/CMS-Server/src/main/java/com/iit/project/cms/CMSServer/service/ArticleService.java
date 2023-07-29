@@ -37,6 +37,9 @@ public class ArticleService implements IArticleService {
     @Autowired
     private ArticleReadStatusRepository articleReadStatusRepository;
 
+    @Autowired
+    private BrowsedHistoryRepository browsedHistoryRepository;
+
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> allArticles = articleRepository.getAllArticles(request);
@@ -48,11 +51,10 @@ public class ArticleService implements IArticleService {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
         // TODO: 2023/7/30 附件
-        updateReadStatus(request);
+        updateReadStatus(request.getUserId(), request.getArticleId());
+        updateBrowseHistory(request.getUserId(), request.getArticleId());
         return BaseResponse.success(article);
     }
-
-
 
     @Override
     public BaseResponse createArticle(CreateArticleRequest request) {
@@ -128,10 +130,18 @@ public class ArticleService implements IArticleService {
     }
 
 
-    private void updateReadStatus(GetArticleDetailRequest request) {
+    private void updateReadStatus(Long userId, Long articleId) {
         ArticleReadStatus articleReadStatus = new ArticleReadStatus();
-        articleReadStatus.setUserId(request.getUserId());
-        articleReadStatus.setArticleId(request.getArticleId());
+        articleReadStatus.setUserId(userId);
+        articleReadStatus.setArticleId(articleId);
         articleReadStatusRepository.addArticleReadStatus(articleReadStatus);
+    }
+
+
+    private void updateBrowseHistory(Long userId, Long articleId) {
+        BrowsedHistory browsedHistory = new BrowsedHistory();
+        browsedHistory.setUserId(userId);
+        browsedHistory.setArticleId(articleId);
+        browsedHistoryRepository.addBrowsedHistory(browsedHistory);
     }
 }
