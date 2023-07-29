@@ -1,15 +1,9 @@
 package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.dao.ArticleRepository;
-import com.iit.project.cms.CMSServer.dao.CommentRepository;
-import com.iit.project.cms.CMSServer.dao.DepartmentRepository;
-import com.iit.project.cms.CMSServer.dao.UserRepository;
+import com.iit.project.cms.CMSServer.dao.*;
 import com.iit.project.cms.CMSServer.dto.*;
-import com.iit.project.cms.CMSServer.entity.Article;
-import com.iit.project.cms.CMSServer.entity.Comment;
-import com.iit.project.cms.CMSServer.entity.Department;
-import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +30,9 @@ public class ArticleService implements IArticleService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private ArticleLikeRepository articleLikeRepository;
 
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
@@ -87,6 +84,18 @@ public class ArticleService implements IArticleService {
             return BaseResponse.success();
         } else {
             return BaseResponse.error(CREATE_COMMENT_FAILED);
+        }
+    }
+
+    @Override
+    public BaseResponse likeArticle(LikeArticleRequest request) {
+        ArticleLike articleLike = new ArticleLike();
+        articleLike.setArticleId(request.getArticleId());
+        articleLike.setUserId(request.getUserId());
+        if (articleLikeRepository.addArticleLike(articleLike)) {
+            return BaseResponse.success();
+        } else {
+            return BaseResponse.error("Like failed");
         }
     }
 

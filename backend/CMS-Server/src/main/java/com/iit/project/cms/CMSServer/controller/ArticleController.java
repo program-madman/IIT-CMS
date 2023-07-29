@@ -63,4 +63,10 @@ public class ArticleController {
     public BaseResponse downloadAttachment(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestParam("file") MultipartFile file) {
         return attachmentService.upload(uid, file);
     }
+
+    @PostMapping("/likeArticle")
+    public BaseResponse likeArticle(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody LikeArticleRequest request) {
+        request.setUserId(Long.parseLong(uid));
+        return articleService.likeArticle(request);
+    }
 }

@@ -18,4 +18,6 @@ public interface IArticleService {
     BaseResponse deleteArticleById(Long id);
 
     BaseResponse addComment(AddCommentRequest request);
+
+    BaseResponse likeArticle(LikeArticleRequest request);
 }
