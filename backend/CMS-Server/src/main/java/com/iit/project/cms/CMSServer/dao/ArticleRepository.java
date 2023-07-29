@@ -108,7 +108,7 @@ public class ArticleRepository extends JdbcRepository {
     }
 
     private boolean isArticleRead(long articleId, long userId) {
-        String sql = "SELECT COUNT(*) FROM article_read_status WHERE article_id = ? AND user_id = ? AND is_read = 1";
+        String sql = "SELECT COUNT(*) FROM article_read_status WHERE article_id = ? AND user_id = ?";
         int count = jdbcTemplate.queryForObject(sql, new Object[]{articleId, userId}, Integer.class);
         return count > 0;
     }
