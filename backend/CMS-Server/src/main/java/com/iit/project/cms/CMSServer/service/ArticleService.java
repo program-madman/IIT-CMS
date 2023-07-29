@@ -39,6 +39,8 @@ public class ArticleService implements IArticleService {
 
     @Autowired
     private BrowsedHistoryRepository browsedHistoryRepository;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
@@ -103,7 +105,19 @@ public class ArticleService implements IArticleService {
         if (articleLikeRepository.addArticleLike(articleLike)) {
             return BaseResponse.success();
         } else {
-            return BaseResponse.error("Like failed");
+            return BaseResponse.error("Like or Unlike failed!");
+        }
+    }
+
+    @Override
+    public BaseResponse addToMyFav(AddToMyFavRequest request) {
+        Favorite favorite = new Favorite();
+        favorite.setUserId(request.getUserId());
+        favorite.setArticleId(request.getArticleId());
+        if (favoriteRepository.addToFavorites(favorite)) {
+            return BaseResponse.success();
+        } else {
+            return BaseResponse.error("Add or Delete article to My Favorites failed!");
         }
     }
 

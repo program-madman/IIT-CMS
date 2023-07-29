@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.dto.AddToMyFavRequest;
 import com.iit.project.cms.CMSServer.dto.*;
 
 public interface IArticleService {
@@ -20,4 +21,6 @@ public interface IArticleService {
     BaseResponse addComment(AddCommentRequest request);
 
     BaseResponse likeArticle(LikeArticleRequest request);
+
+    BaseResponse addToMyFav(AddToMyFavRequest request);
 }

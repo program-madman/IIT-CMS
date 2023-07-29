@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.dto.AddToMyFavRequest;
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.service.IArticleService;
 import com.iit.project.cms.CMSServer.service.IAttachmentService;
@@ -56,18 +57,24 @@ public class ArticleController {
         return articleService.addComment(request);
     }
 
-    @PostMapping("/uploadAttachments")
+    @RequestMapping(value = "/uploadAttachments")
     public BaseResponse uploadAttachments(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestParam("file") MultipartFile file) {
         return attachmentService.upload(uid, file);
     }
-    @PostMapping("/downloadAttachment")
+    @RequestMapping(value = "/downloadAttachment")
     public BaseResponse downloadAttachment(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestParam("file") MultipartFile file) {
         return attachmentService.upload(uid, file);
     }
 
-    @PostMapping("/likeArticle")
+    @RequestMapping(value = "/likeArticle")
     public BaseResponse likeArticle(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody LikeArticleRequest request) {
         request.setUserId(Long.parseLong(uid));
         return articleService.likeArticle(request);
+    }
+
+    @RequestMapping(value = "/addToMyFav")
+    public BaseResponse addToMyFav(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody AddToMyFavRequest request) {
+        request.setUserId(Long.parseLong(uid));
+        return articleService.addToMyFav(request);
     }
 }
