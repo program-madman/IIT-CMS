@@ -29,7 +29,8 @@ public class ArticleController {
         return articleService.getAllArticles(request);
     }
     @RequestMapping(value = "/getArticleById")
-    public BaseResponse getArticleById(@RequestBody GetArticleDetailRequest request) {
+    public BaseResponse getArticleById(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody GetArticleDetailRequest request) {
+        request.setUserId(Long.parseLong(uid));
         return articleService.getArticleById(request);
     }
 

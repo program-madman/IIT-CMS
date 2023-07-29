@@ -34,6 +34,9 @@ public class ArticleService implements IArticleService {
     @Autowired
     private ArticleLikeRepository articleLikeRepository;
 
+    @Autowired
+    private ArticleReadStatusRepository articleReadStatusRepository;
+
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> allArticles = articleRepository.getAllArticles(request);
@@ -44,8 +47,11 @@ public class ArticleService implements IArticleService {
     public BaseResponse getArticleById(GetArticleDetailRequest request) {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
+        // TODO: 2023/7/30 附件
+        updateReadStatus(request);
         return BaseResponse.success(article);
     }
+
 
 
     @Override
@@ -119,5 +125,13 @@ public class ArticleService implements IArticleService {
             commentResponseList.add(r);
         }
         return commentResponseList;
+    }
+
+
+    private void updateReadStatus(GetArticleDetailRequest request) {
+        ArticleReadStatus articleReadStatus = new ArticleReadStatus();
+        articleReadStatus.setUserId(request.getUserId());
+        articleReadStatus.setArticleId(request.getArticleId());
+        articleReadStatusRepository.addArticleReadStatus(articleReadStatus);
     }
 }
