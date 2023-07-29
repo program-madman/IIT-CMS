@@ -4,6 +4,7 @@ import com.iit.project.cms.CMSServer.entity.Comment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -13,7 +14,7 @@ public class CommentRepository extends JdbcRepository {
                 "VALUES (?, ?, ?, ?)";
 
         int rowsAffected = jdbcTemplate.update(sql, comment.getUserId(), comment.getArticleId(),
-                comment.getContent(), comment.getPublishTime());
+                comment.getContent(), new Date());
 
         return rowsAffected > 0; // 返回是否插入成功
     }
@@ -43,7 +44,7 @@ public class CommentRepository extends JdbcRepository {
                 "WHERE comment_id = ?";
 
         int rowsAffected = jdbcTemplate.update(sql, comment.getUserId(), comment.getArticleId(),
-                comment.getContent(), comment.getPublishTime(), comment.getCommentId());
+                comment.getContent(), new Date(), comment.getCommentId());
 
         return rowsAffected > 0; // 返回是否更新成功
     }

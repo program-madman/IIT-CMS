@@ -3,12 +3,11 @@ package com.iit.project.cms.CMSServer.controller;
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.service.IArticleService;
+import com.iit.project.cms.CMSServer.service.IAttachmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.iit.project.cms.CMSServer.common.Symbol.KEY_HEADER_USER_ID;
 
@@ -19,6 +18,9 @@ public class ArticleController {
 
     @Autowired
     private IArticleService articleService;
+
+    @Autowired
+    private IAttachmentService attachmentService;
 
     @RequestMapping(value = "/getAllArticles")
     public BaseResponse getAllArticles(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
@@ -45,5 +47,20 @@ public class ArticleController {
     @RequestMapping(value = "/deleteArticle")
     public BaseResponse deleteArticle(@RequestBody DeleteArticleRequest request) {
         return articleService.deleteArticle(request);
+    }
+
+    @RequestMapping(value = "/addComment")
+    public BaseResponse addComment(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody AddCommentRequest request) {
+        request.setUserId(Long.parseLong(uid));
+        return articleService.addComment(request);
+    }
+
+    @PostMapping("/uploadAttachments")
+    public BaseResponse uploadAttachments(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestParam("file") MultipartFile file) {
+        return attachmentService.upload(uid, file);
+    }
+    @PostMapping("/downloadAttachment")
+    public BaseResponse downloadAttachment(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestParam("file") MultipartFile file) {
+        return attachmentService.upload(uid, file);
     }
 }

@@ -16,4 +16,6 @@ public interface IArticleService {
     BaseResponse deleteArticle(DeleteArticleRequest request);
 
     BaseResponse deleteArticleById(Long id);
+
+    BaseResponse addComment(AddCommentRequest request);
 }

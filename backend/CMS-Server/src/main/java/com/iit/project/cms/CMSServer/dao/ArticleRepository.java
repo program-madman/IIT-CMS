@@ -51,6 +51,7 @@ public class ArticleRepository extends JdbcRepository {
         Long articleId = request.getArticleId();
         // 查询文章基本信息
         String articleInfoSql = "SELECT\n" +
+                "    a.article_id AS articleId,\n" +
                 "    a.title AS articleTitle,\n" +
                 "    a.content AS articleContent,\n" +
                 "    CONCAT(u.first_name, ' ', u.last_name) AS authorName,\n" +
@@ -69,6 +70,7 @@ public class ArticleRepository extends JdbcRepository {
         GetArticleDetailResponse response = jdbcTemplate.queryForObject(
                 articleInfoSql, new Object[]{articleId}, BeanPropertyRowMapper.newInstance(GetArticleDetailResponse.class)
         );
+
         return response;
     }
 
@@ -141,4 +143,5 @@ public class ArticleRepository extends JdbcRepository {
 
         return rowsAffected > 0; // 返回是否删除成功
     }
+
 }
