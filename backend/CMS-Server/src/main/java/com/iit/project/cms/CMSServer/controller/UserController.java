@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.dto.GetUserInfoRequest;
 import com.iit.project.cms.CMSServer.dto.LoginRequest;
 import com.iit.project.cms.CMSServer.dto.RegisterRequest;
 import com.iit.project.cms.CMSServer.entity.User;
@@ -42,6 +43,10 @@ public class UserController {
     @RequestMapping("/getAllUsers")
     private BaseResponse getAllUsers() {
         return BaseResponse.success(userService.getUsers());
+    }
+    @RequestMapping("/getUserInfoById")
+    private BaseResponse getUserInfoById(@RequestBody GetUserInfoRequest request) {
+        return userService.getUserInfoById(request.getUserId());
     }
 
     @RequestMapping("/createUser")

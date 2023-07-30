@@ -5,23 +5,33 @@ import com.iit.project.cms.CMSServer.entity.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public class UserRepository extends JdbcRepository {
+    // 添加用户
     public boolean createUser(User user) {
-        String sql = "INSERT INTO user (dept_id, role_id, first_name, last_name, sign_up, user_name, password, " +
-                "age, phone_number, house_number, register_time, avatar, user_type, gender, country, state, " +
-                "city, street, mail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // 首先检查是否已存在具有相同用户名或邮箱的用户
+        String checkExistingUserSql = "SELECT COUNT(*) FROM user WHERE user_name = ? OR mail = ?";
+        int existingUserCount = jdbcTemplate.queryForObject(checkExistingUserSql, Integer.class, user.getUsername(), user.getMail());
 
-        int rowsAffected = jdbcTemplate.update(sql, user.getDeptId(), user.getRoleId(), user.getFirstName(),
-                user.getLastName(), user.getSignUp(), user.getUsername(), user.getPassword(), user.getAge(),
-                user.getPhoneNumber(), user.getHouseNumber(), user.getRegisterTime(), user.getAvatar(),
-                user.getUserType(), user.getGender(), user.getCountry(), user.getState(), user.getCity(),
-                user.getStreet(), user.getMail());
+        if (existingUserCount > 0) {
+            // 如果已存在相同用户名或邮箱的用户，则不进行插入操作
+            return false;
+        }
 
-        return rowsAffected > 0; // 返回是否插入成功
+        String createUserSql = "INSERT INTO user (dept_id, role_id, first_name, last_name, user_name, password, " +
+                "register_time, avatar, user_type, gender, mail, address_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        int rowsAffected = jdbcTemplate.update(createUserSql, user.getDeptId(), user.getRoleId(), user.getFirstName(),
+                user.getLastName(), user.getUsername(), user.getPassword(), new Date(), user.getAvatar(),
+                user.getUserType(), user.getGender(), user.getMail(), user.getAddressId());
+
+        return rowsAffected > 0;
     }
+
 
     public User getUserById(Long userId) {
         String sql = "SELECT * FROM user WHERE user_id = ?";
@@ -37,20 +47,28 @@ public class UserRepository extends JdbcRepository {
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
     }
 
+    // 更新用户
     public boolean updateUser(User user) {
-        String sql = "UPDATE user SET dept_id = ?, role_id = ?, first_name = ?, last_name = ?, sign_up = ?, " +
-                "user_name = ?, password = ?, age = ?, phone_number = ?, house_number = ?, register_time = ?, " +
-                "avatar = ?, user_type = ?, gender = ?, country = ?, state = ?, city = ?, street = ?, mail = ? " +
-                "WHERE user_id = ?";
+        // 首先检查是否已存在具有相同用户名或邮箱的其他用户
+        String checkExistingUserSql = "SELECT COUNT(*) FROM user WHERE user_id != ? AND (user_name = ? OR mail = ?)";
+        int existingUserCount = jdbcTemplate.queryForObject(checkExistingUserSql, Integer.class, user.getUserId(), user.getUsername(), user.getMail());
 
-        int rowsAffected = jdbcTemplate.update(sql, user.getDeptId(), user.getRoleId(), user.getFirstName(),
-                user.getLastName(), user.getSignUp(), user.getUsername(), user.getPassword(), user.getAge(),
-                user.getPhoneNumber(), user.getHouseNumber(), user.getRegisterTime(), user.getAvatar(),
-                user.getUserType(), user.getGender(), user.getCountry(), user.getState(), user.getCity(),
-                user.getStreet(), user.getMail(), user.getUserId());
+        if (existingUserCount > 0) {
+            // 如果已存在相同用户名或邮箱的其他用户，则不进行更新操作
+            return false;
+        }
 
-        return rowsAffected > 0; // 返回是否更新成功
+        String updateUserSql = "UPDATE user SET dept_id = ?, role_id = ?, first_name = ?, last_name = ?, " +
+                "user_name = ?, password = ?, register_time = ?, avatar = ?, user_type = ?, gender = ?, mail = ?, " +
+                "address_id = ? WHERE user_id = ?";
+
+        int rowsAffected = jdbcTemplate.update(updateUserSql, user.getDeptId(), user.getRoleId(), user.getFirstName(),
+                user.getLastName(), user.getUsername(), user.getPassword(), new Date(), user.getAvatar(),
+                user.getUserType(), user.getGender(), user.getMail(), user.getAddressId(), user.getUserId());
+
+        return rowsAffected > 0;
     }
+
 
     public boolean deleteUser(Long userId) {
         String sql = "DELETE FROM user WHERE user_id = ?";

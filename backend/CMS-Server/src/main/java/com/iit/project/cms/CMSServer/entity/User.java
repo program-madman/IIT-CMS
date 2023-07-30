@@ -4,73 +4,51 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "dept_id")
+    @Column(name = "dept_id", nullable = false)
     private Long deptId;
 
-    @Column(name = "role_id")
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "sign_up")
-    private Date signUp;
-
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "house_number")
-    private String houseNumber;
-
-    @Column(name = "register_time")
+    @Column(name = "register_time", nullable = false)
     private Date registerTime;
 
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "user_type")
+    @Column(name = "user_type", nullable = false)
     private String userType;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private String gender;
 
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "state")
-    private String state;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "street")
-    private String street;
-
-    @Column(name = "mail")
+    @Column(name = "mail", nullable = false, unique = true)
     private String mail;
 
+    @Column(name = "address_id", nullable = false)
+    private Long addressId;
 }
+

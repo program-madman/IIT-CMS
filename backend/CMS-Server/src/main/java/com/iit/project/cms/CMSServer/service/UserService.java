@@ -3,6 +3,7 @@ package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.dao.UserRepository;
+import com.iit.project.cms.CMSServer.dto.GetUserInfoResponse;
 import com.iit.project.cms.CMSServer.dto.LoginRequest;
 import com.iit.project.cms.CMSServer.dto.LoginResponse;
 import com.iit.project.cms.CMSServer.dto.RegisterRequest;
@@ -35,6 +36,14 @@ public class UserService implements IUserService {
             return BaseResponse.success();
         }
         return BaseResponse.error("create user failed");
+    }
+
+    @Override
+    public BaseResponse getUserInfoById(Long userId) {
+        User user = userRepository.getUserById(userId);
+        GetUserInfoResponse response = new GetUserInfoResponse();
+        BeanUtils.copyProperties(user, response);
+        return BaseResponse.success(response);
     }
 
 
@@ -72,6 +81,7 @@ public class UserService implements IUserService {
         }
         User targetUser = new User();
         BeanUtils.copyProperties(request, targetUser);
+
         return BaseResponse.success(userRepository.createUser(targetUser));
     }
 

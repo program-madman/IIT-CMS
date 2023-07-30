@@ -16,4 +16,6 @@ public interface IUserService {
     BaseResponse getUsers();
 
     BaseResponse createUser(User user);
+
+    BaseResponse getUserInfoById(Long userId);
 }
