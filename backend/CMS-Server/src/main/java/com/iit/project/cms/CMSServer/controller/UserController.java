@@ -1,6 +1,8 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.common.CommonResult;
+import com.iit.project.cms.CMSServer.dto.FullDetailRequest;
 import com.iit.project.cms.CMSServer.dto.GetUserInfoRequest;
 import com.iit.project.cms.CMSServer.dto.LoginRequest;
 import com.iit.project.cms.CMSServer.dto.RegisterRequest;
@@ -55,4 +57,13 @@ public class UserController {
         log.info(user.toString());
         return userService.createUser(user);
     }
+
+
+    @RequestMapping(value = "/queryUserArticleInfo")
+    public CommonResult queryUserArticleInfo(@RequestBody FullDetailRequest request) {
+
+        return userService.queryUserArticleInfo(request);
+    }
+
+
 }

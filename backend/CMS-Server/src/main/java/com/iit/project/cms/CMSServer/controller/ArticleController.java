@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.common.CommonResult;
 import com.iit.project.cms.CMSServer.dto.AddToMyFavRequest;
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.service.IArticleService;
@@ -78,4 +79,8 @@ public class ArticleController {
         request.setUserId(Long.parseLong(uid));
         return articleService.addToMyFav(request);
     }
+
+
+
+
 }

@@ -87,4 +87,16 @@ public class UserRepository extends JdbcRepository {
             return null;
         }
     }
+
+    public User queryUserArticleInfo() {
+        String sql = "SELECT * FROM user";
+        List<User> result = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+
+
 }
