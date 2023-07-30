@@ -244,17 +244,9 @@
             nowDialog: 0,
             //文章状态
             msgText: '',
-            //选择的投票item
-            radioGroup: 0,
             //普通附件
             feebackBackType:-1,            
             commonFiles: [],
-            //定向附件
-            directionalFiles: [],
-            //投票按钮状态
-            voteDisable:true,
-            //投票结果
-            votes: [],
             //回复内容
             reportCotent:"",
             //文章id
@@ -263,8 +255,6 @@
             isMyPublish:false,
             //获取的回复信息,先赋默认值。防止渲染出错
             reports:{},
-            //回复附件
-            uploadFileNormal:[],
             //定时器
             timeout:null,
             isCommonFilesDownloadLoading:false,
@@ -335,7 +325,7 @@
                 this.reportCotent=""
                 this.msgId= ''
                 this.isMyPublish=false
-                this. reports={}
+                this.reports={}
                 this.uploadFileNormal=[]
                 this.timeout=null
                 this.isCommonFilesDownloadLoading=false
@@ -345,13 +335,7 @@
             initialize(){
                 console.log("[[[[[[[[ ==>"+JSON.stringify(store.state.user.authorization))
                 this.reset();
-                //理论上，是要单独判断是否Admin的，但是目前看上去admin进入查看的能力和作者一致
-                //产品这么说的，但是可能会存才雷区.比如查看已读报告，并发送提醒... Admin真的可以这么做吗？ 并且。后端是否进行了验证？
-                //单独判断会更好一些，但是逻辑会复杂一些。 目前项目时间有限，如果你看到这段代码。并且有时间，应该修复这个问题
-                //let user = JSON.parse(JSON.stringify(JSON.parse(store.state.user.authorization)))
-                //this.isAdmin = user.JB === "CMS.ADMIN" || user.JB === "CMS.ADMIN" || user.jb === "cms.admin" || user.jb === "CMS.ADMIN";
-               //this.isMyPublish = user.JB === "ADMIN"
-                //this.isMyPublish =  this.isAdmin ? true:this.$route.query.isMyPublish;
+                
                 this.isMyPublish = this.$route.query.isMyPublish;
                 this.msgId = aesDecrypt(this.$route.query.id);
                 //顶部回滚事件监听
@@ -370,29 +354,6 @@
                  let attachment = {"id":1,url:"abc.pdf","downloaded":100,"count":99,"attachmentName":"myAttachment"} 
                  let attachment1 = {"id":1,url:"abc.pdf","downloaded":100,"count":99,"attachmentName":"myAttachment"}  
                  this.commonFiles.push(attachment,attachment1) 
-                //获取文章附件
-                // getDetailAppend(data).then(res => {
-                //     console.log(">>>>>>>>>>>获取文章附件>>>>>>>>>>>>>>>");
-                //     console.log(JSON.stringify(res));
-                //     that.appendBackData = res;
-                //     that.directionalFiles = new Array();
-                //     that.commonFiles = new Array();
-                //     if(that.appendBackData && that.appendBackData.data.length > 0){
-                //         for(let i=0;i<that.appendBackData.data.length;i++){
-                //             var currentFile = that.appendBackData.data[i];
-                //             if(!that.isMyPublish){
-                //                 currentFile.downloaded = 0;
-                //                 currentFile.count = 0;
-                //             }
-                //             if(currentFile.orientation){
-                //                 that.directionalFiles.push(currentFile);
-                //             }else{
-                //                 that.commonFiles.push(currentFile); 
-                //             }
-                //         }
-                //     }
-                //     console.log("commonFiles:"+JSON.stringify(this.commonFiles));
-                // });
             },
             //获取文章变更历史
             getArticleLog() {
@@ -477,28 +438,6 @@
                     default:
                         break;
                 }
-            },
-            //展示旗帜背景图片
-            showImag(status) {
-                let imgsrc;
-                switch (status) {
-                    case 0:
-                        imgsrc = require('@/assets/daifabu.png');
-                        break;
-                    case 1:
-                        imgsrc = require('@/assets/yifabu.png');
-                        break;
-                    case 2:
-                    case 3:
-                        imgsrc = require('@/assets/yichexiao.png');
-                        break;
-                    case 4:
-                        imgsrc = require('@/assets/yishixiao.png');
-                        break;
-                    default:
-                        break;
-                }
-                return imgsrc;
             },
             //获取文章信息
             getDetails(msgId){
@@ -638,10 +577,7 @@
                     showSnackbar("您提交的太频繁了，稍等一会试试吧");
                 }                
             ),
-            //已读回执
-            toReportReceipt(){
-                this.toReport(0,"");
-            },
+           
             //回复附件
             toReportFile(){              
                 //二次确认
@@ -758,30 +694,6 @@
                     this.goVote();
                 })
                 .catch(() => {});  
-            },
-            //去投票
-            goVote(){  
-                //this.toReport(3,"",this.radioGroup);
-                let reportDatas = {
-                    msgId: this.msgId,
-                    feedbackType: 3,
-                    voteId: this.backData.data.voteInfoDTO.voteId,
-                    voteOptionId:this.radioGroup
-                }
-                console.log(JSON.stringify(reportDatas))
-                getDetailToReport(reportDatas).then(res => {
-                    console.log("投票完成") 
-                    console.log(res); 
-                    let data = {
-                        msgId: this.msgId,
-                    }
-                    this.getReports(data);
-                    this.getDetails(this.msgId);
-                }).catch((res)=>{
-                    if(res!=null&&res.data.code=="9"){
-                        showSnackbar("投票已截止");
-                    }
-                });
             },
             //回复信息
             toReport(feedbackType,content,attachmentList){

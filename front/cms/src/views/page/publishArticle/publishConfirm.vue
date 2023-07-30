@@ -2,16 +2,16 @@
   <v-dialog width="728" height="631" style="max-height: 631px" v-model="dialog" :persistent="true">
     <v-card class="pt-6 pl-7 pr-7">
       <span class="publish-confirm-title"
-        >将向以下经销商对应的人员发布文章</span
+        >Article will be published to the corresponding personnel of the following department and user</span
       >
 
       <div class="mt-6 publish-confirm-header-text">
-        <span class="ml-2">区域</span><span style="margin-left: 116px">经销商</span>
+        <span class="ml-2">Departments</span>
       </div>
       <v-divider class="mt-3"></v-divider>
 
       <v-virtual-scroll
-        :items="content"
+        :items="content.targetDeptList"
         height="443"
         item-height="40"
         bench="1"
@@ -22,10 +22,12 @@
             :key="index"
             class="publish-confirm-content"
           >
-            <span class="pl-2" style="width:148px;display: inline-flex;">{{item.companyType ==1 ? item.area : "大众内部"}}</span><span>{{item.companyName}}</span>
+           <span class="pl-2" style="width:320px;display: inline-flex;">{{item.departmentName}}</span>
           </div>
         </template>
       </v-virtual-scroll>
+      
+      
 
       <div style="margin-top: 24px; height: 60px">
         <v-btn
@@ -77,17 +79,17 @@ export default {
   },
 
   methods: {
-    confirm(content) {
+    confirm(article) {
       this.dialog = true;
       return new Promise((resolve, reject) => {
-        this.content = JSON.parse(JSON.stringify(content));
+        this.content = JSON.parse(JSON.stringify(article));
         this.onConfirm = (e) => {
           this.dialog = false;
           resolve(e);
         };
         this.onCancele = (error) => {
           this.dialog = false;
-          this.content=[];
+          this.content= [];
           reject(error);
         };
       });

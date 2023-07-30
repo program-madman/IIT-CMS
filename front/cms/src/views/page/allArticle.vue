@@ -70,7 +70,6 @@
         </v-row>
       </v-col>
     </v-row>
-    <page-loader @onLoadMore="onLoadMore" />
   </v-container>
 </template>
 
@@ -79,9 +78,7 @@ import "@/assets/css/article.css";
 import {  removeCollection,getAllArticle } from "@/api/getData.js";
 import { EventBus } from "@/utils/event-bus";
 import {
-  getMsgStatusDesc,
   highLightText,
-  getMsgStatusImg,
   formatHtml,
 } from "@/utils/articleUtils.js";
 import { mapGetters } from "vuex";
@@ -121,19 +118,12 @@ export default {
       this.loadingview = true;
     },
 
-
-
     onReset(data) {
       if (this.loading == true) return;
       this.onSearch(data);
     },
 
-    onLoadMore() {
-      if (this.loading == true) return;
-      this.searchArticles(this.data);
-    },
-    searchArticles(data) {
-      
+    searchArticles(data) {      
        console.log(data);
       this.loading = true;
       getAllArticle(data)
@@ -143,37 +133,29 @@ export default {
             this.showEmptyViewIfNeeded();
             return;
           }
-          // if (this.data.pageNum == 1) {
-          //   let departments = ["全部"];
-          //   this.departments = departments.concat(res.data.departments);
-          // }
-
+         
           this.data.pageNum++;
           let aTemp = [];
 
           res.data.forEach((item) => {
             let dTemp = {};
             dTemp["id"] = item.articleId;
-            dTemp["title"] = formatHtml(item.title);
-            dTemp["intro"] = formatHtml(item.content);
-            dTemp["lastUpdateTime"] = item.updateTime;
-            dTemp["deptment"] = "Computer Science"
-
-            //文章状态:0:草稿 1:已发布  4:已失效
-            dTemp["articleType"] = getMsgStatusDesc(1);
-            dTemp["articleTypeImg"] = getMsgStatusImg(1);
+            dTemp["title"] = formatHtml(item.articleTitle);
+            dTemp["intro"] = formatHtml(item.articleContent);
+            dTemp["lastUpdateTime"] = item.publishTime;
+            dTemp["deptment"] = item.authorDeptName
             //附件数量
-            dTemp["attachmentCount"] = 3;
+            dTemp["attachmentCount"] = item.attachmentTotalCount
             //阅读数量
             dTemp["readNum"] = 2;
             //文件编号
-            dTemp["articleNo"] = "News";
+            dTemp["articleNo"] = item.articleCategory
             //是否已读
-            dTemp["readStatus"] = false;
+            dTemp["readStatus"] = item.isRead;
             //收藏状态
-            dTemp["favorite"] = false;
+            dTemp["favorite"] = item.isFav;
             //点赞数
-            dTemp["like"] = Math.floor(Math.random() * (2000 - 10)) + 10
+            dTemp["like"] = item.likes
             //收藏操作选择状态寄存
             dTemp["favoriteSelect"] = null;
             aTemp.push(dTemp);
@@ -210,23 +192,6 @@ export default {
     //文章收藏
     collect(item) {
       item.favorite = !item.favorite
-    //   //选择收藏的文章的指针
-    //   let item = this.items[index];
-    //   let type = Number(item.favoriteSelect);
-    //   let params = {
-    //     msgId: Number(item.id),
-    //     archiveId: type,
-    //   };
-    //   console.debug("收藏类型=======>" + type);
-    //   item.favoriteSelect = null;
-
-    //   collectionOperation(params)
-    //     .then((res) => {
-    //       console.debug("修改文章类型" + res);
-    //       this.items[index].favorite = type;
-    //     })
-    //     .catch()
-    //     .finally(() => (this.items[index].dlog = false));
     },
   },
   

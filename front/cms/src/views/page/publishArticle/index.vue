@@ -122,9 +122,7 @@
 import {
   saveMessage,
   getArticleDetail,
-  saveVote,
   uploadFile,
-  dealerCodeValid,
 } from "@/api/getData.js";
 import { aesEncrypt, aesDecrypt } from "@/utils/encryption.js";
 import { highLightAllText } from "@/utils/articleUtils.js";
@@ -387,68 +385,6 @@ export default {
       this.voteTemp = deepClone(this.vote);
     },
 
-    //确认保存投票
-    voteSave: Throttle(
-      function (isSaveAS = false) {
-        if (!isSaveAS && !this.$refs.form.validate()) return;
-
-        let temp = this.voteTemp;
-        temp.enable = true;
-        temp.voteOptions = temp.voteOptions.filter(
-          (t) => t.value != null && t.value != ""
-        );
-
-        let upload = {};
-        upload.id = temp.id;
-        upload.topic = temp.topic;
-        upload.voteType = temp.voteType ? 1 : 0;
-        upload.voteOptions = temp.voteOptions.map((item) => item.value);
-        upload.endTime = temp.endTime;
-
-        saveVote(upload)
-          .then((res) => {
-            console.debug("save vote ==>" + JSON.stringify(res));
-            if (res.code == 0) {
-              this.voteDialog = false;
-              console.debug("save id" + res.data.voteId);
-              temp.id = res.data.voteId;
-              this.vote = deepClone(temp);
-              this.voteTemp = deepClone(temp);
-              this.changeSaveStatus();
-            }
-          })
-          .catch(() => {
-            if (isSaveAS) {
-              this.onVoteDelete();
-              this.showSnack("投票另存为失败");
-            } else {
-              this.showSnack("添加投票失败");
-            }
-          });
-      },
-      function () {
-        this.showSnack("您提交的太频繁了，稍等一会试试吧");
-      },
-      3000
-    ),
-    //添加投票选项
-    addItem() {
-      this.voteTemp.voteOptions.push({ value: null });
-    },
-    //删除投票选项
-    deleteItem: function (index) {
-      //  not allow to delete the first
-      if (index > 1) {
-        this.voteTemp.voteOptions.splice(index, 1);
-      }
-    },
-    //删除投票
-    onVoteDelete() {
-      this.voteTemp = deepClone(voteDefault);
-      this.vote = deepClone(voteDefault);
-      this.changeSaveStatus();
-    },
-
     /*-------------------附件上传操作---------------------------*/
     uploadFileN() {
       //this.$refs.uploadFileN.dispatchEvent(new MouseEvent("click"));
@@ -572,91 +508,7 @@ export default {
             ))
         );
     },
-    //上传定向附件
-    uploadDirectImp(item, temp) {
-      dealerCodeValid(temp.orientation)
-        .then((res) => {
-          if (!res || typeof res == "undefined" || res.code != 0 || !res.data) {
-            let error = "";
-            if(res.code==42){
-              error = "未找到经销商";
-            }else if(res.code==43){
-              error = "没有权限向此区域发送文章";
-            }else{
-              error = "文件名不符合要求";
-            }
-
-            let index = this.uploadFileDirect.findIndex(
-                  (t) => t.text == item.name
-                );
-
-            this.uploadFileDirect[index].error = error;
-            
-          } else {
-            var index = this.uploadFileDirect.findIndex(
-              (t) => t.text == item.name
-            );
-            if (index < 0) return;
-
-            const source = this.cancelToken.source();
-
-            this.directionReqeuestHandles.push(source);
-
-            uploadFile(item,source.token, (progress, fileName) => {
-              var index = this.uploadFileDirect.findIndex(
-                (t) => t.text == fileName
-              );
-              if (index < 0) return;
-              this.uploadFileDirect[index].progress = progress;
-
-              this.uploadFileDirect = JSON.parse(
-                JSON.stringify(this.uploadFileDirect)
-              );
-            })
-              .then((res) => {
-                let index = this.uploadFileDirect.findIndex(
-                  (t) => t.text == item.name
-                );
-                let update = this.uploadFileDirect[index];
-                if (!res || typeof res == "undefined" || res.code != 0) {
-                  update.error = "上传失败";
-                } else {
-                  update.path = res.data.url;
-                  update.res = true;
-                }
-              })
-              .catch(()=>{
-                  let index = this.uploadFileDirect.findIndex(
-                    (t) => t.text == item.name
-                  );
-
-                  if(index>=0){
-                    this.uploadFileDirect[index].error = "上传失败";
-                  }                  
-              })
-              .finally(
-                () =>
-                  (this.uploadFileDirect = JSON.parse(
-                    JSON.stringify(this.uploadFileDirect)
-                  ))
-              );
-          }
-        })
-        .catch(() => {
-          var index = this.uploadFileDirect.findIndex(
-            (t) => t.text == item.name
-          );
-          this.uploadFileDirect[index].error = "文件名不符合要求";
-          console.log(JSON.stringify(this.uploadFileDirect));
-        })
-        .finally(
-          () =>
-            (this.uploadFileDirect = JSON.parse(
-              JSON.stringify(this.uploadFileDirect)
-            ))
-        );
-    },
-
+    
     /*-------------------保存草稿操作---------------------------*/
 
     saveArticle: Throttle(
@@ -793,7 +645,7 @@ export default {
       let error = null;
       if (isNull(this.title)) {
         if (!this.autoSaving) {
-          error = this.titleErrorMessage = "标题不能为空";
+          error = this.titleErrorMessage = "title cannot empty";
           this.showSnack(error);
         }
 
@@ -801,7 +653,7 @@ export default {
       }
       
       if (isNull(this.content)) {
-        if (!this.autoSaving) this.showSnack("正文内容不能为空");
+        if (!this.autoSaving) this.showSnack("content cannot empty");
         return false;
       } else if (this.sumLetter().num > 5000) {
         this.showSnack("正文内容不能超过5000字");

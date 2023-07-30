@@ -34,24 +34,23 @@
               "
             >
               <v-checkbox
-                v-model="ch_delear"
-                :disabled="ch_delear_disable"
+                v-model="allDepartment"
                 label="To Department"
                 hide-details="false"
                 class="pl-4"
                 style="width: 33%; min-height: 28px; height: 28px"
-                @change="selectAllDelear()"
+                @change="selectAllDepartment"
                 dense
               >
               </v-checkbox>
               <div style="width: 1px; height: 100%; background: #e4e8eb"></div>
               <v-checkbox
-                v-model="ch_delear_deplist_all"
+                v-model="allUsers"
                 label="To User"
                 hide-details="false"
                 class="pl-4"
                 style="width: 33%"
-                @change="selectAllDeplist()"
+                @change="selectAllUser"
                 dense
               >
               </v-checkbox>
@@ -78,7 +77,7 @@
                 "
               >
                 <v-virtual-scroll
-                  :items="ch_delear_select"
+                  :items="department"
                   height="446"
                   item-height="30"
                   bench="1"
@@ -92,10 +91,8 @@
                       <v-checkbox
                         class="mt-0"
                         v-model="item.isCheck"
-                        :label="item.companyName"
-                        :disabled="item.disable"
+                        :label="item.departmentName"
                         hide-details="false"
-                        @change="onDealerSelectChange(item)"
                         dense
                       ></v-checkbox>
                       <v-spacer></v-spacer>
@@ -113,7 +110,7 @@
                 "
                 >
                 <v-virtual-scroll
-                    :items="ch_delear_deplist"
+                    :items="userType"
                     height="446"
                     item-height="30"
                     bench="1"
@@ -123,10 +120,8 @@
                       
                     <v-checkbox
                       v-model="item.isCheck"
-                      :label="item.value"
+                      :label="item.typeName"
                       hide-details="false"
-                      :disabled="item.isable"
-                      @change="onDealerDeplistChange(item)"
                       dense
                       style="width: 197px; min-height: 28px; height: 30px"
                       class="pl-4 mt-0"
@@ -144,26 +139,34 @@
                   border-right: 1px solid #e4e8eb;
                 "
               >
-                <v-radio-group
-                    :v-model="ch_delear_deplist"
+              <v-radio-group
+                    :v-model="category"
                     height="446"
                     item-height="30"
                     bench="1"
                     class="pa-0 ma-0"
                   >
-                    
-                      <v-radio
-                      v-for="item in ch_delear_deplist"
+                
+                  <v-virtual-scroll
+                    :items="articlecategory"
+                    height="446"
+                    item-height="30"
+                    bench="1"
+                    class="pa-0 ma-0 ml-4 mt-4"
+                  >
+                 
+                  <template v-slot:default="{ item }">
+                  <v-radio
                       :key="item.typeId"
-                      :label=item.item.typeName
-                      :value=item.item.typeId
+                      :label=item.typeName
+                      :value=item.typeId
                       ></v-radio>
-                   
-                  </v-radio-group>
+                    </template>
+                    
+                </v-virtual-scroll>
+                     
+              </v-radio-group>
               </div>
-
-
-
             </div>
           </v-sheet>        
           <div style="height: 128px; display: block"></div>
@@ -242,6 +245,9 @@ export default {
       effectiveTime: "",
       invalidTime: "",
       feedbackType: 4,
+      allDepartment:false,
+      allUsers:false,
+      category:null,
       uploading: false,
       ch_delear_disable: false,
       ch_delear: false,
@@ -252,7 +258,24 @@ export default {
       ch_delear_deplist: [],
       ch_oem: false,
       ch_oem_deplist: [],
-                userTypeMoke: [
+
+          articlecategory: [
+                  {
+                    "typeId":1,
+                    "typeName":"News"
+                  },
+                  {
+                    "typeId":2,
+                    "typeName":"Deep Learning"
+                  },
+                  {
+                    "typeId":3,
+                    "typeName":"Database"
+                  },
+
+                ],
+
+                userType: [
                   {
                     "typeId":1,
                     "typeName":"Student"
@@ -267,119 +290,55 @@ export default {
                   },
 
                 ],
-                mokeData:[
+                department:[
                   {
-                      "companyName": "Computer Science",
-                      "companyCode": "1",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Computer Science",
+                      "departmentId": "1",
+                      
                   },
                   {
-                      "companyName": "Computer Engineering",
-                      "companyCode": "5",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Computer Engineering",
+                      "departmentId": "5",
+                     
                   },
                   {
-                      "companyName": "Business and Finance",
-                      "companyCode": "3",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Business and Finance",
+                      "departmentId": "3",
+                      
                   },
                   {
-                      "companyName": "Medicine and Health Sciences",
-                      "companyCode": "8",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Medicine and Health Sciences",
+                      "departmentId": "8",
+                     
                   },
                   {
-                      "companyName": "Psychology",
-                      "companyCode": "2",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Psychology",
+                      "departmentId": "2",
+                      
                   },
                   {
-                      "companyName": "Engineering",
-                      "companyCode": "4",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Engineering",
+                      "departmentId": "4",
+                      
                   },
                   {
-                      "companyName": "Economics",
-                      "companyCode": "6",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Economics",
+                      "departmentId": "6",
+                     
                   },
                   {
-                      "companyName": "Environmental Science",
-                      "companyCode": "7",
-                      "companyType": null,
-                      "dealerType": null,
-                      "area": null,
-                      "positions": null,
-                      "selected": null,
-                      "readCount": null,
-                      "feedbackCount": null,
-                      "receiveUserCount": null,
-                      "attachmentReplyCount": null
+                      "departmentName": "Environmental Science",
+                      "departmentId": "7",
+                      
                   }
               ]
     };
   },
 
   mounted() {
-    this.initDealerList();
-    this.initDealerDep();
-    this.initOemDep();
+    this.initDepartment();
+    this.initCategory();
+    this.initUserType();
   },
 
   methods: {
@@ -396,169 +355,35 @@ export default {
       this.$emit("closeDialog");
       closeSnackbar();
     },
-    initDealerList() {
-          //let data = res.data;
-          let data = this.mokeData
-          if (!data || typeof data == "undefined" || data.length == 0) {
-            return;
-          }
-          this.ch_delear_select = [];
-          data.forEach((item, index) => {
-            let temp = {
-              id: index,
-              isCheck: false,
-              disable: false,
-              companyName: item.companyName,
-              companyCode: item.companyCode,
-              companyType: item.companyType,
-              dealerType: item.dealerType,
-              area: item.area,
-              arealab: item.area == null ? null : item.area.substring(0, 1),
-            };
-            this.ch_delear_select.push(temp);
-          });
-          this.ch_delear_select_view = deepClone(this.ch_delear_select);
-      // getDealerList()
-      //   .then((res) => {
-      //     //console.debug(JSON.stringify(res));
-      //     if (!res || typeof res == "undefined" || res.code != 0) {
-      //       return;
-      //     }
 
-      //     //let data = res.data;
-      //     let data = this.mokeData
-      //     if (!data || typeof data == "undefined" || data.length == 0) {
-      //       return;
-      //     }
-      //     var areaSet = new Set();
-      //     var dealerTypeSet = new Set();
-      //     this.ch_delear_select = [];
-      //     data.forEach((item, index) => {
-      //       let area = item.area;
-      //       if (area != null && typeof area != undefined && area != "") {
-      //         areaSet.add(area);
-      //       }
-      //       let type = item.dealerType;
-      //       if (type != null && typeof type != undefined) {
-      //         if (type == 0) type += 3;
-      //         dealerTypeSet.add(type);
-      //       }
-
-      //       let temp = {
-      //         id: index,
-      //         isCheck: false,
-      //         disable: false,
-      //         companyName: item.companyName,
-      //         companyCode: item.companyCode,
-      //         companyType: item.companyType,
-      //         dealerType: item.dealerType,
-      //         area: item.area,
-      //         arealab: item.area == null ? null : item.area.substring(0, 1),
-      //       };
-      //       this.ch_delear_select.push(temp);
-      //     });
-      //     this.ch_delear_select_view = deepClone(this.ch_delear_select);
-
-      //     this.ch_area_supp = [];
-      //     Array.from(areaSet).forEach((item, index) => {
-      //       let temp = {
-      //         id: index,
-      //         isCheck: false,
-      //         lable: item,
-      //       };
-      //       this.ch_area_supp.push(temp);
-      //     });
-
-      //     this.ch_com_supp = [];
-
-      //     Array.from(dealerTypeSet)
-      //       .sort()
-      //       .forEach((item, index) => {
-      //         let temp = {
-      //           id: index,
-      //           isCheck: false,
-      //           lable: this.getDealerTypeDesc(item),
-      //           type: item % 3,
-      //         };
-      //         this.ch_com_supp.push(temp);
-      //       });
-      //   })
-      //   .catch();
+    initDepartment() {
+      
+    },
+    
+    initCategory() {
+      this.category = this.articlecategory[0]
     },
 
-    initDealerDep() {
-      this.userTypeMoke.forEach(item => {
-        let temp = {
-              id: item.typeId,
-              isCheck: false,
-              value: item.typeName,
-            };
-            this.ch_delear_deplist.push(temp);
-      }) 
-      // getDealerDepList()
-      //   .then((res) => {
-      //     if (!res || typeof res == "undefined" || res.code != 0) {
-      //       return;
-      //     }
+    initUserType() {
 
-      //     let data = res.data;
-      //     if (!data || typeof data == "undefined" || data.length == 0) {
-      //       return;
-      //     }
-      //     this.ch_delear_deplist = [];
-      //     Object.keys(data).forEach((key) => {
-      //       let temp = {
-      //         id: key,
-      //         isCheck: false,
-      //         value: data[key],
-      //       };
-      //       this.ch_delear_deplist.push(temp);
-      //     });
-      //   })
-      //   .catch();
-    },
-    initOemDep() {
-      getOemDepList()
-        .then((res) => {
-          if (!res || typeof res == "undefined" || res.code != 0) {
-            return;
-          }
-
-          let data = res.data;
-          if (!data || typeof data == "undefined" || data.length == 0) {
-            return;
-          }
-
-          this.ch_oem_deplist = [];
-          data.forEach((item, index) => {
-            let temp = {
-              id: index,
-              isCheck: false,
-              companyName: item.companyName,
-              companyCode: item.companyCode,
-              companyType: item.companyType,
-              dealerType: item.dealerType,
-              area: item.area,
-            };
-            this.ch_oem_deplist.push(temp);
-          });
-          console.log(JSON.stringify(this.ch_oem_deplist));
-        })
-        .catch();
-    },
-    getDealerTypeDesc(type) {
-      switch (type) {
-        case 1:
-          return "4s店";
-        case 2:
-          return "二级网点";
-        case 3:
-          return "独立售后";
-        default:
-          return "未分类";
-      }
     },
 
+    selectAllDepartment() {
+      this.department.forEach((item) => {
+        item.isCheck = this.allDepartment;;
+      });
+
+      this.department = deepClone(this.department);
+    },
+
+    selectAllUser() {
+      this.userType.forEach((item) => {
+        item.isCheck = this.allUsers;;
+      });
+      this.userType = deepClone(this.userType);
+    },
+
+  
     //选择全部
     selectAllDelear() {
       var isSelected = this.ch_delear;
@@ -590,202 +415,72 @@ export default {
       });
     },
 
-    onAreaSelectChange(item) {
-      if (!item.isCheck) {
-        this.ch_delear_select.forEach((it) => {
-          if (it.area == item.lable) {
-            it.isCheck = false;
-          }
-        });
-        this.setDealerUnCheckedIfNeed();
-      } else {
-        this.ch_delear = true;
-        let selecType = [];
-        this.ch_com_supp.forEach((it) => {
-          if (it.isCheck) {
-            selecType.push(it.type);
-          }
-        });
-        if (selecType.length == 0) return;
-        this.ch_delear_select.forEach((it) => {
-          var typeSelected = selecType.indexOf(it.dealerType) >= 0;
-          if (typeSelected && it.area == item.lable) {
-            it.isCheck = true;
-          }
-        });
-      }
-    },
-    onTypeSelectChange(item) {
-      if (!item.isCheck) {
-        this.ch_delear_select.forEach((it) => {
-          if (it.dealerType == item.type) {
-            it.isCheck = false;
-          }
-        });
-        this.setDealerUnCheckedIfNeed();
-      } else {
-        this.ch_delear = true;
-        let selectArea = [];
-        this.ch_area_supp.forEach((it) => {
-          if (it.isCheck) {
-            selectArea.push(it.lable);
-          }
-        });
-
-        if (selectArea.length == 0) return;
-        this.ch_delear_select.forEach((it) => {
-          var areaSelected = selectArea.indexOf(it.area) >= 0;
-          if (areaSelected && it.dealerType == item.type) {
-            it.isCheck = true;
-          }
-        });
-      }
-    },
-    onDealerSelectChange(item) {
-      if (item.isCheck) {
-        this.ch_delear = true;
-        this.ch_com_supp.forEach((it) => {
-          if (it.type == item.dealerType) {
-            it.isCheck = true;
-          }
-        });
-        this.ch_area_supp.forEach((it) => {
-          if (it.lable == item.area) {
-            it.isCheck = true;
-          }
-        });
-      } else {
-        // 只刷新当前条目相关
-        // if(this.ch_delear_select.findIndex((it)=> it.isCheck && it.dealerType == item.dealerType) < 0) {
-        //   this.ch_com_supp.forEach((it) => it.type == item.dealerType && (it.isCheck = false))
-        //   this.setDealerUnCheckedIfNeed();
-        // }
-
-        // if(this.ch_delear_select.findIndex((it) => it.isCheck && it.area == item.area)<0){
-        //   this.ch_area_supp.forEach((it) => it.lable == item.area && (it.isCheck = false))
-        //   this.setDealerUnCheckedIfNeed();
-        // }
-        // 全部刷新
-        let areaSet = new Set();
-        let dealerTypeSet = new Set();
-        this.ch_delear_select.forEach((it) => {
-          if (it.isCheck) {
-            areaSet.add(it.area);
-            dealerTypeSet.add(it.dealerType);
-          }
-        });
-        let area = Array.from(areaSet);
-        let dealerType = Array.from(dealerTypeSet);
-        this.ch_com_supp.forEach(
-          (it) => dealerType.indexOf(it.type) < 0 && (it.isCheck = false)
-        );
-        this.ch_area_supp.forEach(
-          (it) => area.indexOf(it.lable) < 0 && (it.isCheck = false)
-        );
-        this.setDealerUnCheckedIfNeed();
-      }
-    },
-    setDealerUnCheckedIfNeed() {
-      this.ch_com_supp.findIndex((it) => it.isCheck) < 0 &&
-        this.ch_area_supp.findIndex((it) => it.isCheck) < 0 &&
-        (this.ch_delear = false);
-    },
-    onDealerDeplistChange(item) {
-      if (item.isCheck) {
-        this.ch_delear_deplist_all = true;
-      } else if (this.ch_delear_deplist.findIndex((it) => it.isCheck) < 0) {
-        this.ch_delear_deplist_all = false;
-      }
-    },
-    onOemSelectChange(item) {
-      if (item.isCheck) {
-        this.ch_oem = true;
-      } else if (
-        this.ch_oem_deplist.findIndex((it) => it.isCheck == true) < 0
-      ) {
-        this.ch_oem = false;
-      }
-    },
+   
 
     publish: Throttle(
       function () {
-        this.publishImp();
+        this.publishArticle();
       },
       function () {
-        showSnackbar("您提交的太频繁了，稍等一会试试吧");
+        showSnackbar("submitted too frequently. try it later");
       }
     ),
 
-    publishImp() {
-      if (!/^[A-Za-z0-9]*$/.test(this.msgNumber)) {
-        showSnackbar("文章编号请输入20位数字与字母组合（选填）");
-        return;
-      }
-      let dealers = [];
-      this.ch_delear_select.forEach((item) => {
+    publishArticle() {
+      var article = {}
+      article.targetDeptList = []
+      article.userTypeList = []
+      this.department.forEach((item) => {
         if (item.isCheck) {
-          let temp = {
-            companyName: item.companyName,
-            companyCode: item.companyCode,
-            companyType: item.companyType,
-            dealerType: item.dealerType,
-            area: item.area,
-          };
-          dealers.push(temp);
+          article.targetDeptList.push(item);
         }
-      });
+      })
 
-      let dep = Object.create(null);
+      this.userType.forEach((item) => {
+        if (item.isCheck) {
+          article.userTypeList.push(item);
+        }
+      })
 
-      if (dealers.length > 0) {
-        let hasdep = false;
-        this.ch_delear_deplist.forEach((item) => {
-          if (item.isCheck) {
-            dep[item.id] = item.value;
-            hasdep = true;
-          }
-        });
-        console.log(dep)
-        if (!hasdep) {
-          showSnackbar("请选择发布职位后重试");
+      article.categoryName = this.category.typeName
+
+      if (article.targetDeptList.length == 0) {
+          showSnackbar("please select department");
           return;
-        }
       }
 
-      this.ch_oem_deplist.forEach((item) => {
-        if (item.isCheck) {
-          let temp = {
-            companyName: item.companyName,
-            companyCode: item.companyCode,
-            companyType: item.companyType,
-            dealerType: item.dealerType,
-            area: item.area,
-          };
-          dealers.push(temp);
-        }
-      });
-      if (dealers.length == 0) {
-        showSnackbar("未选择发布对象,请选择发布对象后重试");
-        return;
+      if (article.userType == 0) {
+          showSnackbar("please select user");
+          return;
       }
-      let releaseTime =
-        this.releaseTime == ""
-          ? new Date().format("yyyy-MM-dd hh:mm:ss")
-          : this.releaseTime;
+      this.$refs.confirm
+        .confirm(article)
+        .then(() => {
+          this.uploading = true;
+          publishMessage(article)
+            .then((res) => {
+              console.debug("publish message:" + JSON.stringify(res));
+              if (res.code == 0) {
+                this.$refs.alerTime
+                  .alert("文章提交成功，将为您跳转文章首页。", 10)
+                  .then(() => EventBus.$emit("publishSucessful"));
+              } else {
+                showSnackbar("发布失败,请稍后重试");
+              }
+            })
+            .catch(() => {
+              showSnackbar("发布失败,请稍后重试");
+            })
+            .finally(() => {
+              this.uploading = false;
+            });
+        })
+        .catch(()=> (console.debug("取消")));
 
-      let invalidTime = this.invalidTime == "" ? null : this.invalidTime;
+    },
 
-      let data = {
-        id: this.id,
-        msgNumber: this.msgNumber,
-        dealerObjList: dealers,
-        positions: dep,
-        releaseTime: releaseTime,
-        invalidTime: invalidTime,
-        effectiveTime: this.effectiveTime,
-        feedbackType: this.feedbackType,
-        msgStatus: 1,
-      };
+    publishImp() {
+      
       this.$refs.confirm
         .confirm(dealers)
         .then(() => {

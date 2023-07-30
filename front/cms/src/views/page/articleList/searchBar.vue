@@ -36,7 +36,7 @@
       sm="12"
       md="3"
       class="pa-0 pt-4"
-      v-show="distributeSelect != '全部'"
+      v-show="distributeSelect != 'All'"
       style="display: inline-flex"
     >
       <v-menu
@@ -55,10 +55,10 @@
             flat
             dense
             class="ml-sm-0 ml-md-2"
-            :disabled="distributeSelect != '自定义日期'"
+            :disabled="distributeSelect != 'Custom Date'"
             ref="startDate"
             v-model="startDate"
-            label="发布开始日期"
+            label="Publish start time"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -90,10 +90,10 @@
             dense
             class="ml-2"
             style="width: 144px"
-            :disabled="distributeSelect != '自定义日期'"
+            :disabled="distributeSelect != 'Custom Date'"
             ref="endDate"
             v-model="endDate"
-            label="发布结束日期"
+            label="Publish end time"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -114,7 +114,7 @@
       class="pa-0 pt-4"
       cols="12"
       sm="12"
-      :md="distributeSelect != '全部' ? 6 : 9"
+      :md="distributeSelect != 'All' ? 6 : 9"
       style="display: inline-flex"
     >
       <v-spacer>
@@ -125,8 +125,8 @@
           style="height: 40px; min-width: 140px"
           hide-details
           clearable
-          label="按照文章编号，标题，正文内容查找"
-          placeholder="按照文章编号，标题，正文内容查找"
+          label="Search by article title or body content text"
+          placeholder="Search by article title or body content text"
           maxlength="70"
           counter="70"
           append-icon="mdi-magnify"
@@ -150,7 +150,7 @@
         @click="onSearch"
       >
       <v-icon left> mdi-magnify </v-icon>
-        查找
+        Search
       </v-btn>
 
       <v-btn
@@ -164,7 +164,7 @@
         @click="btnReset"
       >
       <v-icon left> mdi-autorenew </v-icon>
-        还原
+        Revert
       </v-btn>
     </v-col>
   </v-row>
@@ -176,21 +176,21 @@ export default {
     departments: {
       typeof: Array,
       default: () => {
-        return ["全部"];
+        return ["All"];
       },
     },
   },
   data() {
     return {
-      select: "全部",
-      distributeSelect: "全部",
+      select: "All",
+      distributeSelect: "All",
       distributeDate: [
-        "全部",
-        "最近七天",
-        "最近15天",
-        "最近一个月",
-        "最近三个月",
-        "自定义日期",
+        "All",
+        "Past seven days",
+        "Past 15 days",
+        "Last Month",
+        "Past three months",
+        "Custom Date",
       ],
       menu: false,
       menu1: false,
@@ -205,19 +205,19 @@ export default {
   methods:{
     selectDate() {
       switch (this.distributeSelect) {
-        case "最近七天":
+        case "Past seven days":
           this.endDate = new Date().format("yyyy-MM-dd");
           this.startDate =   offsetDayTime(-7).format("yyyy-MM-dd");
           break;
-        case "最近15天":
+        case "Past 15 days":
           this.endDate = new Date().format("yyyy-MM-dd");
           this.startDate =   offsetDayTime(-15).format("yyyy-MM-dd");
           break;
-        case "最近一个月":
+        case "Last Month":
           this.endDate = new Date().format("yyyy-MM-dd");
           this.startDate = offsetMonthTime(-1).format("yyyy-MM-dd");
           break;
-        case "最近三个月":
+        case "Past three months":
           this.endDate = new Date().format("yyyy-MM-dd");
           this.startDate = offsetMonthTime(-3).format("yyyy-MM-dd");
           break;
@@ -244,8 +244,8 @@ export default {
     },
 
     btnReset() {
-      this.select = "全部";
-      this.distributeSelect = "全部";
+      this.select = "All";
+      this.distributeSelect = "All";
       this.search = "";
       let data = {
         pageNum: 1,
@@ -263,7 +263,7 @@ export default {
         department:this.select,
         searchContent: this.search,
       };
-      var timeSearch = this.distributeSelect != "全部";
+      var timeSearch = this.distributeSelect != "All";
       if (timeSearch) {
         data.startTime = this.startDate;
         data.endTime = this.endDate;

@@ -41,10 +41,7 @@
                 <v-icon dense large color="white darken-3"
                   >mdi-circle-small</v-icon>
               </span>
-              <span class="ml-n2">{{ item.operator }}</span>
-              <span class="ml-1 mr-2">-</span>
-              <span class="ml-1">{{item.optText}}</span>
-              <span class="ml-1 mr-2">-</span>
+              <span class="ml-n2">{{ item.title }}</span>
               <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
               <a
@@ -74,7 +71,7 @@
             text
             @click="toMessageCenter"
           >
-            查看全部信息
+            All Message
           </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -190,18 +187,26 @@ export default {
   methods: {
 
     getUserMessage() {
-       getUserMessageList(1, 10)
-      .then((response) => {
-        //showMsgText("1")
-        console.log("######## unread message =========> ####### " + JSON.stringify(response));
-        if (response != null && response.data != null && response.data.length > 0) {
-          this.msgItems = response.data;
-          for (let i = 0; i < this.msgItems.length; i++) {
-            let msg = this.msgItems[i];
-            msg.optText = getMsgReminderStatusDesc(msg.operation);
+      //  getUserMessageList(1, 10)
+      // .then((response) => {
+      //   //showMsgText("1")
+      //   console.log("######## unread message =========> ####### " + JSON.stringify(response));
+      //   if (response != null && response.data != null && response.data.length > 0) {
+      //     this.msgItems = response.data;
+      //     for (let i = 0; i < this.msgItems.length; i++) {
+      //       let msg = this.msgItems[i];
+      //       msg.optText = getMsgReminderStatusDesc(msg.operation);
+      //     }
+      //   }
+      // }).catch();
+      this.msgItems = []
+      for (let i = 0; i < 10; i++) {
+            var msg = {}
+            msg.title = "message title "+i
+            msg.content = "message content "+i
+            msg.isRead = false
+            this.msgItems.push(msg)
           }
-        }
-      }).catch();
     },
 
     getUserUnreadArticleCount() {
