@@ -48,108 +48,61 @@ export const getMyArticle = (query) => {
 
 
 //web端-1 发布文章接口
-export const saveMessage = (requestParams) => {
+export const createArticle = (article) => {
 
     return request({
-        url: "message/save",
+        url: "article/createArticle",
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: requestParams,
+        data: article,
     })
 }
-//web端-1.1 保存投票接口
-export const saveVote = (requestParams) => {
 
+
+//web端-3.1获取文章详情
+export const getArticleDetail = (id) => {
+    let newUrl = 'article/getArticleById';
     return request({
-        url: "vote/save",
+        url: newUrl,
         headers: {
-
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-            
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: requestParams,
+        data: {"articleId":id},
     })
+
 }
-//web端-1.1.1 定向文件检验
-export const dealerCodeValid = (code) => {
 
+//web端-1.2 发布文章接口
+export const publishArticle = (article) => {
     return request({
-        url: "dealer/code/valid",
+        url: "article/createArticle",
         headers: {
-
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
-        method: 'get',
-        params: {code:code},
+        method: 'post',
+        data: article,
     })
 }
 
 //web端-1.2 发布文章接口
-export const publishMessage = (requestParams) => {
+export const publishComment = (comment) => {
     return request({
-        url: "message/push",
+        url: "article/addComment",
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: requestParams,
-    })
-}
-//web端-1.3 获取发布对象list
-export const getDealerList = () => {
-    return request({
-        url: "dealer/list",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-    })
-}
-//web端-1.5 获取发布对象全部部门list
-export const getDealerDepList = () => {
-    return request({
-        url: "dealer/job/list",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
+        data: comment,
     })
 }
 
-//web端-1.5 获取发布对象oem部门list
-export const getOemDepList = () => {
-    return request({
-        url: "oem/list",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-    })
-}
 
 //web端-2.3.获取 草稿箱/已撤回 文章列表
 export const getArticleByStatusCategory = (query) => {
@@ -166,7 +119,7 @@ export const getArticleByStatusCategory = (query) => {
     })
 }
 
-//web端-2.3.获取 收藏/重要通知/政策发布 文章列表
+//web端-2.3.获取 收藏/ 文章列表
 export const getArticleByArchiveCategory = (query) => {
     return request({
         url: 'message/list/archive',
@@ -180,7 +133,7 @@ export const getArticleByArchiveCategory = (query) => {
     })
 }
 
-//web端-2.4 收藏 0：取消 1：我的收藏 2：重要通知 3：政策发布
+//web端-2.4 收藏 0：取消 1：我的收藏 
 export const collectionOperation = (requestParams) => {
     return request({
         url: 'message/archive',
@@ -211,36 +164,6 @@ export const removeCollection = (requestParams) => {
 }
 
 
-//web端-2.5 取消发布
-export const withdrawMessage = (id) => {
-    return request({
-        url: '/message/undo',
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'post',
-        data: { msgId: id }
-    })
-}
-
-
-//web端-2.5 取消发布2
-export const withdrawMessageByAdmin = (id) => {
-    return request({
-        url: '/message/undo/admin',
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'post',
-        data: { msgId: id }
-    })
-}
 //web端-2.6 删除草稿
 export const deleteMessage = (id) => {
     return request({
@@ -253,78 +176,6 @@ export const deleteMessage = (id) => {
         },
         method: 'post',
         data: { msgId: id }
-    })
-}
-
-//web端-3.1获取文章详情
-export const getArticleDetail = (id) => {
-    let newUrl = 'message/detail';
-    return request({
-        url: newUrl,
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        params: {id:id},
-    })
-
-}
-
-//web端-3.2文章详情中获取该文章的回复--admin and author
-export const getArticleReportAuthor = (data) => {
-    console.log("get author report =====>"+JSON.stringify(data))
-    return request({
-        url: 'feedback',
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-        params: data,
-    })
-}
-//web端-3.2文章详情中获取该文章的回复--viewer
-export const getArticleReportViewer = (msgId) => {
-    return request({
-        url: 'feedback/viewer',
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-        params: msgId,
-    })
-}
-
-//web-3.3 获取详情页附件/定向附件
-export const getDetailAppend = (msgId) => {
-    return request({
-        url: 'attachment',
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-        params: msgId,
-    })
-}
-
-//web端-3.4 位置详情回复信息
-export const getDetailToReport = (requestParams) => {
-    return request({
-        url: "message/reply",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'post',
-        data: requestParams,
     })
 }
 
@@ -345,7 +196,31 @@ export const getArticleLog = (id) => {
 
 
 
-//web端-6.获取敏感词
+export const getMyMessages = () => {
+    return request({
+        url: "message/getAllMessagesSendToMe",
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'post',
+    })
+}
+
+
+export const sendMessage = (message) => {
+    return request({
+        url: "message/sendMessageToUser",
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'post',
+        data:message
+    })
+}
+
+
 export const getSensitive = () => {
     let newUrl = 'sensitiveWord/list';
     return request({
@@ -360,7 +235,6 @@ export const getSensitive = () => {
 
 }
 
-//web端-7.保存敏感词
 export const saveSensitive = (requestParams) => {
     return request({
         url: 'sensitiveWord/update',
@@ -712,7 +586,7 @@ export const exportReply = (msgId) => {
     })
 }
 
-//获取发送提醒公司信息
+
 export const getReminderDealers = (msgId,companyCodes) => {
     console.log(msgId,companyCodes);
     return request({
@@ -728,7 +602,7 @@ export const getReminderDealers = (msgId,companyCodes) => {
     })    
 }
 
-//获取发送提醒公司信息
+
 export const sendMessageRemind = (msgId,companyCodes,userIds) => {
     return request({
         url: "message/remind",
@@ -743,7 +617,7 @@ export const sendMessageRemind = (msgId,companyCodes,userIds) => {
     })    
 }
 
-//获取该文章对应区域
+
 export const getArticleAreas = (msgId) => {
     return request({
         url: 'report/area',
@@ -757,7 +631,7 @@ export const getArticleAreas = (msgId) => {
     }) 
 }
 
-//获取发送提醒公司信息
+
 export const getAllDealerReport = (msgId,areas,dealerType,searchContent) => {
     return request({
         url: "message/allDealerReport",
@@ -777,7 +651,7 @@ export const getAllDealerReport = (msgId,areas,dealerType,searchContent) => {
     })    
 }
 
-//获取区域下面的经销商信息
+
 export const getCompanybyarea = (msgId,areas,dealerType,searchContent,readStatus,statisticsStatus) => {
     return request({
         url: "report/companybyarea",
@@ -799,7 +673,7 @@ export const getCompanybyarea = (msgId,areas,dealerType,searchContent,readStatus
     })    
 }
 
-//获取公司对应下面的人的内容
+
 export const getReportPosition = (msgId,areas,dealerType,searchContent,companyCode,readStatus,statisticsStatus,attachmentIdParam) => {
     console.log("dealerType:"+dealerType);
     return request({

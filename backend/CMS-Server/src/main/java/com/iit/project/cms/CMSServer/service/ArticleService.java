@@ -26,6 +26,9 @@ public class ArticleService implements IArticleService {
     private CommentRepository commentRepository;
 
     @Autowired
+    private AttachmentRepository attachmentRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -39,8 +42,18 @@ public class ArticleService implements IArticleService {
 
     @Autowired
     private BrowsedHistoryRepository browsedHistoryRepository;
+
     @Autowired
     private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    private MediaRepository mediaRepository;
+
+    @Autowired
+    private OperateHistoryRepository operateHistoryRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
@@ -52,11 +65,14 @@ public class ArticleService implements IArticleService {
     public BaseResponse getArticleById(GetArticleDetailRequest request) {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
-        // TODO: 2023/7/30 附件
+        article.setAttachmentList(getAttachmentListByArticleId(article.getArticleId()));
+        article.setChangeHistoryResponseList(getChangeHistoryByArticleId(article.getArticleId()));
         updateReadStatus(request.getUserId(), request.getArticleId());
         updateBrowseHistory(request.getUserId(), request.getArticleId());
         return BaseResponse.success(article);
     }
+
+
 
     @Override
     public BaseResponse createArticle(CreateArticleRequest request) {
@@ -121,6 +137,18 @@ public class ArticleService implements IArticleService {
         }
     }
 
+    @Override
+    public BaseResponse getAllArticleCategories() {
+        List<Category> allCategories = categoryRepository.getAllCategories();
+        List<GetAllCategoriesResponse> responseList = new ArrayList<>();
+        for (Category category : allCategories) {
+            GetAllCategoriesResponse response = new GetAllCategoriesResponse();
+            BeanUtils.copyProperties(category, response);
+            responseList.add(response);
+        }
+        return BaseResponse.success(responseList);
+    }
+
 
     private List<CommentResponse> getCommentListByArticleId(Long articleId) {
         List<Comment> comments = commentRepository.getCommentsByArticleId(articleId);
@@ -138,11 +166,41 @@ public class ArticleService implements IArticleService {
             String fullName = user.getFirstName() + " " + user.getLastName();
             r.setCommenterName(fullName);
             r.setCommenterType(user.getUserType());
+            r.setCommentContent(comment.getContent());
             commentResponseList.add(r);
         }
         return commentResponseList;
     }
 
+    private List<AttachmentResponse> getAttachmentListByArticleId(Long articleId) {
+        List<Attachment> attachments = attachmentRepository.getAttachmentsByArticleId(articleId);
+        List<AttachmentResponse> result = new ArrayList<>();
+        for (Attachment attachment : attachments) {
+            AttachmentResponse response = new AttachmentResponse();
+            response.setAttachmentId(attachment.getAttachmentId());
+            response.setName(attachment.getFileName());
+            Media media = mediaRepository.getMediaByAttachmentId(attachment.getAttachmentId());
+            response.setUrl(media.getUrl());
+            result.add(response);
+        }
+        return result;
+    }
+
+    private List<ChangeHistoryResponse> getChangeHistoryByArticleId(Long articleId) {
+        List<OperateHistory> operateHistoryList = operateHistoryRepository.getOperateHistoriesByArticleId(articleId);
+        List<ChangeHistoryResponse> result = new ArrayList<>();
+        for (OperateHistory operateHistory : operateHistoryList) {
+            ChangeHistoryResponse response = new ChangeHistoryResponse();
+            response.setArticleId(articleId);
+            response.setOperationType(operateHistory.getOperateType());
+            response.setUserId(operateHistory.getUserId());
+            response.setOperationTime(operateHistory.getTime());
+            User user = userRepository.getUserById(operateHistory.getUserId());
+            response.setOperatorName(user.getFirstName() + " " + user.getLastName());
+            result.add(response);
+        }
+        return result;
+    }
 
     private void updateReadStatus(Long userId, Long articleId) {
         ArticleReadStatus articleReadStatus = new ArticleReadStatus();

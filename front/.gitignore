@@ -1,0 +1,24 @@
+.DS_Store
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+**/*.log
+
+tests/**/coverage/
+tests/e2e/reports
+selenium-debug.log
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.local
+front/cms/node_modules/.cache/
+/Users/liuguanghui/Documents/IIT/2023\ summary\ course/iit-project/IIT-CMS/front/cms/node_modules/.cache
+package-lock.json
+yarn.lock

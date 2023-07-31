@@ -11,10 +11,7 @@ import com.iit.project.cms.CMSServer.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +43,7 @@ public class UserController {
     private BaseResponse getAllUsers() {
         return BaseResponse.success(userService.getUsers());
     }
+
     @RequestMapping("/getUserInfoById")
     private BaseResponse getUserInfoById(@RequestBody GetUserInfoRequest request) {
         return userService.getUserInfoById(request.getUserId());
@@ -65,5 +63,14 @@ public class UserController {
         return userService.queryUserArticleInfo(request);
     }
 
+    @RequestMapping(value = "/getAllUserTypes")
+    public BaseResponse getAllUserTypes() {
+        return userService.getAllUserTypes();
+    }
+
+    @RequestMapping(value = "/getAllDepartments")
+    public BaseResponse getAllDepartments() {
+        return userService.getAllDepartments();
+    }
 
 }

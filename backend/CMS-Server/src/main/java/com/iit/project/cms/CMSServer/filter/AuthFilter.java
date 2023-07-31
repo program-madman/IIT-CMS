@@ -13,6 +13,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import static com.iit.project.cms.CMSServer.common.ExceptionEnum.AUTH_FAILED;
 import static com.iit.project.cms.CMSServer.common.Symbol.*;
@@ -27,30 +28,56 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        //login
+        log.info("request URI: " + request.getRequestURI());
+
+        //login & register
         if (request.getRequestURI().equals(URL_NO_AUTH_LOGIN) ||
                 request.getRequestURI().equals(URL_NO_AUTH_REGISTER)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
+        // 判断是否为预检请求（OPTIONS请求）
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            // 设置允许的方法、头部和响应缓存时间
+            response.setHeader("Access-Control-Allow-Methods", "*");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, token");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            // 设置允许的域名，可以设置为 * 或具体的前端地址，以便支持跨域请求
+            response.setHeader("Access-Control-Allow-Origin", "*"); // 请将地址修改为您前端页面的实际地址
+            // 返回响应
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
         //token
-        CustomHttpServletRequestWrapper customRequest = new CustomHttpServletRequestWrapper(request);
-        String tokenInHeader = customRequest.getHeader(KEY_HEADER_TOKEN);
+        String tokenInHeader = request.getHeader(KEY_HEADER_TOKEN);
+        log.info("token in header : " + tokenInHeader);
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = request.getHeader(headerName);
+            log.info(headerName + ": " + headerValue);
+        }
         if (tokenInHeader == null) {
             authFailed(response);
             return;
         }
+
+
         if (!TokenUtil.isValidJwt(tokenInHeader)) {
             authFailed(response);
             return;
         }
 
-        User user = extractUserFromToken(tokenInHeader);
         // 将自定义请求头添加到HttpServletRequest对象中
+        User user = extractUserFromToken(tokenInHeader);
+        CustomHttpServletRequestWrapper customRequest = new CustomHttpServletRequestWrapper(request);
         customRequest.addCustomHeader(KEY_HEADER_USER_ID, String.valueOf(user.getUserId()));
         filterChain.doFilter(customRequest, servletResponse);
     }

@@ -1,5 +1,6 @@
 package com.iit.project.cms.CMSServer.dao;
 
+import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.entity.Article;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,17 @@ public class ArticleRepository extends JdbcRepository {
             int r = jdbcTemplate.update(articleSql, article.getUserId(), article.getTitle(),
                     article.getContent(), article.getCategoryName());
             log.info("insert article result : " + r);
+            // Get the generated article_id
+            Long articleId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
+
+            // 插入发送目标部门信息
+            if (article.getTargetDeptList() != null && !article.getTargetDeptList().isEmpty()) {
+                String audienceSql = "INSERT INTO audience (dept_id, article_id) VALUES (?, ?)";
+                for (CreateDeptRequest department : article.getTargetDeptList()) {
+                    // Associate the article with the department in the audience table
+                    jdbcTemplate.update(audienceSql, department.getDepartmentId(), articleId);
+                }
+            }
 
             // 插入附件信息
             if (article.getAttachmentList() != null && !article.getAttachmentList().isEmpty()) {
@@ -31,18 +43,10 @@ public class ArticleRepository extends JdbcRepository {
 
                 }
             }
-
-            // 插入发送目标部门信息
-            if (article.getTargetDeptList() != null && !article.getTargetDeptList().isEmpty()) {
-                String deptSql = "INSERT INTO article_dept (department_name) " +
-                        "VALUES (?, ?)";
-                for (CreateDeptRequest department : article.getTargetDeptList()) {
-                    jdbcTemplate.update(deptSql, department.getDepartmentName());
-                }
-            }
             return true; // 表示插入成功
         } catch (Exception e) {
             e.printStackTrace();
+            BaseResponse.error("Insert article or dept failed.");
             return false; // 表示插入失败
         }
     }

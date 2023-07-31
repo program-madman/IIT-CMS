@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class AttachmentResponse {
-    private String attachmentId;
+    private Long attachmentId;
     private String url;
     private String name;
 }

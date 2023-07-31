@@ -1,5 +1,26 @@
 # CMS API接口文档
 
+## 目录
+- [接口概述](#接口概述)
+  - [基本信息](#基本信息)
+- [接口列表](#接口列表)
+  - [1. 获取用户信息](#1-获取用户信息)
+  - [2. 创建（注册）用户](#2-创建注册用户)
+  - [3. 登陆](#3-登陆)
+  - [4. 获取文章列表](#4-获取文章列表)
+  - [5. 获取文章详情](#5-获取文章详情)
+  - [6. 创建文章](#6-创建文章)
+  - [7. 评论文章](#7-评论文章)
+  - [8. 点赞文章](#8-点赞文章)
+  - [9. 添加收藏](#9-添加收藏)
+  - [10. 获取所有站内信](#10-获取所有站内信)
+  - [11. 获取我发送的所有站内信](#11-获取我发送的所有站内信)
+  - [12. 获取发送给我的所有站内信](#12-获取发送给我的所有站内信)
+  - [13. 发送站内信给某个部门](#13-发送站内信给某个部门)
+  - [14. 发送站内信给某个用户](#14-发送站内信给某个用户)
+  - [15. 获取所有文章类别](#15-获取所有文章类别)
+  - [16. 获取所有用户类型](#16-获取所有用户类型)
+  - [17. 获取所有部门](#17-获取所有部门)
 ## 接口概述
 该文档列出了CMS可用的前端API接口及其功能。
 
@@ -187,7 +208,9 @@
           "replyCount": "2",
           "likeCount": "1",
           "browseCount": "1",
-          "targetDeptName": "Computer Science",
+          "targetDeptName": [
+            "Business Administration"
+          ],
           "changeHistoryResponseList": null,
           "attachmentList": null,
           "commentList": [
@@ -308,3 +331,373 @@
       "data": null
       }
     ```
+
+### 10. 获取所有站内信
+获取所有站内信。
+
+- **URL**: `/message/getAllMessages`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+    
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+        {
+            "messageId": 1,
+            "fromUser": 100,
+            "fromUserName": "GuangHui Liu",
+            "toUser": 101,
+            "toUserName": "Wu Hao",
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
+        }
+      ]
+    }
+    ```
+    
+### 11. 获取我发送的所有站内信
+获取当前登陆账号发送的全部站内信。
+
+- **URL**: `/message/getAllMessagesSendByMe`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+    
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+        {
+            "messageId": 1,
+            "fromUser": 100,
+            "fromUserName": "GuangHui Liu",
+            "toUser": 101,
+            "toUserName": "Wu Hao",
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
+        }
+      ]
+    }
+    ```
+    
+### 12. 获取发送给我的所有站内信
+获取其他账号发送给当前登陆账号的全部站内信。
+
+- **URL**: `/message/getAllMessagesSendToMe`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+    
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+         {
+            "messageId": 1,
+            "fromUser": 100,
+            "fromUserName": "GuangHui Liu",
+            "toUser": 101,
+            "toUserName": "Wu Hao",
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
+        }
+      ]
+    }
+    ```
+
+
+### 13. 发送站内信给某个部门
+指定部门ID发送站内信给某个部门。
+
+- **URL**: `/message/sendMessageToDept`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: 
+  ```json
+  {
+    "toDeptId": 2,
+    "title": "message title",
+    "content": "message content"
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": null
+    }
+    ```
+
+
+### 14. 发送站内信给某个用户
+指定用户ID发送站内信。
+
+- **URL**: `/message/sendMessageToUser`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: 
+  ```json
+  {
+    "toUserId": 100,
+    "title": "message title",
+    "content": "message content"
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": null
+    }
+    ```
+    
+### 15. 获取所有文章类别
+获取所有文章类别。
+
+- **URL**: `/article/getAllArticleCategories`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "categoryName": "Artificial Intelligence"
+        },
+        {
+            "categoryName": "Back-end Development"
+        }
+       ]
+    }
+    ```
+
+    
+### 16. 获取所有用户类型
+获取所有用户类型。
+
+- **URL**: `/user/getAllUserTypes`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "typeId": 1,
+            "typeName": "Employee"
+        },
+        {
+            "typeId": 2,
+            "typeName": "Student"
+        }
+       ]
+    }
+    ```
+    
+### 17. 获取所有部门
+获取所有部门。
+
+- **URL**: `/user/getAllDepartments`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "deptId": 4,
+            "deptName": " Health Sciences"
+        },
+        {
+            "deptId": 19,
+            "deptName": "Architecture and Urban Planning"
+        }
+       ]
+    }
+    ```
+
