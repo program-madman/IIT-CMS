@@ -17,7 +17,7 @@ public class GetArticleDetailResponse {
     private String replyCount; //回复人数
     private String likeCount; //点赞人数
     private String browseCount; //浏览人数
-    private String targetDeptName; //接收部门名称
+    private List<String> targetDeptName; //接收部门名称
     private List<ChangeHistoryResponse> changeHistoryResponseList;
     private List<AttachmentResponse> attachmentList; //附件列表
     private List<CommentResponse> commentList; //评论列表
