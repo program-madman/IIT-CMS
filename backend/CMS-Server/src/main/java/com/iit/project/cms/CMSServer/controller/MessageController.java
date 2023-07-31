@@ -43,7 +43,7 @@ public class MessageController {
     public BaseResponse getAllMessagesSendByMe(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
         return messageService.getAllMessagesSendByMe(Long.parseLong(uid));
     }
-    @RequestMapping(value = "/getAllMessages")
+    @RequestMapping(value = "/getAllMessagesSendToMe")
     public BaseResponse getAllMessagesSendToMe(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
         return messageService.getAllMessagesSendToMe(Long.parseLong(uid));
     }
