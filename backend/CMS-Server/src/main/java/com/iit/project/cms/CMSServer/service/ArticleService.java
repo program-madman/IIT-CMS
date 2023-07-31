@@ -26,6 +26,9 @@ public class ArticleService implements IArticleService {
     private CommentRepository commentRepository;
 
     @Autowired
+    private AttachmentRepository attachmentRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -39,8 +42,12 @@ public class ArticleService implements IArticleService {
 
     @Autowired
     private BrowsedHistoryRepository browsedHistoryRepository;
+
     @Autowired
     private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    private MediaRepository mediaRepository;
 
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
@@ -52,11 +59,12 @@ public class ArticleService implements IArticleService {
     public BaseResponse getArticleById(GetArticleDetailRequest request) {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
-        // TODO: 2023/7/30 附件
+        article.setAttachmentList(getAttachmentListByArticleId(article.getArticleId()));
         updateReadStatus(request.getUserId(), request.getArticleId());
         updateBrowseHistory(request.getUserId(), request.getArticleId());
         return BaseResponse.success(article);
     }
+
 
     @Override
     public BaseResponse createArticle(CreateArticleRequest request) {
@@ -138,9 +146,24 @@ public class ArticleService implements IArticleService {
             String fullName = user.getFirstName() + " " + user.getLastName();
             r.setCommenterName(fullName);
             r.setCommenterType(user.getUserType());
+            r.setCommentContent(comment.getContent());
             commentResponseList.add(r);
         }
         return commentResponseList;
+    }
+
+    private List<AttachmentResponse> getAttachmentListByArticleId(Long articleId) {
+        List<Attachment> attachments = attachmentRepository.getAttachmentsByArticleId(articleId);
+        List<AttachmentResponse> result = new ArrayList<>();
+        for (Attachment attachment : attachments) {
+            AttachmentResponse response = new AttachmentResponse();
+            response.setAttachmentId(attachment.getAttachmentId());
+            response.setName(attachment.getFileName());
+            Media media = mediaRepository.getMediaByAttachmentId(attachment.getAttachmentId());
+            response.setUrl(media.getUrl());
+            result.add(response);
+        }
+        return result;
     }
 
 
