@@ -342,8 +342,150 @@
   - **响应体**:
     ```json
     {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+        {
+            "messageId": 1,
+            "fromUser": 100,
+            "toUser": 101,
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00"
+        },
+        {
+            "messageId": 2,
+            "fromUser": 100,
+            "toUser": 101,
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00"
+        }
+      ]
+    }
+    ```
+    
+### 11. 获取我发送的所有站内信
+获取当前登陆账号发送的全部站内信。
+
+- **URL**: `/message/getAllMessagesSendByMe`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+    
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+        {
+            "messageId": 1,
+            "fromUser": 100,
+            "toUser": 101,
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00"
+        },
+        {
+            "messageId": 2,
+            "fromUser": 100,
+            "toUser": 101,
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00"
+        }
+      ]
+    }
+    ```
+    
+### 12. 获取发送给我的所有站内信
+获取其他账号发送给当前登陆账号的全部站内信。
+
+- **URL**: `/message/getAllMessagesSendToMe`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+    
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+         {
+            "messageId": 101,
+            "fromUser": 100,
+            "toUser": 100,
+            "title": "message title",
+            "content": "message content",
+            "sendTime": "2023-07-31T09:23:34.000+00:00"
+        }
+      ]
+    }
+    ```
+
+
+### 13. 发送站内信给某个部门
+指定部门ID发送站内信给某个部门。
+
+- **URL**: `/message/sendMessageToDept`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: 
+  ```json
+  {
+    "toDeptId": 2,
+    "title": "message title",
+    "content": "message content"
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
       "code": "200",
       "message": "Success!",
       "data": null
-      }
+    }
     ```
+
+
+### 14. 发送站内信给某个用户
+指定用户ID发送站内信。
+
+- **URL**: `/message/sendMessageToUser`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: 
+  ```json
+  {
+    "toUserId": 100,
+    "title": "message title",
+    "content": "message content"
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": null
+    }
+    ```
+
