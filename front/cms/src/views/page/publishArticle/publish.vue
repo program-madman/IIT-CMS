@@ -140,7 +140,7 @@
                 "
               >
               <v-radio-group
-                    :v-model="category"
+                    v-model="category"
                     height="446"
                     item-height="30"
                     bench="1"
@@ -159,7 +159,7 @@
                   <v-radio
                       :key="item.typeId"
                       :label=item.typeName
-                      :value=item.typeId
+                      :value=item.typeName
                       ></v-radio>
                     </template>
                     
@@ -198,14 +198,13 @@
       </v-footer>
       <confirm ref="confirm" />
       <alert-time ref="alerTime" />
-      <loading-alert :open="uploading" value="发布中，请稍等..." />
+      <loading-alert :open="uploading" value="Publishing in progress, please wait" />
     </v-dialog>
   </v-row>
 </template>
 <script>
 import {
-  publishMessage,
-  getOemDepList,
+  publishArticle,
 } from "@/api/getData.js";
 import "@/utils/timeFormate.js";
 import { EventBus } from "@/utils/event-bus";
@@ -221,15 +220,13 @@ export default {
       type: Number,
       default: null,
     },
-    voteEnable: {
-      type: Boolean,
-      default: false,
+    title: {
+      type: String,
+      default: "",
     },
-    dealer: {
-      type: [Object, Array, String],
-      default: function () {
-        return [];
-      },
+    content: {
+      type: String,
+      default: "",
     },
   },
   components: {
@@ -361,16 +358,20 @@ export default {
     },
     
     initCategory() {
-      this.category = this.articlecategory[0]
+      this.category = this.articlecategory[0].typeName
     },
 
     initUserType() {
 
     },
 
+    handleSelectionChange(newCategory) {
+      alert(newCategory)
+    },
+
     selectAllDepartment() {
       this.department.forEach((item) => {
-        item.isCheck = this.allDepartment;;
+        item.isCheck = this.allDepartment;
       });
 
       this.department = deepClone(this.department);
@@ -378,7 +379,7 @@ export default {
 
     selectAllUser() {
       this.userType.forEach((item) => {
-        item.isCheck = this.allUsers;;
+        item.isCheck = this.allUsers;
       });
       this.userType = deepClone(this.userType);
     },
@@ -428,8 +429,14 @@ export default {
 
     publishArticle() {
       var article = {}
+      article.title = this.title
+      article.content = this.content
+      article.categoryName = this.category
       article.targetDeptList = []
       article.userTypeList = []
+      article.attachmentList = []
+      
+
       this.department.forEach((item) => {
         if (item.isCheck) {
           article.targetDeptList.push(item);
@@ -438,11 +445,9 @@ export default {
 
       this.userType.forEach((item) => {
         if (item.isCheck) {
-          article.userTypeList.push(item);
+          article.userTypeList.push(item.typeName);
         }
       })
-
-      article.categoryName = this.category.typeName
 
       if (article.targetDeptList.length == 0) {
           showSnackbar("please select department");
@@ -453,105 +458,33 @@ export default {
           showSnackbar("please select user");
           return;
       }
+  
       this.$refs.confirm
         .confirm(article)
         .then(() => {
-          this.uploading = true;
-          publishMessage(article)
+          this.uploading = true;  
+          publishArticle(article)
             .then((res) => {
               console.debug("publish message:" + JSON.stringify(res));
-              if (res.code == 0) {
+              if (res.code == 200) {
                 this.$refs.alerTime
-                  .alert("文章提交成功，将为您跳转文章首页。", 10)
+                  .alert("The article has been successfully submitted and will redirect you to the homepage of the article.", 10)
                   .then(() => EventBus.$emit("publishSucessful"));
               } else {
-                showSnackbar("发布失败,请稍后重试");
+                showSnackbar("Publishing failed. Please try again later");
               }
             })
             .catch(() => {
-              showSnackbar("发布失败,请稍后重试");
+              showSnackbar("Publishing failed. Please try again later");
             })
             .finally(() => {
               this.uploading = false;
             });
         })
-        .catch(()=> (console.debug("取消")));
+        .catch(()=> (console.debug("Cancel")));
 
     },
-
-    publishImp() {
-      
-      this.$refs.confirm
-        .confirm(dealers)
-        .then(() => {
-          this.uploading = true;
-          publishMessage(data)
-            .then((res) => {
-              console.debug("publish message:" + JSON.stringify(res));
-              if (res.code == 0) {
-                this.$refs.alerTime
-                  .alert("文章提交成功，将为您跳转文章首页。", 10)
-                  .then(() => EventBus.$emit("publishSucessful"));
-              } else {
-                showSnackbar("发布失败,请稍后重试");
-              }
-            })
-            .catch(() => {
-              showSnackbar("发布失败,请稍后重试");
-            })
-            .finally(() => {
-              this.uploading = false;
-            });
-        })
-        .catch(()=> (console.debug("取消")));
-    },
-    caculateDirectFileDelear() {
-      console.debug("dealer ==========>" + JSON.stringify(this.dealer));
-      if (this.ch_delear_select.length == 0) {
-        return;
-      }
-      if (this.dealer.length == 0) {
-        this.ch_delear_disable = false;
-        this.ch_area_supp.forEach((it) => {
-          it.disable = false;
-        });
-        this.ch_area_supp = deepClone(this.ch_area_supp);
-
-        this.ch_com_supp.forEach((it) => {
-          it.disable = false;
-        });
-        this.ch_com_supp = deepClone(this.ch_com_supp);
-
-        this.ch_delear_select.forEach((it) => {
-          it.disable = false;
-        });
-      } else {
-        this.ch_delear_disable = true;
-        this.ch_delear = true;
-        this.dealer.forEach((code) => {
-          var index = this.ch_delear_select.findIndex(
-            (dealer) => dealer.companyCode === code
-          );
-          if (index < 0) return;
-          var com = this.ch_delear_select[index];
-          com.disable = true;
-          com.isCheck = true;
-
-          var areaIndex = this.ch_area_supp.findIndex(
-            (it) => com.area == it.lable
-          );
-          if (areaIndex < 0) return;
-          this.ch_area_supp[areaIndex].disable = true;
-          this.ch_area_supp[areaIndex].isCheck = true;
-          var typeIndex = this.ch_com_supp.findIndex(
-            (it) => com.dealerType == it.type
-          );
-          if (typeIndex < 0) return;
-          this.ch_com_supp[typeIndex].disable = true;
-          this.ch_com_supp[typeIndex].isCheck = true;
-        });
-      }
-    },
+   
   },
   watch: {
     open() {
