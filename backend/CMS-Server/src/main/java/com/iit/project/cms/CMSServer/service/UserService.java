@@ -5,14 +5,21 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.common.CommonResult;
+import com.iit.project.cms.CMSServer.dao.DepartmentRepository;
 import com.iit.project.cms.CMSServer.dao.UserRepository;
+import com.iit.project.cms.CMSServer.dao.UserTypeRepository;
 import com.iit.project.cms.CMSServer.dto.*;
+import com.iit.project.cms.CMSServer.entity.Department;
 import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.UserType;
 import com.iit.project.cms.CMSServer.util.CmsPasswordEncoder;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.iit.project.cms.CMSServer.common.ExceptionEnum.*;
 import static com.iit.project.cms.CMSServer.util.TokenUtil.generateToken;
@@ -22,6 +29,12 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserTypeRepository userTypeRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Override
     public BaseResponse getUsers() {
@@ -87,16 +100,35 @@ public class UserService implements IUserService {
 
     @Override
     public CommonResult queryUserArticleInfo(FullDetailRequest request) {
-
         CommonResult result = new CommonResult();
-
         result.setResult(userRepository.queryUserArticleInfo());
         result.setSuccess(true);
-
         return result;
+    }
 
+    @Override
+    public BaseResponse getAllUserTypes() {
+        List<UserType> allUserTypes = userTypeRepository.getAllUserTypes();
+        List<GetAllUserTypeResponse> responseList = new ArrayList<>();
+        for (UserType userType : allUserTypes) {
+            GetAllUserTypeResponse response = new GetAllUserTypeResponse();
+            BeanUtils.copyProperties(userType, response);
+            responseList.add(response);
+        }
+        return BaseResponse.success(responseList);
+    }
 
-
+    @Override
+    public BaseResponse getAllDepartments() {
+        List<Department> allDepartments = departmentRepository.getAllDepartments();
+        List<GetAllDepartmentResponse> responseList = new ArrayList<>();
+        for (Department department : allDepartments) {
+            GetAllDepartmentResponse response = new GetAllDepartmentResponse();
+            response.setDeptId(department.getDeptId());
+            response.setDeptName(department.getDeptName());
+            responseList.add(response);
+        }
+        return BaseResponse.success(responseList);
     }
 
 }
