@@ -79,6 +79,10 @@ public class ArticleController {
         request.setUserId(Long.parseLong(uid));
         return articleService.addToMyFav(request);
     }
+    @RequestMapping(value = "/getMyFavArticles")
+    public BaseResponse getMyFavArticles(@RequestHeader(KEY_HEADER_USER_ID) Long uid) {
+        return articleService.getMyFavArticles(uid);
+    }
 
     @RequestMapping(value = "/getAllArticleCategories")
     public BaseResponse getAllArticleCategories() {

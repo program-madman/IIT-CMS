@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Slf4j
@@ -78,48 +80,40 @@ public class ArticleRepository extends JdbcRepository {
         return response;
     }
 
-    public List<GetAllArticlesResponse> getAllArticles(GetAllArticlesRequest request) {
-        List<GetAllArticlesResponse> list = new ArrayList<>();
+    public List<Article> getAllArticles(GetAllArticlesRequest request) {
         String userId = request.getUserId();
-
         String sql = "SELECT * FROM article WHERE article_id IN \n" +
                 "(SELECT article_id FROM cms.audience\n" +
                 "WHERE dept_id = (SELECT dept_id FROM user WHERE user_id = ?));";
 
-        List<Article> articles = jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
-        for (Article article : articles) {
-            GetAllArticlesResponse response = new GetAllArticlesResponse();
-            response.setArticleId(article.getArticleId());
-            response.setArticleTitle(article.getTitle());
-            response.setArticleContent(article.getContent());
-            response.setPublishTime(String.valueOf(article.getPublishTime()));
-            response.setArticleCategory(article.getCategoryName());
-            response.setAttachmentTotalCount(countAttachmentsByArticleId(article.getArticleId()));
-            response.setLikes(countLikesByArticleId(article.getArticleId()));
-            response.setIsRead(isArticleRead(article.getArticleId(), Long.parseLong(userId)));
-            response.setIsFav(isArticleFavorite(article.getArticleId(), Long.parseLong(userId)));
-            list.add(response);
-        }
-        return list;
+        return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
-    private int countAttachmentsByArticleId(long articleId) {
+    public List<Article> getArticlesByIds(List<Long> articleIds) {
+        String sql = "SELECT * FROM article WHERE article_id IN (" +
+                articleIds.stream().map(String::valueOf).collect(Collectors.joining(",")) +
+                ")";
+
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
+    }
+
+    public int countAttachmentsByArticleId(long articleId) {
         String sql = "SELECT COUNT(*) AS attachment_count FROM attachment WHERE article_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{articleId}, Integer.class);
     }
 
-    private int countLikesByArticleId(long articleId) {
+    public int countLikesByArticleId(long articleId) {
         String sql = "SELECT COUNT(user_id) AS like_count FROM article_like WHERE article_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{articleId}, Integer.class);
     }
 
-    private boolean isArticleRead(long articleId, long userId) {
+    public boolean isArticleRead(long articleId, long userId) {
         String sql = "SELECT COUNT(*) FROM article_read_status WHERE article_id = ? AND user_id = ?";
         int count = jdbcTemplate.queryForObject(sql, new Object[]{articleId, userId}, Integer.class);
         return count > 0;
     }
 
-    private boolean isArticleFavorite(long articleId, long userId) {
+    public boolean isArticleFavorite(long articleId, long userId) {
         String sql = "SELECT COUNT(*) > 0 AS is_favorite FROM favorite WHERE user_id = ? AND article_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{userId, articleId}, Boolean.class);
     }

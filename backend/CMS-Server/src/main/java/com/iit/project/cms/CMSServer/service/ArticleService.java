@@ -57,8 +57,23 @@ public class ArticleService implements IArticleService {
 
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
-        List<GetAllArticlesResponse> allArticles = articleRepository.getAllArticles(request);
-        return BaseResponse.success(allArticles);
+        List<GetAllArticlesResponse> list = new ArrayList<>();
+        List<Article> allArticles = articleRepository.getAllArticles(request);
+        for (Article article : allArticles) {
+            GetAllArticlesResponse response = new GetAllArticlesResponse();
+            response.setArticleId(article.getArticleId());
+            response.setArticleTitle(article.getTitle());
+            response.setArticleContent(article.getContent());
+            response.setAuthorDeptName(departmentRepository.getDepartmentNameByUserId(Long.parseLong(request.getUserId())));
+            response.setPublishTime(String.valueOf(article.getPublishTime()));
+            response.setArticleCategory(article.getCategoryName());
+            response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
+            response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
+            response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), Long.parseLong(request.getUserId())));
+            response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), Long.parseLong(request.getUserId())));
+            list.add(response);
+        }
+        return BaseResponse.success(list);
     }
 
     @Override
@@ -144,6 +159,32 @@ public class ArticleService implements IArticleService {
         for (Category category : allCategories) {
             GetAllCategoriesResponse response = new GetAllCategoriesResponse();
             BeanUtils.copyProperties(category, response);
+            responseList.add(response);
+        }
+        return BaseResponse.success(responseList);
+    }
+
+    @Override
+    public BaseResponse getMyFavArticles(Long uid) {
+        List<Favorite> favoriteArticles = favoriteRepository.getAllFavoritesByUserId(uid);
+        List<Long> ids = new ArrayList<>();
+        for (Favorite f : favoriteArticles) {
+            ids.add(f.getArticleId());
+        }
+        List<Article> articles = articleRepository.getArticlesByIds(ids);
+        List<GetFavArticlesResponse> responseList = new ArrayList<>();
+        for (Article article : articles) {
+            GetFavArticlesResponse response = new GetFavArticlesResponse();
+            response.setArticleId(article.getArticleId());
+            response.setArticleTitle(article.getTitle());
+            response.setArticleContent(article.getContent());
+            response.setAuthorDeptName(departmentRepository.getDepartmentNameByUserId(uid));
+            response.setPublishTime(String.valueOf(article.getPublishTime()));
+            response.setArticleCategory(article.getCategoryName());
+            response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
+            response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
+            response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), uid));
+            response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), uid));
             responseList.add(response);
         }
         return BaseResponse.success(responseList);

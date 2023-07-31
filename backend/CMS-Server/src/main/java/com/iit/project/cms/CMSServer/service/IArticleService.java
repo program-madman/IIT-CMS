@@ -25,4 +25,6 @@ public interface IArticleService {
     BaseResponse addToMyFav(AddToMyFavRequest request);
 
     BaseResponse getAllArticleCategories();
+
+    BaseResponse getMyFavArticles(Long uid);
 }

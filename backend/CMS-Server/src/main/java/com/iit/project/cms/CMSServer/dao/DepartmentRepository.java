@@ -56,5 +56,17 @@ public class DepartmentRepository extends JdbcRepository {
 
         return rowsAffected > 0; // 返回是否删除成功
     }
+
+    public String getDepartmentNameByUserId(Long userId) {
+        String sql = "SELECT d.dept_name FROM department d " +
+                "JOIN user u ON d.dept_id = u.dept_id " +
+                "WHERE u.user_id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{userId}, String.class);
+        } catch (org.springframework.dao.EmptyResultDataAccessException ex) {
+            return null;
+        }
+    }
 }
 
