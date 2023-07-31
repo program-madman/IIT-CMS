@@ -2,6 +2,7 @@ package com.iit.project.cms.CMSServer.dao;
 
 
 import com.iit.project.cms.CMSServer.entity.User;
+import com.iit.project.cms.CMSServer.entity.UserBrowse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -93,11 +94,21 @@ public class UserRepository extends JdbcRepository {
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class), deptId);
     }
 
-    public User queryUserArticleInfo() {
-        String sql = "SELECT * FROM user";
-        List<User> result = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
+    public List<UserBrowse> queryUserArticleInfo() {
+        String sql = "select user_name,time,category_name,title,content,publish_time,update_time\n" +
+                "from\n" +
+                "browsed_history\n" +
+                "inner join (\n" +
+                "select user_id,user_name\n" +
+                "from user\n" +
+                ") AS user_tb on browsed_history.user_id = user_tb.user_id\n" +
+                "inner join(\n" +
+                "select *\n" +
+                "from article\n" +
+                ") as article on browsed_history.article_id = article.article_id";
+        List<UserBrowse> result = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(UserBrowse.class));
         if (result.size() > 0) {
-            return result.get(0);
+            return result;
         } else {
             return null;
         }
