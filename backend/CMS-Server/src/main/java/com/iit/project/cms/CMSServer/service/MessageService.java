@@ -57,8 +57,7 @@ public class MessageService implements IMessageService {
             message.setToUser(user.getUserId());
             messageList.add(message);
         }
-        int[] rets = messageRepository.batchInsertMessages(messageList);
-        if (rets.length > 0) {
+        if (messageRepository.batchInsertMessages(messageList)) {
             return BaseResponse.success();
         } else {
             return BaseResponse.error("Batch create message failed!");
@@ -88,8 +87,7 @@ public class MessageService implements IMessageService {
             message.setToUser(toUserId);
             messageList.add(message);
         }
-        int[] rets = messageRepository.batchInsertMessages(messageList);
-        if (rets.length > 0) {
+        if (messageRepository.batchInsertMessages(messageList)) {
             return BaseResponse.success();
         } else {
             return BaseResponse.error("Batch create message failed!");

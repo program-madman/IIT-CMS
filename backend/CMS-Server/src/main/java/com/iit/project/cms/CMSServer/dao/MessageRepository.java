@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -74,39 +75,44 @@ public class MessageRepository extends JdbcRepository {
     }
 
     // 批量插入消息
-    public int[] batchInsertMessages(List<Message> messages) {
-        String sql = "INSERT INTO message (message_id, from_user, to_user, title, content, send_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-
-        int batchSize = 1000; // 每次批量插入的大小，可以根据实际情况调整
-        int totalSize = messages.size();
-        int batches = (totalSize + batchSize - 1) / batchSize; // 计算批次数
-
-        int[] affectedRows = new int[totalSize];
-
-        for (int i = 0; i < batches; i++) {
-            List<Message> batchList = messages.subList(i * batchSize, Math.min((i + 1) * batchSize, totalSize));
-            int[] result = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement ps, int j) throws SQLException {
-                    Message message = batchList.get(j);
-                    ps.setLong(1, message.getMessageId());
-                    ps.setLong(2, message.getFromUser());
-                    ps.setLong(3, message.getToUser());
-                    ps.setString(4, message.getTitle());
-                    ps.setString(5, message.getContent());
-                    ps.setTimestamp(6, new java.sql.Timestamp(message.getSendTime().getTime()));
-                }
-
-                @Override
-                public int getBatchSize() {
-                    return batchList.size();
-                }
-            });
-
-            System.arraycopy(result, 0, affectedRows, i * batchSize, result.length);
+    public boolean batchInsertMessages(List<Message> messages) {
+        boolean ret = false;
+        for (Message message : messages) {
+             ret =createMessage(message);
         }
+//        String sql = "INSERT INTO message (message_id, from_user, to_user, title, content, send_time) " +
+//                "VALUES (?, ?, ?, ?, ?, ?)";
+//
+//        int batchSize = 1000; // 每次批量插入的大小，可以根据实际情况调整
+//        int totalSize = messages.size();
+//        int batches = (totalSize + batchSize - 1) / batchSize; // 计算批次数
+//
+//        int[] affectedRows = new int[totalSize];
+//
+//        for (int i = 0; i < batches; i++) {
+//            List<Message> batchList = messages.subList(i * batchSize, Math.min((i + 1) * batchSize, totalSize));
+//            int[] result = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+//                @Override
+//                public void setValues(PreparedStatement ps, int j) throws SQLException {
+//                    Message message = batchList.get(j);
+//                    ps.setLong(1, message.getMessageId());
+//                    ps.setLong(2, message.getFromUser());
+//                    ps.setLong(3, message.getToUser());
+//                    ps.setString(4, message.getTitle());
+//                    ps.setString(5, message.getContent());
+//                    ps.setTimestamp(6, new Timestamp(new Date().getTime()));
+//                }
+//
+//                @Override
+//                public int getBatchSize() {
+//                    return batchList.size();
+//                }
+//            });
+//
+//            System.arraycopy(result, 0, affectedRows, i * batchSize, result.length);
+//        }
 
-        return affectedRows;
+        return ret;
     }
+
 }
