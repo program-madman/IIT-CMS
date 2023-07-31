@@ -1,14 +1,13 @@
 package com.iit.project.cms.CMSServer.service;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.common.CommonResult;
 import com.iit.project.cms.CMSServer.dao.UserRepository;
-import com.iit.project.cms.CMSServer.dto.GetUserInfoResponse;
-import com.iit.project.cms.CMSServer.dto.LoginRequest;
-import com.iit.project.cms.CMSServer.dto.LoginResponse;
-import com.iit.project.cms.CMSServer.dto.RegisterRequest;
+import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.entity.User;
-import com.iit.project.cms.CMSServer.service.IUserService;
 import com.iit.project.cms.CMSServer.util.CmsPasswordEncoder;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -83,6 +82,21 @@ public class UserService implements IUserService {
         BeanUtils.copyProperties(request, targetUser);
 
         return BaseResponse.success(userRepository.createUser(targetUser));
+    }
+
+
+    @Override
+    public CommonResult queryUserArticleInfo(FullDetailRequest request) {
+
+        CommonResult result = new CommonResult();
+
+        result.setResult(userRepository.queryUserArticleInfo());
+        result.setSuccess(true);
+
+        return result;
+
+
+
     }
 
 }
