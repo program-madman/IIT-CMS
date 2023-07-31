@@ -87,4 +87,9 @@ public class UserRepository extends JdbcRepository {
             return null;
         }
     }
+
+    public List<User> getUsersByDeptId(Long deptId) {
+        String sql = "SELECT * FROM user where dept_id = ?";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class), deptId);
+    }
 }
