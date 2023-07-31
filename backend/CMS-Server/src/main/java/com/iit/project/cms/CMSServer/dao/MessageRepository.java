@@ -16,10 +16,17 @@ public class MessageRepository extends JdbcRepository {
 
     // 添加消息
     public boolean createMessage(Message message) {
-        String sql = "INSERT INTO message (from_user, to_user, title, content, send_time) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sqlSelectMaxId = "SELECT MAX(message_id) FROM message";
+        Integer maxId = jdbcTemplate.queryForObject(sqlSelectMaxId, Integer.class);
 
-        int rowsAffected = jdbcTemplate.update(sql, message.getFromUser(), message.getToUser(),
+        // Increment the maxId by 1 to get the new message_id
+        int newMessageId = (maxId != null) ? (maxId + 1) : 1;
+
+        String sql = "INSERT INTO message (message_id, from_user, to_user, title, content, send_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+
+        int rowsAffected = jdbcTemplate.update(sql, newMessageId, message.getFromUser(), message.getToUser(),
                 message.getTitle(), message.getContent(), new Date());
 
         return rowsAffected > 0; // 返回是否插入成功
@@ -78,7 +85,7 @@ public class MessageRepository extends JdbcRepository {
     public boolean batchInsertMessages(List<Message> messages) {
         boolean ret = false;
         for (Message message : messages) {
-             ret =createMessage(message);
+            ret = createMessage(message);
         }
 //        String sql = "INSERT INTO message (message_id, from_user, to_user, title, content, send_time) " +
 //                "VALUES (?, ?, ?, ?, ?, ?)";

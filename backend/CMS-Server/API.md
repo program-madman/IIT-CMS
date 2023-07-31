@@ -187,7 +187,9 @@
           "replyCount": "2",
           "likeCount": "1",
           "browseCount": "1",
-          "targetDeptName": "Computer Science",
+          "targetDeptName": [
+            "Business Administration"
+          ],
           "changeHistoryResponseList": null,
           "attachmentList": null,
           "commentList": [

@@ -8,14 +8,17 @@ import com.iit.project.cms.CMSServer.dao.UserRepository;
 import com.iit.project.cms.CMSServer.dto.SendMsgRequest;
 import com.iit.project.cms.CMSServer.entity.Message;
 import com.iit.project.cms.CMSServer.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class MessageService implements IMessageService {
 
     @Autowired
@@ -48,8 +51,13 @@ public class MessageService implements IMessageService {
 
     @Override
     public BaseResponse sendMessageToDept(SendMsgRequest request) {
+        log.info(request.toString());
         List<Message> messageList = new ArrayList<>();
         List<User> users = userRepository.getUsersByDeptId(request.getToDeptId());
+        log.info("users in dept: " + request.getToDeptId() + "  is : " + users);
+        if (CollectionUtils.isEmpty(users)) {
+            return BaseResponse.error("Dept is empty!");
+        }
         for (User user : users) {
             Message message = new Message();
             BeanUtils.copyProperties(request, message);

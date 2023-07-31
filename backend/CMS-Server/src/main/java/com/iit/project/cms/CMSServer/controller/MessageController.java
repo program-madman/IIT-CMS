@@ -5,10 +5,7 @@ import com.iit.project.cms.CMSServer.dto.SendMsgRequest;
 import com.iit.project.cms.CMSServer.service.IMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.iit.project.cms.CMSServer.common.Symbol.KEY_HEADER_USER_ID;
 
@@ -21,18 +18,18 @@ public class MessageController {
     private IMessageService messageService;
 
     @RequestMapping(value = "/sendMessageToDept")
-    public BaseResponse sendMessageToDept(@RequestHeader(KEY_HEADER_USER_ID) String uid, SendMsgRequest request) {
+    public BaseResponse sendMessageToDept(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody SendMsgRequest request) {
         request.setFromUserId(Long.parseLong(uid));
         return messageService.sendMessageToDept(request);
     }
     @RequestMapping(value = "/sendMessageToUser")
-    public BaseResponse sendMessageToUser(@RequestHeader(KEY_HEADER_USER_ID) String uid, SendMsgRequest request) {
+    public BaseResponse sendMessageToUser(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody SendMsgRequest request) {
         request.setFromUserId(Long.parseLong(uid));
         return messageService.sendMessageToUser(request);
     }
 
     @RequestMapping(value = "/sendMessageToUsers")
-    public BaseResponse sendMessageToUsers(@RequestHeader(KEY_HEADER_USER_ID) String uid, SendMsgRequest request) {
+    public BaseResponse sendMessageToUsers(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody SendMsgRequest request) {
         request.setFromUserId(Long.parseLong(uid));
         return messageService.sendMessageToUsers(request);
     }
