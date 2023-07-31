@@ -59,7 +59,7 @@
       </v-btn>
 
       <span class="appendix-hint"
-        >定向附件文件名格式如下：[70101010]******************，中括号中为发送经销商代码</span
+        ></span
       >
     </div>
     <!-- 添加附件按钮栏 结束 -->
@@ -144,7 +144,7 @@
               style="margin-left: 157px; margin-right: 24px"
               @click="dialogCancle"
             >
-              取消
+              Cancel
             </v-btn>
             <v-btn
               min-width="105px"
@@ -154,7 +154,7 @@
               color="blue"
               @click="dialogOk"
             >
-              确认
+              Confirm
             </v-btn>
           </div>
         </v-form>

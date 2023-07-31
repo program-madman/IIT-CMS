@@ -18,6 +18,9 @@
   - [12. 获取发送给我的所有站内信](#12-获取发送给我的所有站内信)
   - [13. 发送站内信给某个部门](#13-发送站内信给某个部门)
   - [14. 发送站内信给某个用户](#14-发送站内信给某个用户)
+  - [15. 获取所有文章类别](#15-获取所有文章类别)
+  - [16. 获取所有用户类型](#16-获取所有用户类型)
+  - [17. 获取所有部门](#17-获取所有部门)
 ## 接口概述
 该文档列出了CMS可用的前端API接口及其功能。
 
@@ -352,18 +355,52 @@
         {
             "messageId": 1,
             "fromUser": 100,
+            "fromUserName": "GuangHui Liu",
             "toUser": 101,
+            "toUserName": "Wu Hao",
             "title": "Test Message",
             "content": "Hello world",
-            "sendTime": "2023-07-24T15:30:58.000+00:00"
-        },
-        {
-            "messageId": 2,
-            "fromUser": 100,
-            "toUser": 101,
-            "title": "Test Message",
-            "content": "Hello world",
-            "sendTime": "2023-07-24T15:30:58.000+00:00"
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
         }
       ]
     }
@@ -392,18 +429,52 @@
         {
             "messageId": 1,
             "fromUser": 100,
+            "fromUserName": "GuangHui Liu",
             "toUser": 101,
+            "toUserName": "Wu Hao",
             "title": "Test Message",
             "content": "Hello world",
-            "sendTime": "2023-07-24T15:30:58.000+00:00"
-        },
-        {
-            "messageId": 2,
-            "fromUser": 100,
-            "toUser": 101,
-            "title": "Test Message",
-            "content": "Hello world",
-            "sendTime": "2023-07-24T15:30:58.000+00:00"
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
         }
       ]
     }
@@ -430,12 +501,54 @@
     "message": "Success!",
     "data": [
          {
-            "messageId": 101,
+            "messageId": 1,
             "fromUser": 100,
-            "toUser": 100,
-            "title": "message title",
-            "content": "message content",
-            "sendTime": "2023-07-31T09:23:34.000+00:00"
+            "fromUserName": "GuangHui Liu",
+            "toUser": 101,
+            "toUserName": "Wu Hao",
+            "title": "Test Message",
+            "content": "Hello world",
+            "sendTime": "2023-07-24T15:30:58.000+00:00",
+            "fromUserInfo": {
+                "userId": 100,
+                "deptId": 2,
+                "roleId": 2,
+                "firstName": "GuangHui",
+                "lastName": "Liu",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Employee",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "345@123.com"
+            },
+            "toUserInfo": {
+                "userId": 101,
+                "deptId": 1,
+                "roleId": 2,
+                "firstName": "Wu",
+                "lastName": "Hao",
+                "username": null,
+                "age": null,
+                "phoneNumber": null,
+                "houseNumber": null,
+                "registerTime": null,
+                "avatar": null,
+                "userType": "Student",
+                "gender": "male",
+                "country": null,
+                "state": null,
+                "city": null,
+                "street": null,
+                "mail": "789@123.com"
+            }
         }
       ]
     }
@@ -490,6 +603,101 @@
       "code": "200",
       "message": "Success!",
       "data": null
+    }
+    ```
+    
+### 15. 获取所有文章类别
+获取所有文章类别。
+
+- **URL**: `/article/getAllArticleCategories`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "categoryName": "Artificial Intelligence"
+        },
+        {
+            "categoryName": "Back-end Development"
+        }
+       ]
+    }
+    ```
+
+    
+### 16. 获取所有用户类型
+获取所有用户类型。
+
+- **URL**: `/user/getAllUserTypes`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "typeId": 1,
+            "typeName": "Employee"
+        },
+        {
+            "typeId": 2,
+            "typeName": "Student"
+        }
+       ]
+    }
+    ```
+    
+### 17. 获取所有部门
+获取所有部门。
+
+- **URL**: `/user/getAllDepartments`
+- **方法**: POST
+- **请求头**: token
+- **请求体**: null
+  ```json
+  {
+
+  }
+
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+        {
+            "deptId": 4,
+            "deptName": " Health Sciences"
+        },
+        {
+            "deptId": 19,
+            "deptName": "Architecture and Urban Planning"
+        }
+       ]
     }
     ```
 

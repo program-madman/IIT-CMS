@@ -140,7 +140,7 @@
                 //选择未读
                 switch1: false,
                 //默认选中角色
-                selectionRole: '供应商',
+                selectionRole: 'role',
                 // 是否全选
                 ifChecked: false,
                 //选中数据
@@ -156,31 +156,22 @@
                 unReads_sup: [
                     {
                         id: 1,
-                        name: '北京三里屯4s店_sup',
+                        name: '',
                         children: [
-                            { id: 2, name: 'Jhon 销售总监' },
-                            { id: 3, name: 'Jack 销售经理' },
-                            { id: 4, name: 'Jim 销售经理' },
-                            { id: 5, name: 'Mary 销售经理' },
+                           
                         ],
                     },
                     {
                         id: 6,
-                        name: '北京西三旗4s店_sup',
+                        name: '',
                         children: [
-                            { id: 7, name: 'Jhon 销售总监' },
-                            { id: 8, name: 'Jack 销售经理' },
-                            { id: 9, name: 'Jim 销售经理' },
-                            { id: 10, name: 'Mary 销售经理' },
-                            { id: 11, name: 'Mary 助理' },
+                            
                         ],
                     }
                 ],
                 //供应商已读列表
                 hReads_sup: [
-                    { name: 'Jhon', company: '北京三里屯4s店_sup', deptment: '销售总监' },
-                    { name: 'Jim', company: '北京三里屯4s店_sup', deptment: '销售经理' },
-                    { name: 'Mary', company: '北京三里屯4s店_sup', deptment: '助理' },
+                   
                 ],
                 //供应商 已阅读 
                 unReads_oem: [
@@ -188,21 +179,12 @@
                         id: 1,
                         name: 'OEM',
                         children: [
-                            { id: 2, name: 'Jhon 销售总监' },
-                            { id: 3, name: 'Jack 销售经理' },
-                            { id: 4, name: 'Jim 销售经理' },
-                            { id: 5, name: 'Mary 销售经理' },
-                            { id: 6, name: 'Jhon2 销售总监' },
-                            { id: 7, name: 'Jack2 销售经理' },
-                            { id: 8, name: 'Jim2 销售经理' },
-                            { id: 9, name: 'Mary2 销售经理' }
+                          
                         ],
                     },
                 ],
                 hReads_oem: [
-                    { name: 'Jhon', company: '北京三里屯4s店_oem', deptment: '销售总监' },
-                    { name: 'Jim', company: '北京三里屯4s店_oem', deptment: '销售经理' },
-                    { name: 'Mary', company: '北京三里屯4s店_oem', deptment: '助理' },
+                   
                 ],
                 closeState: false,
                 tabs: null,
@@ -211,9 +193,7 @@
                 allDistrictSelection: [],
                 allDistrictItems: [
 
-                    { id: 1, name: '北区', children: [{ id: 2, name: '70101010  大连大昌合众汽车销售服务有限公司' }, { id: 3, name: '70101012  沈阳大昌合众汽车销售服务有限公司' }, { id: 4, name: '70101088  上海中进众旺汽车销售服务有限公司' }, { id: 5, name: '70101098  浙江捷通汽车有限公司' }] },
-                    { id: 6, name: '中区', children: [{ id: 7, name: '70101056  温州之远汽车有限公司' }, { id: 8, name: '70101073  大连大昌合众汽车销售服务有限公司' }, { id: 9, name: '70101074  北京联众汽车销售服务有限公司' }] },
-                    { id: 10, name: '南区', children: [{ id: 11, name: '70101089  济南祥和汽车销售服务有限公司' }] },
+                   
 
                 ],
                 //选中数据
@@ -221,11 +201,7 @@
                 vwDeptItems: [
 
 
-                    { id: 1, name: '宾利', children: [{ id: 2, name: '集团物流部' }, { id: 3, name: '中央市场部' }, { id: 4, name: '品牌售后部' }, { id: 5, name: '售后服务部' },], },
-                    { id: 6, name: '兰博基尼', children: [{ id: 7, name: '财务部' }, { id: 8, name: '经销商网络部' }, { id: 9, name: 'IT' },], },
-                    { id: 10, name: '保时捷', children: [{ id: 11, name: '法务部' },], },
-                    { id: 12, name: '奥迪', children: [{ id: 13, name: '法务部' }, { id: 14, name: '中央市场部' }, { id: 15, name: '品牌售后部' }, { id: 16, name: '售后服务部' },], },
-                    { id: 17, name: '大众', children: [{ id: 18, name: '法务2部' }, { id: 19, name: '经销商网络2部' },], },
+                   
 
                 ],
                 //可见范围是否全选
@@ -281,38 +257,7 @@
             toSelectTree(isChecked) {
                 console.log(isChecked);
                 if (isChecked) {                
-                    this.arry = [{
-                        "id": 2,
-                        "name": "Jhon 销售总监"
-                    },
-                    {
-                        "id": 3,
-                        "name": "Jack 销售经理"
-                    },
-                    {
-                        "id": 4,
-                        "name": "Jim 销售经理"
-                    },
-                    {
-                        "id": 5,
-                        "name": "Mary 销售经理"
-                    },
-                    {
-                        "id": 6,
-                        "name": "Jhon2 销售总监"
-                    },
-                    {
-                        "id": 7,
-                        "name": "Jack2 销售经理"
-                    },
-                    {
-                        "id": 8,
-                        "name": "Jim2 销售经理"
-                    },
-                    {
-                        "id": 9,
-                        "name": "Mary2 销售经理"
-                    }];
+                    this.arry = [];
                 } else {
                     this.arry = [];
                 }
@@ -321,13 +266,13 @@
             toItemSelectTree(isItemChecked){
                 if (this.tabs===0){
                     if (isItemChecked) {
-                        this.allDistrictSelection = [{"id":2,"name":"70101010  大连大昌合众汽车销售服务有限公司"},{"id":3,"name":"70101012  沈阳大昌合众汽车销售服务有限公司"},{"id":4,"name":"70101088  上海中进众旺汽车销售服务有限公司"},{"id":5,"name":"70101098  浙江捷通汽车有限公司"},{"id":7,"name":"70101056  温州之远汽车有限公司"},{"id":8,"name":"70101073  大连大昌合众汽车销售服务有限公司"},{"id":9,"name":"70101074  北京联众汽车销售服务有限公司"},{"id":11,"name":"70101089  济南祥和汽车销售服务有限公司"}];
+                        this.allDistrictSelection = [];
                     }else{
                         this.allDistrictSelection = [];
                     }  
                 }else{
                     if (isItemChecked) {
-                        this.vwDeptSelection = [{"id":2,"name":"集团物流部"},{"id":3,"name":"中央市场部"},{"id":4,"name":"品牌售后部"},{"id":5,"name":"售后服务部"},{"id":7,"name":"财务部"},{"id":8,"name":"经销商网络部"},{"id":9,"name":"IT"},{"id":11,"name":"法务部"},{"id":13,"name":"法务部"},{"id":14,"name":"中央市场部"},{"id":15,"name":"品牌售后部"},{"id":16,"name":"售后服务部"},{"id":18,"name":"法务2部"},{"id":19,"name":"经销商网络2部"}];
+                        this.vwDeptSelection = [];
                     }else{
                         this.vwDeptSelection = [];
                     }  

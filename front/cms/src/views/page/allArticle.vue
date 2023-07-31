@@ -86,7 +86,6 @@ import { aesEncrypt } from "@/utils/encryption.js";
 export default {
   components: {
     searchBar: () => import("./articleList/searchBar.vue"),
-    pageLoader: () => import("./articleList/pageLoader.vue"),
     loading: () => import("@/components/base/loading.vue"),
     emptyView: () => import("@/components/base/empty-view.vue"),
   },

@@ -12,13 +12,13 @@
             outlined
             color="#1867C0FF"
             style="margin-left: 8px; margin-top: 1px"
-            @click="markAllRead"
-            >全部已读</v-btn
+            @click="newMessage"
+            >New Message</v-btn
           >
         </v-card-actions>
         <v-subheader
           class="subtitle-1 my-n2"
-          v-text="'还没有任何消息'"
+          v-text="'Empty Message'"
           v-if="messageDates.length === 0"
         />
 
@@ -42,17 +42,9 @@
                     <span class="ml-2 message-list-releasetime-text"
                       >{{ msg.releaseTime }}
                     </span>
-                    <span class="ml-2 message-list-time-text">{{
-                      msg.time
-                    }}</span>
-                    <span class="ml-2 message-list-time-text">{{
-                      msg.operator
-                    }}</span>
-                    <span class="ml-2 message-list-operate-type-text"
-                      >{{ msg.typeText }} </span
-                    ><a class="ml-3 message-list-title-text"
-                      >{{ msg.messageTitle }}
-                    </a>
+                    <span class="ml-2 message-list-time-text">{{ msg.time }}</span>
+                    <span class="ml-4 message-list-time-text">{{ msg.fromUser }}</span>
+                    <a class="ml-3 message-list-title-text">{{ msg.title }}</a>
                   </v-row>
                   <v-divider class="my-sm-auto"></v-divider>
                 </v-list-item-content>
@@ -62,37 +54,132 @@
         </template>
       </v-list>
     </v-card>
-    <page-loader @onLoadMore="onLoadMore" />
+
+    <v-dialog
+        v-model="dialog"
+        activator="parent"
+        width="600"
+      >
+        <v-card>
+          <v-card-title class="text-h5">
+            {{selectMsg.title}}
+           </v-card-title>
+          <v-card-text>
+            {{selectMsg.content}}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="dialog = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+        v-model="sendDialog"
+        activator="parent"
+        width="600"
+      >
+        <v-card> 
+          
+          <v-col cols="12">
+          <v-text-field
+            v-model="toUser.toUserId"
+            label="To User"
+            required
+          />
+        </v-col>
+          
+
+          <v-col cols="12">
+          <v-text-field
+            v-model="toUser.title"
+            label="Title"
+            maxlength="70"
+            required
+          />
+        </v-col>
+        <v-col cols="12">
+          <v-textarea maxlength="500" v-model="toUser.content" label="Content" variant="outlined"></v-textarea>
+        </v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn  
+            @click="sendDialog = false"
+          >
+            Cancle
+          </v-btn>
+          <v-btn
+            color="primary"
+            @click="postMessage"
+          >
+              Send Message 
+          </v-btn>
+        </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+      v-model="sending"
+      :scrim="false"
+      persistent
+      width="auto"
+    >
+      <v-card
+        color="primary"
+      >
+        <v-card-text>
+          Please stand by
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+      <v-snackbar color="success" v-model="snackbarVisible"   top="top"  >
+       Send Message Success!
+    <template v-slot:action>
+      <v-btn text color="white" @click="snackbarVisible = false">
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
+
   </v-container>
 </template>
 
 <script>
 import {
-  getUserMessageList,
-  markAllMessageRead,
+  getMyMessages,
+  sendMessage,
   markMessageReadOne,
 } from "@/api/getData.js";
-import { jumpToDetail } from "@/utils/common.js";
-import { getMsgReminderStatusDesc } from "@/utils/articleUtils.js";
+//import { getMsgReminderStatusDesc } from "@/utils/articleUtils.js";
 import { EventBus } from "@/utils/event-bus";
-import { Debounce } from "@/utils/tools.js";
+
 export default {
   mounted() {
-    //初始化..... 需要吗？
     this.messageMap = new Map();
     this.messageDates = [];
     this.currentPage = 1;
-    this.loadUserMessage(this.currentPage, this.pageNumber);
+    this.loadUserMessage();
     EventBus.$emit("refreshUnread", "refresh");
   },
   components: {
-    pageLoader: () => import("./articleList/pageLoader.vue"),
+    
   },
   data: () => ({
+    sending:false,
+    dialog:false,
+    sendDialog:false,
     messageMap: new Map(),
     messageDates: [],
     pageNumber: 10,
     currentPage: 1,
+    snackbarVisible:false,
+    selectMsg:{"title":"","content":""},
+    toUser:{"toUserId":"","title":"","content":""}
   }),
   methods: {
     reset() {
@@ -110,35 +197,16 @@ export default {
 
     //go to article detail page
     toDetail(message) {
-      jumpToDetail(this.$router, message.messageId);
       if (message.isRead === false) {
         this.markOnceRead(message);
       }
+      this.selectMsg = message
+      this.dialog = true
     },
 
-    onLoadMore() {
-      if (this.loading == true) return;
-      this.loading = true;
-      this.loadUserMessage(this.currentPage, this.pageNumber);
+    newMessage() {
+      this.sendDialog = true
     },
-
-    markAllRead: Debounce(function () {
-
-
-      markAllMessageRead()
-        .then((response) => {
-          if (
-            response != null &&
-            response.code === 0 &&
-            response.message === "success"
-          ) {
-            this.reset();
-            this.loadUserMessage(this.currentPage, this.pageNumber);
-            EventBus.$emit("makeAllMsgRead", "all message readed");
-          }
-        })
-        .catch();
-    }, 500),
 
     markOnceRead(message) {
       markMessageReadOne(message.id)
@@ -151,32 +219,49 @@ export default {
             EventBus.$emit("markSingleRead", "one message readed");
             message.isRead = true;
           }
-        })
-        .catch();
+        }).catch();
     },
 
-    loadUserMessage(pageNum, pageSize) {
-      getUserMessageList(pageNum, pageSize)
-        .then((response) => {
-          this.fillDatas(response);
-        })
-        .catch();
+    loadUserMessage() {
+      // var items = []
+      // for (let i = 0; i < 10; i++) {
+      //     let msg = {}
+      //     msg.title = "title "+ i;
+      //     msg.content = "content" + i
+      //     msg.isRead = false
+      //     msg.sendtime = "2023-08-03 12:12:12"
+      //     items.push(msg)
+      // }
+      // var resp = {}
+      // resp.data = items
+
+      getMyMessages().then((response) => {
+          if (response.code === '200') {
+            this.fillDatas(response.data)
+          }
+        }).catch();
+    },
+
+    postMessage() {
+      this.sending = true
+      sendMessage(this.toUser).then((resp) => {
+          if (resp.code === '200') {
+            this.snackbarVisible = true
+            this.sendDialog = false
+          }
+        }).catch(
+          
+        )
+        .finally(() => { this.sending = false});   
+      
     },
 
     fillDatas(response) {
-      console.debug("respone" + JSON.stringify(response));
-      if (
-        response == null ||
-        response.data == null ||
-        response.data.length == 0
-      ) {
-        return;
-      }
+      console.debug("respone >>>>>>" + JSON.stringify(response));
       this.loading = false;
-      this.currentPage++;
-      for (let i = 0; i < response.data.length; i++) {
-        let message = response.data[i];
-        let date = message.operationTime.split(" ");
+      for (let i = 0; i < response.length; i++) {
+        let message = response[i];
+        let date = message.sendTime.split("31T");
         let key = "";
         console.log("######## date =========> ####### " + JSON.stringify(date));
         if (date != null && typeof key != undefined && date.length >= 2) {
@@ -193,18 +278,13 @@ export default {
           }
           message.color = message.isRead ? "grey" : "red";
           message.cardColor = message.isRead ? "grey" : "blue-grey";
-          //----- mock effect ----
-          //message.color = i % 2 === 0 ? "grey" : "red";
-          //message.cardColor = i % 2 === 0 ? "grey" : "indigo";
-          //message.isRead = i % 2 === 0 ? true : false;
-          //----- mock effect ----
-          message.typeText = getMsgReminderStatusDesc(message.operation);
           console.log("typeText ==========>" + message.color);
           list.push(message);
           this.messageMap.set(key, list);
         }
       }
       this.messageDates = Array.from(this.messageMap.keys());
+      this.$forceUpdate()
       //alert("on response length >>>> "+Array.from(this.messageDates).length)
     },
   },

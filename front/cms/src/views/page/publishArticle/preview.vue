@@ -14,7 +14,7 @@
           <v-btn icon dark @click="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title>预览文章</v-toolbar-title>
+          <v-toolbar-title>Preview Article</v-toolbar-title>
         </v-toolbar>
 
         <v-card class="pa-6" elevation="0">
@@ -28,18 +28,18 @@
 
             <v-row class="mt-2 ma-0 aritcle-desc">
               <span>
-                {{ user.operateDepartment }}
+                 Author Department : Computer Science
               </span>
               <span class="ml-6">{{ createTime }}</span>
             </v-row>
 
             <v-row class="mt-4 ma-0" align="center">
-              <span class="aritcle-desc"> 本文发送给: </span>
+              <span class="aritcle-desc"> This article to: </span>
               <div class="chip-wrapper ml-2">
-                <span class="chip-text">XX主管</span>
+                <span class="chip-text">XX Department</span>
               </div>
               <div class="chip-wrapper ml-2">
-                <span class="chip-text">XX经理</span>
+                <span class="chip-text">XX Department</span>
               </div>
             </v-row>
             <v-row class="ma-0 mt-4">
@@ -56,8 +56,8 @@
             <div class="mt-4">
               <div v-if="uploadFileNormal.length > 0">
                 <v-row class="ma-0 pa-0">
-                  <span class="files-category mr-4"> 普通附件 </span>
-                  <span class="files-category-btn">全部下载</span>
+                  <span class="files-category mr-4"> Attachment </span>
+                  <span class="files-category-btn">Download</span>
                 </v-row>
                 <v-row no-gutters class="pa-0 ma-0 mt-2">
                   <file-item
@@ -69,29 +69,23 @@
                   ></file-item>
                 </v-row>
               </div>
-              <div v-if="uploadFileDirect.length > 0">
-                <v-row class="ma-0 mt-4 pa-0" align="center">
-                  <span class="files-category mr-4">定向附件</span>
-                  <span class="files-category-btn">全部下载</span>
-                </v-row>
-                <v-row no-gutters class="pa-0 ma-0 mt-2">
-                  <file-item
-                    v-for="(item, hindex) in uploadFileDirect"
-                    :key="hindex"
-                    :isPreview="true"
-                    class="pa-0 mr-4 file-item"
-                    :apFile="item"
-                  ></file-item>
-                </v-row>
-              </div>
             </div>
            
             <v-row class="ma-0 mt-4" align="center">
               <span class="aritcle-desc">
-                阅读：0/0
+                Read:0
               </span>
               <span class="aritcle-desc ml-6">
-                回复：0/0
+                Reply:0
+              </span>
+              <span class="aritcle-desc ml-6">
+                Comments:0
+              </span>
+              <span class="aritcle-desc ml-6">
+                Browsed:0
+              </span>
+              <span class="aritcle-desc ml-6">
+                Like:0
               </span>
             </v-row>
           </div>
@@ -111,7 +105,7 @@
           color="#1867C0FF"
           @click="close"
         >
-          返回编辑文章
+          Edit Article
         </v-btn>
       </v-footer>
     </v-dialog>

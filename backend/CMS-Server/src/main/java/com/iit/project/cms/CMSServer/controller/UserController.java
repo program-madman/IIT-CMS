@@ -43,6 +43,7 @@ public class UserController {
     private BaseResponse getAllUsers() {
         return BaseResponse.success(userService.getUsers());
     }
+
     @RequestMapping("/getUserInfoById")
     private BaseResponse getUserInfoById(@RequestBody GetUserInfoRequest request) {
         return userService.getUserInfoById(request.getUserId());
@@ -62,5 +63,14 @@ public class UserController {
         return userService.queryUserArticleInfo(request);
     }
 
+    @RequestMapping(value = "/getAllUserTypes")
+    public BaseResponse getAllUserTypes() {
+        return userService.getAllUserTypes();
+    }
+
+    @RequestMapping(value = "/getAllDepartments")
+    public BaseResponse getAllDepartments() {
+        return userService.getAllDepartments();
+    }
 
 }

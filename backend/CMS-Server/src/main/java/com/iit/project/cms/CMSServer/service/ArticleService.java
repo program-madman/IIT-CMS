@@ -52,6 +52,9 @@ public class ArticleService implements IArticleService {
     @Autowired
     private OperateHistoryRepository operateHistoryRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> allArticles = articleRepository.getAllArticles(request);
@@ -132,6 +135,18 @@ public class ArticleService implements IArticleService {
         } else {
             return BaseResponse.error("Add/Delete article to/from My Favorites failed!");
         }
+    }
+
+    @Override
+    public BaseResponse getAllArticleCategories() {
+        List<Category> allCategories = categoryRepository.getAllCategories();
+        List<GetAllCategoriesResponse> responseList = new ArrayList<>();
+        for (Category category : allCategories) {
+            GetAllCategoriesResponse response = new GetAllCategoriesResponse();
+            BeanUtils.copyProperties(category, response);
+            responseList.add(response);
+        }
+        return BaseResponse.success(responseList);
     }
 
 

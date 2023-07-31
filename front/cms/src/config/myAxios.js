@@ -1,6 +1,6 @@
 import axios from 'axios';
 //import store from '@/store';
-import { showLoginAlert } from "@/utils/snackbar.js";
+//import { showLoginAlert } from "@/utils/snackbar.js";
 //import { Debounce } from "@/utils/tools.js";
 //import { isNull} from "@/utils/common.js"
 
@@ -56,28 +56,28 @@ instance.interceptors.response.use(response => {
         return;
     }
 
-    if (
-        400 <= error.response.status < 500
-    ) {
-        let code = error.response.data.code;
-        console.error("服务器错误，code ：" + error.response.status);
-        console.error("业务错误，code ：" + code);
-        console.error("on error =======> "+JSON.stringify(error.response.headers))
+    // if (
+    //     400 <= error.response.code < 500
+    // ) {
+    //     let code = error.response.data.code;
+    //     console.error("服务器错误，code ：" + error.response.status);
+    //     console.error("业务错误，code ：" + code);
+    //     console.error("on error =======> "+JSON.stringify(error.response.headers))
 
-        if(code === 3007 || code === 4002 || code === 3005 || code === 41 || code === 40) {
-            console.log("===> on token expire <=== ")
-            showLoginAlert()
-        } 
-        return Promise.reject(error)
+    //     if(code === 3007 || code === 4002 || code === 3005 || code === 41 || code === 40) {
+    //         console.log("===> on token expire <=== ")
+    //         showLoginAlert()
+    //     } 
+    //     return Promise.reject(error)
       
-    } else {
-        if (error.response.status >= 500) {
-            console.debug("服务器错误，code ： " + error.response.status);
-        } else {
-            console.debug("服务器错误，code ： " + error.response.status);
-            return Promise.reject(error)
-        }
-    }
+    // } else {
+    //     if (error.response.status >= 500) {
+    //         console.debug("服务器错误，code ： " + error.response.status);
+    //     } else {
+    //         console.debug("服务器错误，code ： " + error.response.status);
+    //         return Promise.reject(error)
+    //     }
+    // }
 });
 
 export default instance;

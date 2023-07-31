@@ -38,7 +38,7 @@
         >
       </div>
       <span class="error-message" v-if="apFile.error != null"
-        ><v-icon>mdi-alert-circle-outline </v-icon>{{ apFile.error }}
+        ><v-icon>mdi-alert-circle-outline </v-icon>Upload Error
         {{ apFile.progressbar }}</span
       >
       <v-spacer></v-spacer>
@@ -52,7 +52,7 @@
         "
       >
         <button class="caption blue--text text--darken-3" @click="onDelete">
-          {{ isPreview ? "下载" : "删除" }}
+          {{ isPreview ? "Download" : "Delete" }}
         </button>
       </div>
     </v-sheet>
