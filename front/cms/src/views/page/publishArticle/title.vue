@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    placeholder="Input Title Here()no more than 120 words"
+    placeholder="Input title here(no more than 120 words)"
     hide-details="auto"
     single-line
     clearable

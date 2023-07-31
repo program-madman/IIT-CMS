@@ -110,9 +110,8 @@
     />
     <publish
       :open="publish && $route.path == '/publishArticle'"
-      :id="id"
-      :voteEnable="vote.enable"
-      :dealer="delearList"
+      :title="title"
+      :content="content"
       @closeDialog="publish = false"
     />
     <confirm ref="confirm" />

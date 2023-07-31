@@ -20,11 +20,10 @@
         <div class="mr-2" 
             v-if="apFile.downloaded && apFile.count"
         style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
-            <span class="text-caption grey--text text--darken-1">{{$t("downloadNum")}}: {{ showDownloadTxt(apFile.downloaded,apFile.count)
-                }}</span></div>
+            <span class="text-caption grey--text text--darken-1">download count: {{ apFile.url}}</span></div>
         <div class="mr-2" style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
             <v-progress-circular v-if="this.isRequestDownloadUrl" class="ml-8"  :indeterminate="isRequestDownloadUrl" color="primary"></v-progress-circular>
-            <v-btn v-else text class="text-caption blue--text text--darken-3">{{$t("download")}}</v-btn>            
+            <v-btn v-else text class="text-caption blue--text text--darken-3">download</v-btn>            
         </div>
     </v-sheet>
 </template>
@@ -113,8 +112,8 @@
             },
             //文件名
             showFileName(file){
-                if(file.attachmentName) {
-                    return file.attachmentName
+                if(file.name) {
+                    return file.name
                 }else { 
                     return file.url.slice(file.url.lastIndexOf("/") + 1);
                 }
@@ -139,11 +138,11 @@
                        if(typeof res !== "undefined" && res !== null && res.code === 0 && typeof res.data !== "undefined" && res.data !== null && res.data !== "") {
                            downloadFileByUrl(res.data)   
                        }else {
-                           showSnackbar('下载失败，请稍候重试');
+                           showSnackbar('Download failed, please try again later');
                        }
                     })
                     .catch(() => {
-                        showSnackbar('下载失败，请稍候重试');
+                        showSnackbar('Download failed, please try again later');
                     })
                     .finally(() => {
                         this.isRequestDownloadUrl = false;

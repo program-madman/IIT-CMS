@@ -12,7 +12,7 @@
       v-if="hasEditPermission"
       @click="newArticle"
     >
-      {{ $t("new_message") }}
+      New Article
     </v-btn>
     <!-- 消息通知 -->
     <v-menu :nudge-width="220" offset-y open-on-hover>
@@ -117,8 +117,8 @@
 <script>
 // import mySearch from "../store/modules/mySearch";
 import { mapState, mapGetters } from "vuex";
-import { getUserMessageList, getMessageUnreadCount,markMessageReadOne } from "@/api/getData.js";
-import { getMsgReminderStatusDesc} from "@/utils/articleUtils.js";
+import { getMessageUnreadCount,markMessageReadOne } from "@/api/getData.js";
+
 import { jumpToDetail } from "@/utils/common.js";
 import { EventBus } from "@/utils/event-bus";
 
@@ -158,7 +158,7 @@ export default {
   data: () => ({
     lanval: "简体中文",
     drawer: true,
-    msgCount: 0,
+    msgCount: 10,
     lanitems: [
       { title: "简体中文", val: "zh" },
       { title: "English", val: "en" },
