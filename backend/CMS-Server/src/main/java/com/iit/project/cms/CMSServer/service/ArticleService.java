@@ -49,6 +49,9 @@ public class ArticleService implements IArticleService {
     @Autowired
     private MediaRepository mediaRepository;
 
+    @Autowired
+    private OperateHistoryRepository operateHistoryRepository;
+
     @Override
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> allArticles = articleRepository.getAllArticles(request);
@@ -60,10 +63,12 @@ public class ArticleService implements IArticleService {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
         article.setAttachmentList(getAttachmentListByArticleId(article.getArticleId()));
+        article.setChangeHistoryResponseList(getChangeHistoryByArticleId(article.getArticleId()));
         updateReadStatus(request.getUserId(), request.getArticleId());
         updateBrowseHistory(request.getUserId(), request.getArticleId());
         return BaseResponse.success(article);
     }
+
 
 
     @Override
@@ -166,6 +171,21 @@ public class ArticleService implements IArticleService {
         return result;
     }
 
+    private List<ChangeHistoryResponse> getChangeHistoryByArticleId(Long articleId) {
+        List<OperateHistory> operateHistoryList = operateHistoryRepository.getOperateHistoriesByArticleId(articleId);
+        List<ChangeHistoryResponse> result = new ArrayList<>();
+        for (OperateHistory operateHistory : operateHistoryList) {
+            ChangeHistoryResponse response = new ChangeHistoryResponse();
+            response.setArticleId(articleId);
+            response.setOperationType(operateHistory.getOperateType());
+            response.setUserId(operateHistory.getUserId());
+            response.setOperationTime(operateHistory.getTime());
+            User user = userRepository.getUserById(operateHistory.getUserId());
+            response.setOperatorName(user.getFirstName() + " " + user.getLastName());
+            result.add(response);
+        }
+        return result;
+    }
 
     private void updateReadStatus(Long userId, Long articleId) {
         ArticleReadStatus articleReadStatus = new ArticleReadStatus();
