@@ -23,4 +23,6 @@ public interface IArticleService {
     BaseResponse likeArticle(LikeArticleRequest request);
 
     BaseResponse addToMyFav(AddToMyFavRequest request);
+
+    BaseResponse getAllArticleCategories();
 }

@@ -80,7 +80,10 @@ public class ArticleController {
         return articleService.addToMyFav(request);
     }
 
-
+    @RequestMapping(value = "/getAllArticleCategories")
+    public BaseResponse getAllArticleCategories() {
+        return articleService.getAllArticleCategories();
+    }
 
 
 }
