@@ -5,6 +5,8 @@ import com.iit.project.cms.CMSServer.dao.DepartmentRepository;
 import com.iit.project.cms.CMSServer.dao.MessageReadStatusRepository;
 import com.iit.project.cms.CMSServer.dao.MessageRepository;
 import com.iit.project.cms.CMSServer.dao.UserRepository;
+import com.iit.project.cms.CMSServer.dto.GetMessageResponse;
+import com.iit.project.cms.CMSServer.dto.GetUserInfoResponse;
 import com.iit.project.cms.CMSServer.dto.SendMsgRequest;
 import com.iit.project.cms.CMSServer.entity.Message;
 import com.iit.project.cms.CMSServer.entity.User;
@@ -36,17 +38,68 @@ public class MessageService implements IMessageService {
 
     @Override
     public BaseResponse getAllMessages(Long uid) {
-        return BaseResponse.success(messageRepository.getAllMessages());
+        List<Message> allMessages = messageRepository.getAllMessages();
+        List<GetMessageResponse> responseList = new ArrayList<>();
+        for (Message message : allMessages) {
+            GetMessageResponse r = new GetMessageResponse();
+            BeanUtils.copyProperties(message, r);
+            User fromUser = userRepository.getUserById(message.getFromUser());
+            GetUserInfoResponse fui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(fromUser,fui);
+            r.setFromUserInfo(fui);
+            r.setFromUserName(fromUser.getFirstName() + " " + fromUser.getLastName());
+            User toUser = userRepository.getUserById(message.getToUser());
+            GetUserInfoResponse tui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(toUser,tui);
+            r.setToUserInfo(tui);
+            r.setToUserName(toUser.getFirstName() + " " + toUser.getLastName());
+            responseList.add(r);
+        }
+        return BaseResponse.success(responseList);
     }
 
     @Override
     public BaseResponse getAllMessagesSendByMe(Long uid) {
-        return BaseResponse.success(messageRepository.getMessagesSentByUser(uid));
+        List<Message> messagesSentByUser = messageRepository.getMessagesSentByUser(uid);
+        List<GetMessageResponse> responseList = new ArrayList<>();
+        for (Message message : messagesSentByUser) {
+            GetMessageResponse r = new GetMessageResponse();
+            BeanUtils.copyProperties(message, r);
+            User fromUser = userRepository.getUserById(message.getFromUser());
+            GetUserInfoResponse fui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(fromUser,fui);
+            r.setFromUserInfo(fui);
+            r.setFromUserName(fromUser.getFirstName() + " " + fromUser.getLastName());
+            User toUser = userRepository.getUserById(message.getToUser());
+            GetUserInfoResponse tui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(toUser,tui);
+            r.setToUserInfo(tui);
+            r.setToUserName(toUser.getFirstName() + " " + toUser.getLastName());
+            responseList.add(r);
+        }
+        return BaseResponse.success(responseList);
     }
 
     @Override
     public BaseResponse getAllMessagesSendToMe(Long uid) {
-        return BaseResponse.success(messageRepository.getMessagesSentToUser(uid));
+        List<Message> messagesSentToUser = messageRepository.getMessagesSentToUser(uid);
+        List<GetMessageResponse> responseList = new ArrayList<>();
+        for (Message message : messagesSentToUser) {
+            GetMessageResponse r = new GetMessageResponse();
+            BeanUtils.copyProperties(message, r);
+            User fromUser = userRepository.getUserById(message.getFromUser());
+            GetUserInfoResponse fui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(fromUser,fui);
+            r.setFromUserInfo(fui);
+            r.setFromUserName(fromUser.getFirstName() + " " + fromUser.getLastName());
+            User toUser = userRepository.getUserById(message.getToUser());
+            GetUserInfoResponse tui = new GetUserInfoResponse();
+            BeanUtils.copyProperties(toUser,tui);
+            r.setToUserInfo(tui);
+            r.setToUserName(toUser.getFirstName() + " " + toUser.getLastName());
+            responseList.add(r);
+        }
+        return BaseResponse.success(responseList);
     }
 
     @Override
