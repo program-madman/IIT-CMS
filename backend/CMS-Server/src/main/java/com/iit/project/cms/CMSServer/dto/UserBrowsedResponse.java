@@ -15,7 +15,7 @@ public class UserBrowsedResponse {
 
     private String userName;
 
-    private Date browse_time;
+    private Date browseTime;
 
     private String categoryName;
 
@@ -25,7 +25,7 @@ public class UserBrowsedResponse {
 
     private Date publishTime;
 
-    private Article updateTime;
+    private Date updateTime;
 
 
 

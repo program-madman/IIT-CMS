@@ -2,6 +2,8 @@ package com.iit.project.cms.CMSServer.dao;
 
 import com.iit.project.cms.CMSServer.dto.ArticleInformationStatisticsResponse;
 import com.iit.project.cms.CMSServer.dto.AuthorArticleCountInRecentMonthResponse;
+import com.iit.project.cms.CMSServer.dto.NoBrowsedUserYear;
+import com.iit.project.cms.CMSServer.dto.TopThreeArticleMonthResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -115,6 +117,55 @@ public class StatisticsRepository extends JdbcRepository {
                 "LEFT JOIN department AS d ON d.dept_id = u.dept_id ";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(AuthorArticleCountInRecentMonthResponse.class));
     }
+
+
+    public List<TopThreeArticleMonthResponse>  queryTopThreeArticleMonth(){
+
+        String sql = "\n" +
+                "select title,month_time,browse_time,ranks\n" +
+                "from (\n" +
+                "select article_id,month_time,browse_time,ranks\n" +
+                "from (\n" +
+                "select article_id,month_time,browse_time,\n" +
+                "row_number() over (partition by month_time order by browse_time desc) as ranks\n" +
+                "from(\n" +
+                "select count(user_id) as browse_time ,article_id,month(time) as month_time\n" +
+                "from browsed_history\n" +
+                "where year(time) = year(current_date())\n" +
+                "group by article_id,month(time)\n" +
+                "order by month_time\n" +
+                ") as browsed_count_tb\n" +
+                ") rank_tb\n" +
+                "where ranks <= 3\n" +
+                ") biz_tb\n" +
+                "left join(\n" +
+                "select article_id,title\n" +
+                "from article\n" +
+                ") as article_tb on biz_tb.article_id = article_tb.article_id;\n" +
+                "\n";
+
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(TopThreeArticleMonthResponse.class));
+
+    }
+
+
+    public List<NoBrowsedUserYear>  queryNoBrowsedUserYear(){
+
+        String sql = "select user.user_id as user_id,\n" +
+                "user_name ,\n" +
+                "browsed_user_id\n" +
+                "\n" +
+                "from user\n" +
+                "left join (\n" +
+                "select distinct user_id as browsed_user_id from browsed_history\n" +
+                "where year(time) =  year(current_date())\n" +
+                ") as browsed_tb on user.user_id = browsed_tb.browsed_user_id\n" +
+                "where  browsed_user_id is null";
+
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(NoBrowsedUserYear.class));
+
+    }
+
 
 
 }

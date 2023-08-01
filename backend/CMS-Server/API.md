@@ -875,5 +875,90 @@
       },
         ]
       }
+### 23. 每个月浏览次数前三多的文章-title文章名-monthTime月-browseTime浏览次数-ranks排名
+- **URL**: `/statistics/queryTopThreeArticleMonth`
+- **方法**: GET
+- **请求头**: token
+  - **成功响应**:
+    - **状态码**: 200 OK
+    - **响应体**:
+      ```json
+{
+"success": true,
+"result": [
+{
+"title": "Worldcoin: Sam Altman launches eyeball scanning crypto coin",
+"monthTime": "7",
+"browseTime": "2",
+"ranks": "1"
+},
+{
+"title": "Dynamic voltage scaling",
+"monthTime": "7",
+"browseTime": "1",
+"ranks": "2"
+},
+{
+"title": "Central processing unit",
+"monthTime": "7",
+"browseTime": "1",
+"ranks": "3"
+},
+{
+"title": "Mark Zuckerberg: Threads users down by more than a half",
+"monthTime": "8",
+"browseTime": "2",
+"ranks": "1"
+},
+{
+"title": "002 test creawte article",
+"monthTime": "8",
+"browseTime": "1",
+"ranks": "2"
+},
+{
+"title": "Quality by design",
+"monthTime": "8",
+"browseTime": "1",
+"ranks": "3"
+}
+],
+"errMsg": null
+}
 
+
+### 24. 今年没登陆的用户,和第23结合起来做不活跃用户热文推送-三个字段都是id和名字，浏览id为空的是今年开始没登陆的
+- **URL**: `/statistics/queryNoBrowsedUserYear`
+- **方法**: GET
+- **请求头**: token
+  - **成功响应**:
+    - **状态码**: 200 OK
+    - **响应体**:
+      ```json
+{
+"success": true,
+"result": [
+{
+"userId": "4",
+"userName": "3",
+"browsedUserId": null
+},
+{
+"userId": "1",
+"userName": "aaa",
+"browsedUserId": null
+},
+{
+"userId": "103",
+"userName": "finaluser",
+"browsedUserId": null
+},
+{
+"userId": "3",
+"userName": "wuhaocms2",
+"browsedUserId": null
+}
+],
+"errMsg": null
+}
       ```

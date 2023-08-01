@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.common.CommonResult;
 import com.iit.project.cms.CMSServer.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,16 @@ public class StatisticsController {
     public BaseResponse getAuthorArticleCountInRecentMonth() {
         return service.getAuthorArticleCountInRecentMonth();
     }
+
+    @GetMapping("/queryTopThreeArticleMonth")
+    public CommonResult queryTopThreeArticleMonth() {
+        return service.queryTopThreeArticleMonth();
+    }
+
+    @GetMapping("/queryNoBrowsedUserYear")
+    public CommonResult queryNoBrowsedUserYear() {
+        return service.queryNoBrowsedUserYear();
+    }
+
 
 }

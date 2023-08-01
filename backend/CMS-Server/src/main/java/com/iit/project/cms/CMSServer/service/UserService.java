@@ -103,8 +103,15 @@ public class UserService implements IUserService {
     public CommonResult queryUserBrowsedInfo(FullDetailRequest request) {
         CommonResult result = new CommonResult();
 
-        result.setResult(userRepository.queryUserBrowsedInfo());
-        result.setSuccess(true);
+        try {
+            result.setResult(userRepository.queryUserBrowsedInfo());
+            result.setSuccess(true);
+
+        }catch(Exception e){
+            result.setSuccess(false);
+            result.setErrMsg(e.getMessage());
+        }
+
         return result;
     }
 
