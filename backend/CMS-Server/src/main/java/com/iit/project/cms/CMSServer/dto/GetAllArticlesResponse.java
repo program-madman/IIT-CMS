@@ -12,6 +12,7 @@ public class GetAllArticlesResponse {
     private String articleCategory;
     private Integer attachmentTotalCount;
     private Integer likes;
+    private Boolean isLike;
     private Boolean isFav;
     private Boolean isRead;
 }
