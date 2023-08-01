@@ -68,6 +68,7 @@ public class ArticleService implements IArticleService {
             response.setPublishTime(String.valueOf(article.getPublishTime()));
             response.setArticleCategory(article.getCategoryName());
             response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
+            response.setIsLike(articleRepository.isArticleLike(article.getArticleId(), Long.parseLong(request.getUserId())));
             response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
             response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), Long.parseLong(request.getUserId())));
             response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), Long.parseLong(request.getUserId())));

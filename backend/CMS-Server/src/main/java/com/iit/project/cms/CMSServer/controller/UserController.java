@@ -1,5 +1,7 @@
 package com.iit.project.cms.CMSServer.controller;
 
+import static com.iit.project.cms.CMSServer.common.Symbol.KEY_HEADER_USER_ID;
+
 import com.iit.project.cms.CMSServer.common.BaseResponse;
 import com.iit.project.cms.CMSServer.common.CommonResult;
 import com.iit.project.cms.CMSServer.dto.FullDetailRequest;
@@ -47,6 +49,11 @@ public class UserController {
     @RequestMapping("/getUserInfoById")
     private BaseResponse getUserInfoById(@RequestBody GetUserInfoRequest request) {
         return userService.getUserInfoById(request.getUserId());
+    }
+
+    @RequestMapping("/myProfile")
+    private BaseResponse getMyProfile(@RequestHeader(KEY_HEADER_USER_ID) Long uid) {
+      return userService.getUserInfoById(uid);
     }
 
     @RequestMapping("/createUser")

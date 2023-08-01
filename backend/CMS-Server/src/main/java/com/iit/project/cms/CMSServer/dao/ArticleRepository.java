@@ -126,6 +126,11 @@ public class ArticleRepository extends JdbcRepository {
         return jdbcTemplate.queryForObject(sql, new Object[]{userId, articleId}, Boolean.class);
     }
 
+    public boolean isArticleLike(Long articleId, Long userId) {
+        String sql = "SELECT COUNT(*) > 0 FROM article_like WHERE article_id = ? AND user_id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{articleId, userId}, Boolean.class);
+    }
+
     public List<GetMyArticlesResponse> getMyPublishedArticles(GetMyArticlesRequest request) {
 
         return null;

@@ -163,6 +163,7 @@
               "articleCategory": "Technology",
               "attachmentTotalCount": 0,
               "likes": 0,
+              "isLike": true,
               "isFav": false,
               "isRead": false
           },
@@ -175,6 +176,7 @@
               "articleCategory": "Technology",
               "attachmentTotalCount": 1,
               "likes": 1,
+              "isLike": false,
               "isFav": false,
               "isRead": true
           }
