@@ -59,6 +59,9 @@ public class ArticleService implements IArticleService {
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> list = new ArrayList<>();
         List<Article> allArticles = articleRepository.getAllArticles(request);
+        for (Article allArticle : allArticles) {
+            log.info("article id is : " + allArticle.getArticleId() + "   time: " + allArticle.getPublishTime());
+        }
         for (Article article : allArticles) {
             GetAllArticlesResponse response = new GetAllArticlesResponse();
             response.setArticleId(article.getArticleId());
@@ -82,6 +85,7 @@ public class ArticleService implements IArticleService {
     public BaseResponse getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> list = new ArrayList<>();
         List<Article> allArticles = articleRepository.getAllArticlesPublishedByMe(request);
+
         for (Article article : allArticles) {
             GetAllArticlesResponse response = new GetAllArticlesResponse();
             response.setArticleId(article.getArticleId());
@@ -92,6 +96,7 @@ public class ArticleService implements IArticleService {
             response.setArticleCategory(article.getCategoryName());
             response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
             response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
+            response.setIsLike(articleRepository.isArticleLike(article.getArticleId(), Long.parseLong(request.getUserId())));
             response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), Long.parseLong(request.getUserId())));
             response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), Long.parseLong(request.getUserId())));
             list.add(response);
@@ -205,6 +210,7 @@ public class ArticleService implements IArticleService {
             response.setPublishTime(String.valueOf(article.getPublishTime()));
             response.setArticleCategory(article.getCategoryName());
             response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
+            response.setIsLike(articleRepository.isArticleLike(article.getArticleId(), uid));
             response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
             response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), uid));
             response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), uid));
