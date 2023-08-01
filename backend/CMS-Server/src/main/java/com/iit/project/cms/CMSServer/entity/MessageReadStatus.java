@@ -11,14 +11,12 @@ import java.util.Date;
 @Table(name = "message_read_status")
 public class MessageReadStatus implements Serializable {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "message_id", nullable = false)
-    private Message message;
+    @Column(name = "message_id", nullable = false)
+    private Long messageId;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(name = "time", nullable = false)
     private Date time;

@@ -13,6 +13,7 @@ public class GetMessageResponse {
     private String toUserName;
     private String title;
     private String content;
+    private Boolean isRead;
     private Date sendTime;
     private GetUserInfoResponse fromUserInfo;
     private GetUserInfoResponse toUserInfo;

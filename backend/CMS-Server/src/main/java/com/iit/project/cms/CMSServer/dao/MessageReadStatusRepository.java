@@ -3,6 +3,7 @@ import com.iit.project.cms.CMSServer.entity.MessageReadStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -13,8 +14,8 @@ public class MessageReadStatusRepository extends JdbcRepository {
         String sql = "INSERT INTO message_read_status (message_id, user_id, time) " +
                 "VALUES (?, ?, ?)";
 
-        int rowsAffected = jdbcTemplate.update(sql, messageReadStatus.getMessage().getMessageId(),
-                messageReadStatus.getUser().getUserId(), messageReadStatus.getTime());
+        int rowsAffected = jdbcTemplate.update(sql, messageReadStatus.getMessageId(),
+                messageReadStatus.getUserId(), new Date());
 
         return rowsAffected > 0; // 返回是否插入成功
     }
@@ -41,8 +42,8 @@ public class MessageReadStatusRepository extends JdbcRepository {
     public boolean updateMessageReadStatus(MessageReadStatus messageReadStatus) {
         String sql = "UPDATE message_read_status SET time = ? WHERE message_id = ? AND user_id = ?";
 
-        int rowsAffected = jdbcTemplate.update(sql, messageReadStatus.getTime(),
-                messageReadStatus.getMessage().getMessageId(), messageReadStatus.getUser().getUserId());
+        int rowsAffected = jdbcTemplate.update(sql, new Date(),
+                messageReadStatus.getMessageId(), messageReadStatus.getUserId());
 
         return rowsAffected > 0; // 返回是否更新成功
     }

@@ -7,14 +7,17 @@ import com.iit.project.cms.CMSServer.dao.MessageRepository;
 import com.iit.project.cms.CMSServer.dao.UserRepository;
 import com.iit.project.cms.CMSServer.dto.GetMessageResponse;
 import com.iit.project.cms.CMSServer.dto.GetUserInfoResponse;
+import com.iit.project.cms.CMSServer.dto.MarkMessageAsReadRequest;
 import com.iit.project.cms.CMSServer.dto.SendMsgRequest;
 import com.iit.project.cms.CMSServer.entity.Message;
+import com.iit.project.cms.CMSServer.entity.MessageReadStatus;
 import com.iit.project.cms.CMSServer.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +90,12 @@ public class MessageService implements IMessageService {
         for (Message message : messagesSentToUser) {
             GetMessageResponse r = new GetMessageResponse();
             BeanUtils.copyProperties(message, r);
+            MessageReadStatus isRead = messageReadStatusRepository.getMessageReadStatusById(r.getMessageId(), uid);
+            if (ObjectUtils.isEmpty(isRead)) {
+                r.setIsRead(false);
+            } else {
+                r.setIsRead(true);
+            }
             User fromUser = userRepository.getUserById(message.getFromUser());
             GetUserInfoResponse fui = new GetUserInfoResponse();
             BeanUtils.copyProperties(fromUser,fui);
@@ -100,6 +109,22 @@ public class MessageService implements IMessageService {
             responseList.add(r);
         }
         return BaseResponse.success(responseList);
+    }
+
+    @Override
+    public BaseResponse markMessageAsRead(Long uid, MarkMessageAsReadRequest request) {
+        MessageReadStatus messageReadStatus = new MessageReadStatus();
+        messageReadStatus.setMessageId(request.getMessageId());
+        messageReadStatus.setUserId(uid);
+        if (!ObjectUtils.isEmpty(messageReadStatusRepository.getMessageReadStatusById(request.getMessageId(), uid))) {
+            return BaseResponse.error("Message is already read, message id: " + messageReadStatus.getMessageId());
+        }
+
+        if (messageReadStatusRepository.createMessageReadStatus(messageReadStatus)){
+            return BaseResponse.success();
+        } else {
+            return BaseResponse.error("Mark message as read failed, the message id is : " + messageReadStatus.getMessageId());
+        }
     }
 
     @Override

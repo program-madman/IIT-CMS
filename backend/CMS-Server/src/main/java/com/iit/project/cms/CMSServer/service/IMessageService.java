@@ -1,6 +1,7 @@
 package com.iit.project.cms.CMSServer.service;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
+import com.iit.project.cms.CMSServer.dto.MarkMessageAsReadRequest;
 import com.iit.project.cms.CMSServer.dto.SendMsgRequest;
 
 public interface IMessageService {
@@ -15,4 +16,6 @@ public interface IMessageService {
     BaseResponse getAllMessagesSendByMe(Long uid);
 
     BaseResponse getAllMessagesSendToMe(Long uid);
+
+    BaseResponse markMessageAsRead(Long uid, MarkMessageAsReadRequest request);
 }
