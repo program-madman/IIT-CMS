@@ -104,8 +104,8 @@
     <!-- <v-btn> 退出 </v-btn> -->
 
     <div class="mr-1 ml-6">
-      <div class="app-bar-user">{{ user.name }}</div>
-      <span class="app-bar-user-post mr-2" v-if="user.department != null">{{ user.department }}</span>
+      <div class="app-bar-user">{{  user.firstName }}</div>
+      <span class="app-bar-user-post mr-2" >{{ user.userType }}</span>
       <span class="app-bar-user-post" v-if='user.positionName !="MG"'>{{ user.positionName }}</span>
     </div>
 
@@ -116,7 +116,7 @@
 // import mySearch from "../store/modules/mySearch";
 import { mapState, mapGetters } from "vuex";
 import { markMessageReadOne,getMyMessages } from "@/api/getData.js";
-
+//import store from '@/store';
 import { jumpToDetail } from "@/utils/common.js";
 import { EventBus } from "@/utils/event-bus";
 
@@ -126,7 +126,7 @@ export default {
 
     
     this.getUserMessage();
-
+    //this.initUser()
     EventBus.$on("makeAllMsgRead", (msg) => {
       // 所有消息标记已读，把标记去掉
       console.log("######## receive message ####### " + msg);
@@ -154,6 +154,7 @@ export default {
   },
 
   data: () => ({
+    //user:{},
     lanval: "简体中文",
     drawer: true,
     msgCount: 0,
@@ -183,6 +184,11 @@ export default {
   },
 
   methods: {
+
+    initUser() {
+      //user.name = store.state.user.userInfo.firstName
+      //user.type = store.state.user.userInfo.userType
+    },
 
     getUserMessage() {
       getMyMessages().then((response) => {

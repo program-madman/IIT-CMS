@@ -163,6 +163,18 @@ export const getAllCategorys = () => {
 }
 
 
+export const myProfile = () => {
+    return request({
+        url: 'user/myProfile',
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'post',
+    })
+}
+
+
 
 
 
