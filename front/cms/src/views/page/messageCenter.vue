@@ -4,7 +4,6 @@
       <v-list two-line>
         <v-card-actions>
           <v-btn
-            v-if="messageDates.length > 0"
             min-width="105px"
             height="36px"
             depressed
@@ -43,7 +42,7 @@
                       >{{ msg.releaseTime }}
                     </span>
                     <span class="ml-2 message-list-time-text">{{ msg.time }}</span>
-                    <span class="ml-4 message-list-time-text">{{ msg.fromUser }}</span>
+                    <span class="ml-4 message-list-time-text">{{ msg.fromUserName }}</span>
                     <a class="ml-3 message-list-title-text">{{ msg.title }}</a>
                   </v-row>
                   <v-divider class="my-sm-auto"></v-divider>
@@ -84,6 +83,7 @@
           <v-text-field
             v-model="toUser.toUserId"
             label="To User"
+            placeholder="Input user name"
             required
           />
         </v-col>
@@ -153,7 +153,7 @@
 import {
   getMyMessages,
   sendMessage,
-  markMessageReadOne,
+  markMessageRead,
 } from "@/api/getData.js";
 //import { getMsgReminderStatusDesc } from "@/utils/articleUtils.js";
 import { EventBus } from "@/utils/event-bus";
@@ -209,12 +209,9 @@ export default {
     },
 
     markOnceRead(message) {
-      markMessageReadOne(message.id)
+      markMessageRead(message.messageId)
         .then((response) => {
-          if (
-            response != null &&
-            response.code === 0 &&
-            response.message === "success"
+          if (response && response.code === '200'
           ) {
             EventBus.$emit("markSingleRead", "one message readed");
             message.isRead = true;
@@ -258,7 +255,7 @@ export default {
       this.loading = false;
       for (let i = 0; i < response.length; i++) {
         let message = response[i];
-        let date = message.sendTime.split("31T");
+        let date = message.sendTime.split(".");
         let key = "";
         console.log("######## date =========> ####### " + JSON.stringify(date));
         if (date != null && typeof key != undefined && date.length >= 2) {

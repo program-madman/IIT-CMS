@@ -74,7 +74,7 @@
 
 <script>
 import "@/assets/css/article.css";
-import {  removeCollection,getAllArticle,addOrRemoveFavorite } from "@/api/getData.js";
+import {  getAllArticle,addOrRemoveFavorite,getMyFavArticles,getMyArticle } from "@/api/getData.js";
 import { EventBus } from "@/utils/event-bus";
 import {
   highLightText,
@@ -132,13 +132,13 @@ export default {
       this.loading = true;
       switch (this.type) {
         case 0://全部文章
-          this.getMyAllArticle(data)
+          this.allArticle(data)
           break;
         case 1: //收藏
-          
+          this.getMyFavorite(data)
         break;
           case 2: //我发布的
-          
+          this.myArticle(data)
           break;
       
         default:
@@ -148,7 +148,7 @@ export default {
      
     },
 
-    getMyAllArticle(data) {
+    allArticle(data) {
       getAllArticle(data)
         .then((res) => {
           if (res == null || typeof res == "undefined" || res.code == null || 
@@ -169,8 +169,47 @@ export default {
         });
     },
 
-    getMyFavoriteArticle() {
 
+    myArticle(data) {
+      getMyArticle(data)
+        .then((res) => {
+          if (res == null || typeof res == "undefined" || res.code == null || 
+              typeof res.code == "undefined" || res.data.length == 0) {
+            this.showEmptyViewIfNeeded();
+            return;
+          }
+         this.fillArticle(res)
+        })
+        .catch((res) => {
+          console.log(res);
+          this.showEmptyViewIfNeeded();
+        })
+        .finally(() => {
+          EventBus.$emit("articleListComplete", "init");
+          this.loading = false;
+          this.loadingview = false;
+        });
+    },
+
+    getMyFavorite(data) {
+      getMyFavArticles(data)
+        .then((res) => {
+          if (res == null || typeof res == "undefined" || res.code == null || 
+              typeof res.code == "undefined" || res.data.length == 0) {
+            this.showEmptyViewIfNeeded();
+            return;
+          }
+         this.fillArticle(res)
+        })
+        .catch((res) => {
+          console.log(res);
+          this.showEmptyViewIfNeeded();
+        })
+        .finally(() => {
+          EventBus.$emit("articleListComplete", "init");
+          this.loading = false;
+          this.loadingview = false;
+        });
     },
 
 

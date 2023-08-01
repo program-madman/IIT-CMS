@@ -22,7 +22,7 @@
             :key="index"
             class="publish-confirm-content"
           >
-           <span class="pl-2" style="width:320px;display: inline-flex;">{{item.departmentName}}</span>
+           <span class="pl-2" style="width:320px;display: inline-flex;">{{item.deptName}}</span>
           </div>
         </template>
       </v-virtual-scroll>

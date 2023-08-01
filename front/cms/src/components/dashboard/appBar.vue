@@ -9,7 +9,6 @@
       class="pl-2"
       height="36"
       min-width="105"
-      v-if="hasEditPermission"
       @click="newArticle"
     >
       New Article
@@ -41,7 +40,7 @@
                 <v-icon dense large color="white darken-3"
                   >mdi-circle-small</v-icon>
               </span>
-              <span class="ml-n2">{{ item.title }}</span>
+              <span class="ml-n2">{{ item.fromUserName }}</span>
               <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
               <a
@@ -50,11 +49,10 @@
                 small
                 :style="{color:'#1867C0'}"
                 color="blue lighten-2"
-                @click="selectMsg(cindex)"
               >
-                {{ item.messageTitle | lenghth(20) }}</a>
+                {{ item.title | lenghth(20) }}</a>
                </template>
-            <span>{{item.messageTitle}}</span>
+            <span>{{item.title}}</span>
          </v-tooltip>
          
          <v-divider />
@@ -117,7 +115,7 @@
 <script>
 // import mySearch from "../store/modules/mySearch";
 import { mapState, mapGetters } from "vuex";
-import { getMessageUnreadCount,markMessageReadOne } from "@/api/getData.js";
+import { markMessageReadOne,getMyMessages } from "@/api/getData.js";
 
 import { jumpToDetail } from "@/utils/common.js";
 import { EventBus } from "@/utils/event-bus";
@@ -126,7 +124,7 @@ export default {
 
   mounted() {
 
-    this.getUserUnreadArticleCount()
+    
     this.getUserMessage();
 
     EventBus.$on("makeAllMsgRead", (msg) => {
@@ -145,7 +143,7 @@ export default {
     EventBus.$on("refreshUnread", (msg) => {
       // 接到此消息会刷新一下未读数。
       console.log("######## refresh message ####### " + msg);
-      this.getUserUnreadArticleCount()
+      
     }),
 
     EventBus.$on("articleListComplete", (msg) => {
@@ -158,7 +156,7 @@ export default {
   data: () => ({
     lanval: "简体中文",
     drawer: true,
-    msgCount: 10,
+    msgCount: 0,
     lanitems: [
       { title: "简体中文", val: "zh" },
       { title: "English", val: "en" },
@@ -187,36 +185,20 @@ export default {
   methods: {
 
     getUserMessage() {
-      //  getUserMessageList(1, 10)
-      // .then((response) => {
-      //   //showMsgText("1")
-      //   console.log("######## unread message =========> ####### " + JSON.stringify(response));
-      //   if (response != null && response.data != null && response.data.length > 0) {
-      //     this.msgItems = response.data;
-      //     for (let i = 0; i < this.msgItems.length; i++) {
-      //       let msg = this.msgItems[i];
-      //       msg.optText = getMsgReminderStatusDesc(msg.operation);
-      //     }
-      //   }
-      // }).catch();
-      this.msgItems = []
-      for (let i = 0; i < 10; i++) {
-            var msg = {}
-            msg.title = "message title "+i
-            msg.content = "message content "+i
-            msg.isRead = false
-            this.msgItems.push(msg)
-          }
-    },
-
-    getUserUnreadArticleCount() {
-      getMessageUnreadCount()
-        .then((response) => {
-            //console.log("######## unread counnt =========> ####### " + JSON.stringify(response));
-            if(response.data != null && response.data > 0) {
-              this.msgCount = response.data
+      getMyMessages().then((response) => {
+          if (response.code === '200') {
+            this.msgItems = []
+            this.msgCount = 0
+            for (let i = 0; i < response.data.length ; i++) {
+              if(i<10) {
+                 this.msgItems.push(response.data[i])  
+              }
+              if(response.data[i].isRead === false) {
+                this.msgCount++
+              }  
             }
-        }).catch()
+          }
+        }).catch();
     },
 
     markOnceRead(message) {

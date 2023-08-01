@@ -58,7 +58,7 @@ export default {
         return res;
       menu.sort();
       menu.forEach((item) => {
-        if (item > 10 && item < 21) {
+        if (item > 10 && item < 22) {
           res.push(menus[item]);
         }
       });

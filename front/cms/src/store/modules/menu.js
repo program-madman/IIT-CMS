@@ -59,4 +59,10 @@ export const menus = {
     path: "articleManagement",
     message: 0,
   },
+  21: {
+    text: "recordManagement",
+    icon: "mdi-reorder-horizontal",
+    path: "recordManagement",
+    message: 0,
+  },
 };

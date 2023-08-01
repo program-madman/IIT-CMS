@@ -29,5 +29,18 @@
   "read": "Read",
   "reply": "Reply",
   "visibility": "Visibility",
-  "statisticsReport": "Statistics report"
+  "statisticsReport": "Statistics report",
+
+  "recordManagement": "Reorder",
+  "record_User": "User",
+  "record_Browse": "Browse",
+  "record_Comment": "Comment",
+  "record_Message": "Message",
+  "record_Operate": "Operate",
+  "record_Statistic_User": "User Statistic",
+  "record_Read": "Read",
+  "record_Attachment": "Attachment",
+  "record_Like": "Like",
+  "record_Statistic_Article": "Article Statistic"
+
 }

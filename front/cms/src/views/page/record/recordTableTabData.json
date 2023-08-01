@@ -1,0 +1,236 @@
+[
+  {
+    "index": 0,
+    "value": "User",
+    "tabName": "record_User",
+    "head": [
+      {
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "User Type",
+        "value": "userType"
+      },{
+        "text": "Department",
+        "value": "deptName"
+      },{
+        "text": "Role",
+        "value": "roleName"
+      },{
+        "text": "Title",
+        "value": "title"
+      }
+    ],
+    "data": [
+      {
+        "userName": "guanghui",
+        "userType": "1",
+        "deptName": "jjjjjjjj",
+        "roleName": "yyyyyyyyy",
+        "title": " 返回返回"
+      }
+    ]
+  },{
+    "index": 1,
+    "value": "Browse",
+    "tabName": "record_Browse",
+    "head": [
+      {
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "Browsed Time",
+        "value": "browsedTime"
+      },{
+        "text": "Category Name",
+        "value": "categoryName"
+      },{
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "Content",
+        "value": "content"
+      },{
+        "text": "Publish Time",
+        "value": "publishTime"
+      },{
+        "text": "Update Time",
+        "value": "updateTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 2,
+    "value": "Comment",
+    "tabName": "record_Comment",
+    "head": [
+      {
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "Comment Content",
+        "value": "commentContent"
+      },{
+        "text": "Comment Time",
+        "value": "commentTime"
+      },{
+        "text": "CategoryName",
+        "value": "categoryName"
+      },{
+        "text": "Title",
+        "value": "title"
+      }
+    ],
+    "data": [
+
+    ]
+  },{
+    "index": 3,
+    "value": "Message",
+    "tabName": "record_Message",
+    "head": [
+      {
+        "text": "From User",
+        "value": "fromUser"
+      },{
+        "text": "To User",
+        "value": "toUser"
+      },{
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "Content",
+        "value": "content"
+      },{
+        "text": "Send Time",
+        "value": "sendTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 4,
+    "value": "Operate",
+    "tabName": "record_Operate",
+    "head": [
+      {
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "Operate Type",
+        "value": "operateType"
+      },{
+        "text": "Operate Time",
+        "value": "operateTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 5,
+    "value": "UserStatistic",
+    "tabName": "record_Statistic_User",
+    "head": [
+      {
+        "text": "User",
+        "value": "totalUser"
+      },{
+        "text": "Total Sign In Count",
+        "value": "totalSignInCount"
+      },{
+        "text": "Total Publish Article Total Count",
+        "value": "totalPublishArticleTotalCount"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 6,
+    "value": "Read",
+    "tabName": "record_Read",
+    "head": [
+      {
+        "text": "title",
+        "value": "title"
+      },{
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "Read Time",
+        "value": "readTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 7,
+    "value": "Attachment",
+    "tabName": "record_Attachment",
+    "head": [
+      {
+        "text": "File Name",
+        "value": "fileName"
+      },{
+        "text": "File Type",
+        "value": "fileType"
+      },{
+        "text": "Size",
+        "value": "size"
+      },{
+        "text": "Attach Time",
+        "value": "attachTime"
+      },{
+        "text": "Title",
+        "value": "title"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 8,
+    "value": "Like",
+    "tabName": "record_Like",
+    "head": [
+      {
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "User",
+        "value": "userName"
+      },{
+        "text": "Like Time",
+        "value": "likeTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 9,
+    "value": "ArticleStatistic",
+    "tabName": "record_Statistic_Article",
+    "head": [
+      {
+        "text": "Total Article",
+        "value": "totalArticle"
+      },{
+        "text": "Like",
+        "value": "likeCount"
+      },{
+        "text": "Favorite",
+        "value": "favoriteCount"
+      },{
+        "text": "Browsed Count",
+        "value": "browsedCount"
+      },{
+        "text": "Comment Count",
+        "value": "commentCount"
+      }
+    ],
+    "data": [
+    ]
+  }
+]

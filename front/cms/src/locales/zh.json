@@ -16,7 +16,7 @@
   "publish_date": "发布日期",
   "sensitiveFilter": "敏感词过滤",
   "str_articles ": "全部文章",
-  "artcleDetail":"文章详情", 
+  "artcleDetail":"文章详情",
 
   "vote": "投票",
   "voteEnd":"投票截止",
@@ -30,6 +30,18 @@
   "read": "阅读",
   "reply": "回复",
   "visibility": "可见范围",
-  "statisticsReport": "查看统计报告"
-  
+  "statisticsReport": "查看统计报告",
+
+  "recordManagement": "操作记录",
+  "record_User": "用户",
+  "record_Browse": "浏览",
+  "record_Comment": "回复",
+  "record_Message": "消息",
+  "record_Operate": "操作",
+  "record_Statistic_User": "用户统计",
+  "record_Read": "阅读",
+  "record_Attachment": "附件",
+  "record_Like": "喜欢",
+  "record_Statistic_Article": "文章统计"
+
 }
