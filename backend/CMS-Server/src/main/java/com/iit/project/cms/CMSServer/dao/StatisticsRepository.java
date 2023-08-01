@@ -78,41 +78,42 @@ public class StatisticsRepository extends JdbcRepository {
     }
 
     public List<AuthorArticleCountInRecentMonthResponse> getAuthorArticleCountInRecentMonth() {
-//        String sql = """
-//            SELECT
-//            current_month.user_id as userId,
-//            IFNULL(previous_month.num_articles, 0) as previousMonthArticles,
-//            IFNULL(current_month.num_articles, 0) as currentMonthArticles,
-//            IFNULL(current_month.num_articles, 0) - IFNULL(previous_month.num_articles, 0) as difference
-//        FROM
-//            (
-//            SELECT
-//                user_id,
-//                COUNT(*) as num_articles
-//            FROM
-//                article
-//            WHERE
-//                publish_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-//                AND publish_time < CURDATE()
-//            GROUP BY
-//                user_id) as current_month
-//        LEFT JOIN
-//            (
-//            SELECT
-//                user_id,
-//                COUNT(*) as num_articles
-//            FROM
-//                article
-//            WHERE
-//                publish_time >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
-//                    AND publish_time < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-//                GROUP BY
-//                    user_id) as previous_month
-//        ON
-//            current_month.user_id = previous_month.user_id;
-//                """;
-//        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(AuthorArticleCountInRecentMonthResponse.class));
-        return null;
+        String sql = "SELECT\n" +
+                "\tcurrent_month.user_id as userId,\n" +
+                "\tCONCAT(u.first_name, \" \", u.last_name) as name, \n" +
+                "\td.dept_name  as deptName,\n" +
+                "\tIFNULL(previous_month.num_articles, 0) as previousMonthArticles,\n" +
+                "\tIFNULL(current_month.num_articles, 0) as currentMonthArticles,\n" +
+                "\tIFNULL(current_month.num_articles, 0) - IFNULL(previous_month.num_articles, 0) as difference\n" +
+                "FROM\n" +
+                "\t(\n" +
+                "\tSELECT\n" +
+                "\t\tuser_id,\n" +
+                "\t\tCOUNT(*) as num_articles\n" +
+                "\tFROM\n" +
+                "\t\tarticle\n" +
+                "\tWHERE\n" +
+                "\t\tpublish_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+                "\t\tAND publish_time < CURDATE()\n" +
+                "\tGROUP BY\n" +
+                "\t\tuser_id) as current_month\n" +
+                "LEFT JOIN\n" +
+                "    (\n" +
+                "\tSELECT\n" +
+                "\t\tuser_id,\n" +
+                "\t\tCOUNT(*) as num_articles\n" +
+                "\tFROM\n" +
+                "\t\tarticle\n" +
+                "\tWHERE\n" +
+                "\t\tpublish_time >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)\n" +
+                "\t\t\tAND publish_time < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+                "\t\tGROUP BY\n" +
+                "\t\t\tuser_id) as previous_month\n" +
+                "ON\n" +
+                "\tcurrent_month.user_id = previous_month.user_id\n" +
+                "LEFT JOIN user AS u ON current_month.user_id = u.user_id\n" +
+                "LEFT JOIN department AS d ON d.dept_id = u.dept_id ";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(AuthorArticleCountInRecentMonthResponse.class));
     }
 
 

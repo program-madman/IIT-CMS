@@ -5,7 +5,11 @@ import lombok.Data;
 @Data
 public class AuthorArticleCountInRecentMonthResponse {
 
-    public String userId;
+    public Long userId;
+
+    private String name;
+
+    private String deptName;
     
     public Integer previousMonthArticles;
 

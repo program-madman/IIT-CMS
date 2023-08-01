@@ -14,6 +14,7 @@
             <v-card-title>
               <v-layout align-center justify-space-between>
                 <h1 class="headline">
+                  <v-img class="ml-12"  width="200px" height="200px" src="../assets/images/hawks.jpeg" />
                   {{ platformName }}
                 </h1>
                 <v-flex>
@@ -67,7 +68,7 @@
 </template>
 
 <script>
-import { login } from "@/api/getData.js";
+import { login,myProfile } from "@/api/getData.js";
 export default {
   data() {
     return {
@@ -173,7 +174,31 @@ export default {
       login(this.username,this.password)
        .then((res) => {
         console.log("userinfo=====>" + JSON.stringify(res));
-        if (res == null || typeof res == "undefined" || res.code != 200) {
+        if (res == null || typeof res == "undefined" || res.code != '200') {
+          console.log(" code mybay null "+res.code)
+          this.verifyError = "login failed"
+          this.snackbar = true
+        } else {
+          console.log("=== enter main page ===")
+          let user = res.data;
+          //user.menuList = this.author
+          //console.log("login success ====> "+JSON.stringify(user))
+          this.$store.commit("user/setUser", user);
+          //this.toIndexPage()
+          this.getUserInfo(res.data.token)
+        }
+      })
+      .catch((e) => {
+        console.log(" on error "+JSON.stringify(e))
+        this.verifyError = "login failed"
+        this.snackbar = true
+      })
+    },
+    getUserInfo(token) {
+      myProfile()
+       .then((res) => {
+        console.log("userinfo=====>" + JSON.stringify(res));
+        if (res == null || typeof res == "undefined" || res.code != '200') {
           console.log(" code mybay null "+res.code)
           this.verifyError = "login failed"
           this.snackbar = true
@@ -181,9 +206,9 @@ export default {
           console.log("=== enter main page ===")
           let user = res.data;
           user.menuList = this.author
-          console.log("login success ====> "+JSON.stringify(user))
+          user.token = token
+          console.log("getinfo success ====> "+JSON.stringify(user))
           this.$store.commit("user/setUser", user);
-          //console.log("user ====> "+JSON.stringify(this.$store.state.user.userInfo))  
           this.toIndexPage()
         }
       })
