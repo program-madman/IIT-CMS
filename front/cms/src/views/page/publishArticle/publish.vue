@@ -91,7 +91,7 @@
                       <v-checkbox
                         class="mt-0"
                         v-model="item.isCheck"
-                        :label="item.departmentName"
+                        :label="item.deptName"
                         hide-details="false"
                         dense
                       ></v-checkbox>
@@ -136,36 +136,33 @@
                   height: 446px;
                   width: 33%;
                   border-left: 1px solid #e4e8eb;
-                  border-right: 1px solid #e4e8eb;
-                "
-              >
-              <v-radio-group
-                    v-model="category"
-                    height="446"
-                    item-height="30"
-                    bench="1"
-                    class="pa-0 ma-0"
-                  >
-                
-                  <v-virtual-scroll
-                    :items="articlecategory"
-                    height="446"
-                    item-height="30"
-                    bench="1"
-                    class="pa-0 ma-0 ml-4 mt-4"
-                  >
-                 
-                  <template v-slot:default="{ item }">
-                  <v-radio
-                      :key="item.typeId"
-                      :label=item.typeName
-                      :value=item.typeName
-                      ></v-radio>
-                    </template>
-                    
-                </v-virtual-scroll>
-                     
-              </v-radio-group>
+                  border-right: 1px solid #e4e8eb;">
+                <v-radio-group
+                      v-model="category"
+                      height="446"
+                      item-height="30"
+                      bench="1"
+                      class="pa-0 ma-0"
+                    >
+                  
+                    <v-virtual-scroll
+                      :items="articlecategory"
+                      height="446"
+                      item-height="30"
+                      bench="1"
+                      class="pa-0 ma-0 ml-4 mt-4"
+                    >
+                  
+                    <template v-slot:default="{ item }">
+                    <v-radio
+                        :key="item.categoryName"
+                        :label=item.categoryName
+                        :value=item.categoryName
+                        ></v-radio>
+                      </template>
+                      
+                  </v-virtual-scroll>
+                </v-radio-group>
               </div>
             </div>
           </v-sheet>        
@@ -205,6 +202,9 @@
 <script>
 import {
   publishArticle,
+  getAllDepartments,
+  getAllCategorys,
+  getAllUserTypes,
 } from "@/api/getData.js";
 import "@/utils/timeFormate.js";
 import { EventBus } from "@/utils/event-bus";
@@ -246,89 +246,9 @@ export default {
       allUsers:false,
       category:null,
       uploading: false,
-      ch_delear_disable: false,
-      ch_delear: false,
-      ch_area_supp: [],
-      ch_com_supp: [],
-      ch_delear_select: [],
-      ch_delear_deplist_all: false,
-      ch_delear_deplist: [],
-      ch_oem: false,
-      ch_oem_deplist: [],
-
-          articlecategory: [
-                  {
-                    "typeId":1,
-                    "typeName":"News"
-                  },
-                  {
-                    "typeId":2,
-                    "typeName":"Deep Learning"
-                  },
-                  {
-                    "typeId":3,
-                    "typeName":"Database"
-                  },
-
-                ],
-
-                userType: [
-                  {
-                    "typeId":1,
-                    "typeName":"Student"
-                  },
-                  {
-                    "typeId":2,
-                    "typeName":"Professor"
-                  },
-                  {
-                    "typeId":3,
-                    "typeName":"Office Assisant"
-                  },
-
-                ],
-                department:[
-                  {
-                      "departmentName": "Computer Science",
-                      "departmentId": "1",
-                      
-                  },
-                  {
-                      "departmentName": "Computer Engineering",
-                      "departmentId": "5",
-                     
-                  },
-                  {
-                      "departmentName": "Business and Finance",
-                      "departmentId": "3",
-                      
-                  },
-                  {
-                      "departmentName": "Medicine and Health Sciences",
-                      "departmentId": "8",
-                     
-                  },
-                  {
-                      "departmentName": "Psychology",
-                      "departmentId": "2",
-                      
-                  },
-                  {
-                      "departmentName": "Engineering",
-                      "departmentId": "4",
-                      
-                  },
-                  {
-                      "departmentName": "Economics",
-                      "departmentId": "6",
-                     
-                  },
-                  {
-                      "departmentName": "Environmental Science",
-                      "departmentId": "7",
-                      
-                  }
-              ]
+      articlecategory: [],
+      userType: [],
+      department:[]
     };
   },
 
@@ -354,15 +274,36 @@ export default {
     },
 
     initDepartment() {
-      
+      getAllDepartments()
+        .then((res) => {
+          this.department = res.data
+        })
+        .catch((res) => {
+          console.log(res);
+          
+        })
     },
     
     initCategory() {
-      this.category = this.articlecategory[0].typeName
+      
+      getAllCategorys()
+        .then((res) => {
+          this.articlecategory = res.data
+          this.category = this.articlecategory[0].categoryName
+        }).catch((res) => {
+          console.log(res);
+        })
     },
 
     initUserType() {
-
+      getAllUserTypes()
+        .then((res) => {
+          this.userType = res.data
+        })
+        .catch((res) => {
+          console.log(res);
+          
+        })
     },
 
     handleSelectionChange(newCategory) {
@@ -383,40 +324,6 @@ export default {
       });
       this.userType = deepClone(this.userType);
     },
-
-  
-    //选择全部
-    selectAllDelear() {
-      var isSelected = this.ch_delear;
-      this.ch_area_supp.forEach((item) => {
-        item.isCheck = isSelected;
-      });
-
-      this.ch_com_supp.forEach((item) => {
-        item.isCheck = isSelected;
-      });
-
-      this.ch_delear_select.forEach((item) => {
-        item.isCheck = isSelected;
-      });
-      this.ch_delear_select = deepClone(this.ch_delear_select);
-    },
-    selectAllDeplist() {
-      var isSelected = this.ch_delear_deplist_all;
-      this.ch_delear_deplist.forEach((item) => {
-        item.isCheck = isSelected;
-      });
-
-      this.ch_delear_deplist = deepClone(this.ch_delear_deplist);
-    },
-    selectAllOem() {
-      var isSelected = this.ch_oem;
-      this.ch_oem_deplist.forEach((item) => {
-        item.isCheck = isSelected;
-      });
-    },
-
-   
 
     publish: Throttle(
       function () {
@@ -439,6 +346,8 @@ export default {
 
       this.department.forEach((item) => {
         if (item.isCheck) {
+          item.departmentId = item.deptId
+          item.departmentName = item.deptName
           article.targetDeptList.push(item);
         }
       })

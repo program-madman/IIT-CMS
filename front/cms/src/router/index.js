@@ -145,6 +145,25 @@ const routes = [
           permission:20,
         }
       },
+      {
+        path: 'recordManagement',
+        name: 'recordManagement',
+        group:1,
+        component: () => import('../views/page/record/recordManagement.vue'),
+        meta: {
+          keepAlive: false,
+          group: 1,
+          permission:21,
+        }
+      },
+      {
+        path: 'recordDetail',
+        name: 'recordDetail',
+        component: () => import('../views/page/record/recordDetails.vue'),
+        meta: {
+          keepAlive: false,
+        }
+      },
     ],
   },
   {

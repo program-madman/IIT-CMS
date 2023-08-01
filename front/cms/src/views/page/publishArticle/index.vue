@@ -713,7 +713,7 @@ export default {
     },
 
     changeSaveStatus() {
-      this.needSave = true;
+      //this.needSave = true;
       this.autoSave();
     },
   },

@@ -34,12 +34,23 @@ export const getAllArticle = (query) => {
 //web端-2.2.获取我的发布文章列表
 export const getMyArticle = (query) => {
     return request({
-        url: 'message/list/mine',
+        url: 'article/getAllArticlesPublishedByMe',
         headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'get',
+        params: query
+    })
+}
 
+
+export const getMyFavArticles = (query) => {
+    return request({
+        url: 'article/getMyFavArticles',
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
         },
         method: 'get',
         params: query
@@ -116,36 +127,46 @@ export const addOrRemoveFavorite = (articleId) => {
 }
 
 
-
-export const removeCollection = (requestParams) => {
+export const getAllDepartments = () => {
     return request({
-        url: 'message/unarchive',
+        url: 'user/getAllDepartments',
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: requestParams
     })
 }
 
 
-//web端-2.6 删除草稿
-export const deleteMessage = (id) => {
+export const getAllUserTypes = () => {
     return request({
-        url: '/message/delete',
+        url: 'user/getAllUserTypes',
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: { msgId: id }
     })
 }
+
+
+export const getAllCategorys = () => {
+    return request({
+        url: 'article/getAllArticleCategories',
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'post',
+    })
+}
+
+
+
+
+
+
 
 //web端-4.获取文章变更日志
 export const getArticleLog = (id) => {
@@ -200,7 +221,6 @@ export const getSensitive = () => {
         },
         method: 'get',
     })
-
 }
 
 export const saveSensitive = (requestParams) => {
@@ -281,18 +301,7 @@ export const downFile = (query) => {
     })
 }
 
-export const getMessageUnreadCount = () => {
-    return request({
-        url: 'message/center/unreadcount',
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get'
-    })
-}
+
 
 // get user message list
 export const getUserMessageList = (pageNumber, size) => {
@@ -311,46 +320,15 @@ export const getUserMessageList = (pageNumber, size) => {
 }
 
 
-export const markAllMessageRead = () => {
+export const markMessageRead = (id) => {
     return request({
-        url: "message/center/markallread",
+        url: "message/markMessageAsRead",
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'post'
-    })
-}
-
-export const markMessageRead = (ids) => {
-    return request({
-        url: "message/center/readlist",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: {messageIds:ids}
-    })
-
-}
-
-export const markMessageReadOne = (id) => {
-    console.log("======> read one id == "+id)
-    return request({
-        url: "message/center/readone",
-        headers: {
-            "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'post',
-        data: {id:id}
+        data: {"messageId":id}
     })
 
 }
