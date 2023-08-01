@@ -21,4 +21,9 @@ public class StatisticsController {
         return service.getArticleStatisticsInformation();
     }
 
+    @GetMapping("/author-recentmonth-count-statistics")
+    public BaseResponse getAuthorArticleCountInRecentMonth() {
+        return service.getAuthorArticleCountInRecentMonth();
+    }
+
 }

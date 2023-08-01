@@ -1,7 +1,7 @@
 package com.iit.project.cms.CMSServer.dao;
 
 import com.iit.project.cms.CMSServer.dto.ArticleInformationStatisticsResponse;
-import com.iit.project.cms.CMSServer.entity.RoleFunction;
+import com.iit.project.cms.CMSServer.dto.AuthorArticleCountInRecentMonthResponse;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -75,6 +75,43 @@ public class StatisticsRepository extends JdbcRepository {
                 "\ta.article_id = ao.article_id;\n";
 
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ArticleInformationStatisticsResponse.class));
+    }
+
+    public List<AuthorArticleCountInRecentMonthResponse> getAuthorArticleCountInRecentMonth() {
+        String sql = """
+            SELECT
+            current_month.user_id as userId,
+            IFNULL(previous_month.num_articles, 0) as previousMonthArticles,
+            IFNULL(current_month.num_articles, 0) as currentMonthArticles,
+            IFNULL(current_month.num_articles, 0) - IFNULL(previous_month.num_articles, 0) as difference
+        FROM
+            (
+            SELECT
+                user_id,
+                COUNT(*) as num_articles
+            FROM
+                article
+            WHERE
+                publish_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                AND publish_time < CURDATE()
+            GROUP BY
+                user_id) as current_month
+        LEFT JOIN
+            (
+            SELECT
+                user_id,
+                COUNT(*) as num_articles
+            FROM
+                article
+            WHERE
+                publish_time >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+                    AND publish_time < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY
+                    user_id) as previous_month
+        ON
+            current_month.user_id = previous_month.user_id;        
+                """;
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(AuthorArticleCountInRecentMonthResponse.class));
     }
 
 

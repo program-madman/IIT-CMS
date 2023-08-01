@@ -6,4 +6,6 @@ public interface IStatisticsService {
 
     BaseResponse getArticleStatisticsInformation();
 
+    BaseResponse getAuthorArticleCountInRecentMonth();
+
 }
