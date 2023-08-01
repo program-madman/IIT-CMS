@@ -103,50 +103,18 @@ export const publishComment = (comment) => {
     })
 }
 
-
-//web端-2.3.获取 草稿箱/已撤回 文章列表
-export const getArticleByStatusCategory = (query) => {
-    console.debug(JSON.stringify(query))
+export const addOrRemoveFavorite = (articleId) => {
     return request({
-        url: 'message/list/status',
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-        params: query
-    })
-}
-
-//web端-2.3.获取 收藏/ 文章列表
-export const getArticleByArchiveCategory = (query) => {
-    return request({
-        url: 'message/list/archive',
-        headers: {
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
-        },
-        method: 'get',
-        params: query
-    })
-}
-
-//web端-2.4 收藏 0：取消 1：我的收藏 
-export const collectionOperation = (requestParams) => {
-    return request({
-        url: 'message/archive',
+        url: 'article/addToMyFav',
         headers: {
             "Content-Type": "application/json",
-            "authorization": store.state.user.authorization,
-            "position":store.state.user.position,
-            "ticket":store.state.user.ticket,
+            "token": store.state.user.userInfo.token,
         },
         method: 'post',
-        data: requestParams
+        data: {"articleId":articleId}
     })
 }
+
 
 
 export const removeCollection = (requestParams) => {

@@ -249,10 +249,7 @@ export default {
             this.snackbarVisible = true
             this.sendDialog = false
           }
-        }).catch(
-          
-        )
-        .finally(() => { this.sending = false});   
+        }).catch().finally(() => { this.sending = false});   
       
     },
 

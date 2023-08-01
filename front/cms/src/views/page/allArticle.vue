@@ -45,14 +45,14 @@
                       v-bind="attrs"
                       v-on="on"
                       class="article-operator-text"
-                      @click.stop="collect(item)"
+                      @click.stop="favorite(item)"
                     >
                       <v-icon class="article-operator-icon">
                         {{
-                          item.favorite > 0 ? "mdi-star" : "mdi-star-outline"
+                          item.favorite ? "mdi-star" : "mdi-star-outline"
                         }}
                       </v-icon>
-                      {{ item.favorite > 0 ? "favorite" : "favorite" }}
+                      {{ item.favorite  ? "favorite" : "favorite" }}
                     </button>
 
                 <button
@@ -62,7 +62,6 @@
                   </v-icon>
                   {{item.like}}
                 </button>
-
                   </template> 
               </div>
             </div>
@@ -75,7 +74,7 @@
 
 <script>
 import "@/assets/css/article.css";
-import {  removeCollection,getAllArticle } from "@/api/getData.js";
+import {  removeCollection,getAllArticle,addOrRemoveFavorite } from "@/api/getData.js";
 import { EventBus } from "@/utils/event-bus";
 import {
   highLightText,
@@ -88,6 +87,12 @@ export default {
     searchBar: () => import("./articleList/searchBar.vue"),
     loading: () => import("@/components/base/loading.vue"),
     emptyView: () => import("@/components/base/empty-view.vue"),
+  },
+  props: {
+    type: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -125,6 +130,25 @@ export default {
     searchArticles(data) {      
        console.log(data);
       this.loading = true;
+      switch (this.type) {
+        case 0://全部文章
+          this.getMyAllArticle(data)
+          break;
+        case 1: //收藏
+          
+        break;
+          case 2: //我发布的
+          
+          break;
+      
+        default:
+          //this.getMyAllArticle()
+          break;
+      }
+     
+    },
+
+    getMyAllArticle(data) {
       getAllArticle(data)
         .then((res) => {
           if (res == null || typeof res == "undefined" || res.code == null || 
@@ -132,10 +156,26 @@ export default {
             this.showEmptyViewIfNeeded();
             return;
           }
-         
-          this.data.pageNum++;
-          let aTemp = [];
+         this.fillArticle(res)
+        })
+        .catch((res) => {
+          console.log(res);
+          this.showEmptyViewIfNeeded();
+        })
+        .finally(() => {
+          EventBus.$emit("articleListComplete", "init");
+          this.loading = false;
+          this.loadingview = false;
+        });
+    },
 
+    getMyFavoriteArticle() {
+
+    },
+
+
+    fillArticle(res) {
+      let aTemp = [];
           res.data.forEach((item) => {
             let dTemp = {};
             dTemp["id"] = item.articleId;
@@ -162,17 +202,9 @@ export default {
           this.items = this.items.concat(aTemp);
           console.debug("add list" + aTemp);
           highLightText(this.items, this.data.searchContent);
-        })
-        .catch((res) => {
-          console.log(res);
-          this.showEmptyViewIfNeeded();
-        })
-        .finally(() => {
-          EventBus.$emit("articleListComplete", "init");
-          this.loading = false;
-          this.loadingview = false;
-        });
     },
+
+
     showEmptyViewIfNeeded() {
       if (this.data==null || this.data.pageNum == 1) {
         this.loading = false;
@@ -189,36 +221,15 @@ export default {
     },
   
     //文章收藏
-    collect(item) {
-      item.favorite = !item.favorite
+    favorite(item) {
+      addOrRemoveFavorite(item.id).then((resp) => {
+          if (resp.code === '200') {
+            item.favorite = !item.favorite
+          }
+        }).catch()
     },
   },
   
-  //文章收藏
-  removeFavourite(item) {
-    //选择收藏的文章的指针
-    // this.items.splice(0, 1)
-    //let item = this.items[index];
-    let data = {
-      msgId: item.id,
-      archiveId: item.favorite,
-    };
-    removeCollection(data)
-      .then((res) => {
-        console.debug(res);
-        if(res && res.code ==0) {
-          item.favorite = 0;
-          this.items = JSON.parse(JSON.stringify(this.items))
-        }
-        // var i = this.items.indexOf(item);
-        // if (i >= 0) {
-        //   this.items.splice(i, 1);
-        // }
-      })
-      .catch();
-    //选择的文件夹
-  },
-
   //过滤文字
   filters: {
     lenghth(text, length, suffix = "...") {
