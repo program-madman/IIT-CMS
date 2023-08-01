@@ -823,4 +823,55 @@
     }
     ```
     
+### 21. 查找最近一个月内，每个作者的文章发布量变化（与前一个月相比）
+- **URL**: `/statistics/author-recentmonth-count-statistics`
+- **方法**: GET
+- **请求头**: token
+- **成功响应**:
+  - **状态码**: 200 OK
+  - **响应体**:
+    ```json
+    {
+    "code": "200",
+    "message": "Success!",
+    "data": [
+        {
+            "userId": 100,
+            "name": "GuangHui Liu",
+            "deptName": "Business Administration",
+            "previousMonthArticles": 0,
+            "currentMonthArticles": 104,
+            "difference": 104
+        }
+    ]
+  }
 
+    ```
+### 22. 统计所有文章的点赞数，评论数等等信息
+- **URL**: `/statistics/article-statistics`
+- **方法**: GET
+- **请求头**: token
+  - **成功响应**:
+    - **状态码**: 200 OK
+    - **响应体**:
+      ```json
+      {
+      "code": "200",
+      "message": "Success!",
+      "data": [
+          {
+      "title": "Spotify raises premium subscription price for millions",
+      "author": "GuangHui Liu",
+      "deptName": "Business Administration",
+      "commentCount": 1,
+      "viewsCount": 10,
+      "likeCount": 10,
+      "likesRank": 1,
+      "favoriteCount": 8,
+      "lastOperation": "CREATE",
+      "lastOperationTime": "2023-07-24T15:30:58.000+00:00"
+      },
+        ]
+      }
+
+      ```
