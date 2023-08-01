@@ -78,39 +78,37 @@ public class StatisticsRepository extends JdbcRepository {
     }
 
     public List<AuthorArticleCountInRecentMonthResponse> getAuthorArticleCountInRecentMonth() {
-        String sql = """
-            SELECT
-            current_month.user_id as userId,
-            IFNULL(previous_month.num_articles, 0) as previousMonthArticles,
-            IFNULL(current_month.num_articles, 0) as currentMonthArticles,
-            IFNULL(current_month.num_articles, 0) - IFNULL(previous_month.num_articles, 0) as difference
-        FROM
-            (
-            SELECT
-                user_id,
-                COUNT(*) as num_articles
-            FROM
-                article
-            WHERE
-                publish_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                AND publish_time < CURDATE()
-            GROUP BY
-                user_id) as current_month
-        LEFT JOIN
-            (
-            SELECT
-                user_id,
-                COUNT(*) as num_articles
-            FROM
-                article
-            WHERE
-                publish_time >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
-                    AND publish_time < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                GROUP BY
-                    user_id) as previous_month
-        ON
-            current_month.user_id = previous_month.user_id;        
-                """;
+        String sql = "SELECT\n" +
+                "            current_month.user_id as userId,\n" +
+                "            IFNULL(previous_month.num_articles, 0) as previousMonthArticles,\n" +
+                "            IFNULL(current_month.num_articles, 0) as currentMonthArticles,\n" +
+                "            IFNULL(current_month.num_articles, 0) - IFNULL(previous_month.num_articles, 0) as difference\n" +
+                "        FROM\n" +
+                "            (\n" +
+                "            SELECT\n" +
+                "                user_id,\n" +
+                "                COUNT(*) as num_articles\n" +
+                "            FROM\n" +
+                "                article\n" +
+                "            WHERE\n" +
+                "                publish_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+                "                AND publish_time < CURDATE()\n" +
+                "            GROUP BY\n" +
+                "                user_id) as current_month\n" +
+                "        LEFT JOIN\n" +
+                "            (\n" +
+                "            SELECT\n" +
+                "                user_id,\n" +
+                "                COUNT(*) as num_articles\n" +
+                "            FROM\n" +
+                "                article\n" +
+                "            WHERE\n" +
+                "                publish_time >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)\n" +
+                "                    AND publish_time < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)\n" +
+                "                GROUP BY\n" +
+                "                    user_id) as previous_month\n" +
+                "        ON\n" +
+                "            current_month.user_id = previous_month.user_id;";
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(AuthorArticleCountInRecentMonthResponse.class));
     }
 
