@@ -76,6 +76,28 @@ public class ArticleService implements IArticleService {
         return BaseResponse.success(list);
     }
 
+
+    @Override
+    public BaseResponse getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
+        List<GetAllArticlesResponse> list = new ArrayList<>();
+        List<Article> allArticles = articleRepository.getAllArticlesPublishedByMe(request);
+        for (Article article : allArticles) {
+            GetAllArticlesResponse response = new GetAllArticlesResponse();
+            response.setArticleId(article.getArticleId());
+            response.setArticleTitle(article.getTitle());
+            response.setArticleContent(article.getContent());
+            response.setAuthorDeptName(departmentRepository.getDepartmentNameByUserId(Long.parseLong(request.getUserId())));
+            response.setPublishTime(String.valueOf(article.getPublishTime()));
+            response.setArticleCategory(article.getCategoryName());
+            response.setAttachmentTotalCount(articleRepository.countAttachmentsByArticleId(article.getArticleId()));
+            response.setLikes(articleRepository.countLikesByArticleId(article.getArticleId()));
+            response.setIsRead(articleRepository.isArticleRead(article.getArticleId(), Long.parseLong(request.getUserId())));
+            response.setIsFav(articleRepository.isArticleFavorite(article.getArticleId(), Long.parseLong(request.getUserId())));
+            list.add(response);
+        }
+        return BaseResponse.success(list);
+    }
+
     @Override
     public BaseResponse getArticleById(GetArticleDetailRequest request) {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
@@ -189,6 +211,7 @@ public class ArticleService implements IArticleService {
         }
         return BaseResponse.success(responseList);
     }
+
 
 
     private List<CommentResponse> getCommentListByArticleId(Long articleId) {

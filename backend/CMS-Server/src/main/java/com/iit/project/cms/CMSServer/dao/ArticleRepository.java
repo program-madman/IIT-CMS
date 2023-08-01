@@ -89,6 +89,14 @@ public class ArticleRepository extends JdbcRepository {
         return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
+
+    public List<Article> getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
+        String userId = request.getUserId();
+        String sql = "SELECT * FROM article WHERE user_id = ?;";
+
+        return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
+    }
+
     public List<Article> getArticlesByIds(List<Long> articleIds) {
         String sql = "SELECT * FROM article WHERE article_id IN (" +
                 articleIds.stream().map(String::valueOf).collect(Collectors.joining(",")) +

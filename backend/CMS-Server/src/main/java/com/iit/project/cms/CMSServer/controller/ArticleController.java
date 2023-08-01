@@ -30,6 +30,13 @@ public class ArticleController {
         request.setUserId(uid);
         return articleService.getAllArticles(request);
     }
+    @RequestMapping(value = "/getAllArticlesPublishedByMe")
+    public BaseResponse getAllArticlesPublishedByMe(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
+        GetAllArticlesRequest request = new GetAllArticlesRequest();
+        request.setUserId(uid);
+        return articleService.getAllArticlesPublishedByMe(request);
+    }
+
     @RequestMapping(value = "/getArticleById")
     public BaseResponse getArticleById(@RequestHeader(KEY_HEADER_USER_ID) String uid, @RequestBody GetArticleDetailRequest request) {
         request.setUserId(Long.parseLong(uid));

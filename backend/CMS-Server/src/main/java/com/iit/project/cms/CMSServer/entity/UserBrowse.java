@@ -16,7 +16,7 @@ import java.util.Date;
 @Table(name = "browsed_history")
 public class UserBrowse implements Serializable {
 
-
+    @Id
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User userName;

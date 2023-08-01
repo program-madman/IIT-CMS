@@ -18,6 +18,6 @@ public class StatisticsService implements IStatisticsService {
 
     @Override
     public BaseResponse getAuthorArticleCountInRecentMonth() {
-        throw BaseResponse.success(repository.getAuthorArticleCountInRecentMonth());
+        return BaseResponse.success(repository.getAuthorArticleCountInRecentMonth());
     }
 }

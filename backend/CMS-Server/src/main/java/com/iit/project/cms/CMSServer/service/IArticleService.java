@@ -27,4 +27,6 @@ public interface IArticleService {
     BaseResponse getAllArticleCategories();
 
     BaseResponse getMyFavArticles(Long uid);
+
+    BaseResponse getAllArticlesPublishedByMe(GetAllArticlesRequest request);
 }
