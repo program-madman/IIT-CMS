@@ -21,7 +21,7 @@ public interface IUserService {
 
     BaseResponse getUserInfoById(Long userId);
 
-    CommonResult queryUserArticleInfo(FullDetailRequest request);
+    CommonResult queryUserBrowsedInfo(FullDetailRequest request);
 
     BaseResponse getAllUserTypes();
 

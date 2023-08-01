@@ -57,10 +57,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/queryUserArticleInfo")
-    public CommonResult queryUserArticleInfo(@RequestBody FullDetailRequest request) {
+    @RequestMapping(value = "/queryUserBrowsedInfo")
+    public CommonResult queryUserBrowsedInfo(@RequestBody FullDetailRequest request) {
 
-        return userService.queryUserArticleInfo(request);
+        return userService.queryUserBrowsedInfo(request);
     }
 
     @RequestMapping(value = "/getAllUserTypes")

@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,9 +100,10 @@ public class UserService implements IUserService {
 
 
     @Override
-    public CommonResult queryUserArticleInfo(FullDetailRequest request) {
+    public CommonResult queryUserBrowsedInfo(FullDetailRequest request) {
         CommonResult result = new CommonResult();
-        result.setResult(userRepository.queryUserArticleInfo());
+
+        result.setResult(userRepository.queryUserBrowsedInfo());
         result.setSuccess(true);
         return result;
     }
