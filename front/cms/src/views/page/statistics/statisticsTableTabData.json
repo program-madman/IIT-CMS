@@ -1,0 +1,106 @@
+[
+  {
+    "index": 0,
+    "value": "recentMonth",
+    "tabName": "statistics_recent_month_count",
+    "head": [
+      {
+        "text": "User",
+        "value": "name"
+      },{
+        "text": "Department",
+        "value": "deptName"
+      },{
+        "text": "Previous Month Articles",
+        "value": "previousMonthArticles"
+      },{
+        "text": "Current Month Articles",
+        "value": "currentMonthArticles"
+      },{
+        "text": "Difference",
+        "value": "difference"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 1,
+    "value": "statisticsArticle",
+    "tabName": "statistics_article",
+    "head": [
+      {
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "User",
+        "value": "author"
+      },{
+        "text": "Department",
+        "value": "deptName"
+      },{
+        "text": "Comment Count",
+        "value": "commentCount"
+      },{
+        "text": "Views Count",
+        "value": "viewsCount"
+      },{
+        "text": "Like Count",
+        "value": "likeCount"
+      },{
+        "text": "Likes Rank",
+        "value": "likesRank"
+      },{
+        "text": "Favorite Count",
+        "value": "favoriteCount"
+      },{
+        "text": "Last Operation",
+        "value": "lastOperation"
+      },{
+        "text": "Last Operation Time",
+        "value": "lastOperationTime"
+      }
+    ],
+    "data": [
+    ]
+  },{
+    "index": 2,
+    "value": "threeArticleMonth",
+    "tabName": "statistics_three_article_month",
+    "head": [
+      {
+        "text": "Title",
+        "value": "title"
+      },{
+        "text": "Month Time",
+        "value": "monthTime"
+      },{
+        "text": "Browse Time",
+        "value": "browseTime"
+      },{
+        "text": "ranks",
+        "value": "ranks"
+      }
+    ],
+    "data": [
+
+    ]
+  },{
+    "index": 3,
+    "value": "noBrowsedUser",
+    "tabName": "statistics_no_browsed_user",
+    "head": [
+      {
+        "text": "User Id",
+        "value": "userId"
+      },{
+        "text": "User Name",
+        "value": "userName"
+      },{
+        "text": "Browsed User Id",
+        "value": "browsedUserId"
+      }
+    ],
+    "data": [
+    ]
+  }
+]

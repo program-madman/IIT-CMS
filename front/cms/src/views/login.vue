@@ -80,7 +80,7 @@ export default {
       loading: false,
       loadingError: false,
       viewer:[11,12],
-      author:[11,12,13,15,21],
+      author:[11,12,13,21,22],
       admin:[11,12,13,20,21,22],
       darkTheme: true,
       platformName: 'IIT CS425 Project - CMS',

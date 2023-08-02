@@ -42,6 +42,12 @@
   "record_Read": "Read",
   "record_Attachment": "Attachment",
   "record_Like": "Like",
-  "record_Statistic_Article": "Article statistics"
+  "record_Statistic_Article": "Article statistics",
+
+  "statisticsManagement": "Statistics",
+  "statistics_recent_month_count": "Recent Month",
+  "statistics_article": "Recent Month",
+  "statistics_three_article_month": "Top Three",
+  "statistics_no_browsed_user": "No Browsed User"
 
 }

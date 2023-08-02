@@ -61,7 +61,7 @@ const actions = {
 };
 const getters = {
   hasEditPermission: state => {
-    return state.userInfo.menuList.indexOf(22) >= 0;
+    return state.userInfo.menuList.indexOf(23) >= 0;
   },
   permissionList: state => {
     return state.userInfo.menuList;
@@ -69,7 +69,7 @@ const getters = {
   getIndexPage: state => {
     let menu = state.userInfo.menuList
     menu.sort();
-    let index = menu.findIndex(item => item > 10 && item < 22);
+    let index = menu.findIndex(item => item > 10 && item < 23);
     if (index < 0) return null;
     return menus[menu[index]];
   }

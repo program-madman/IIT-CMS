@@ -157,13 +157,16 @@ const routes = [
         }
       },
       {
-        path: 'recordDetail',
-        name: 'recordDetail',
-        component: () => import('../views/page/record/recordDetails.vue'),
+        path: 'statisticsManagement',
+        name: 'statisticsManagement',
+        group:1,
+        component: () => import('../views/page/statistics/statisticsManagement.vue'),
         meta: {
           keepAlive: false,
+          group: 1,
+          permission:22,
         }
-      },
+      }
     ],
   },
   {

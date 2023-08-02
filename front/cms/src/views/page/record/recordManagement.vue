@@ -36,7 +36,7 @@ import {
 } from "@/api/recordApi";
 export default {
   components: {
-    recordDetails: () => import("./recordDetails.vue")
+    recordDetails: () => import("./tableDetails.vue")
   },
   data: () => ({
     currentTab: null,

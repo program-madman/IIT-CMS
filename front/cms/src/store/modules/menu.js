@@ -65,4 +65,10 @@ export const menus = {
     path: "recordManagement",
     message: 0,
   },
+  22: {
+    text: "statisticsManagement",
+    icon: "mdi-animation-outline",
+    path: "statisticsManagement",
+    message: 0,
+  },
 };

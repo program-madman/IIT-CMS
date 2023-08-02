@@ -58,7 +58,7 @@ export default {
         return res;
       menu.sort();
       menu.forEach((item) => {
-        if (item > 10 && item < 22) {
+        if (item > 10 && item < 23) {
           res.push(menus[item]);
         }
       });
@@ -127,7 +127,7 @@ export default {
 }
 .lab-text{
   font-family: PingFang SC;
-  font-weight: medium;
+  font-weight: bold;
   font-size: 14px !important;
   line-height: normal;
   letter-spacing: 0px !important;
@@ -140,7 +140,7 @@ export default {
   height: 20px;
   text-align: center;
   font-family: PingFang SC;
-  font-weight: medium;
+  font-weight: bold;
   font-size: 14px;
   line-height: normal;
   letter-spacing: 0px;
