@@ -84,15 +84,16 @@ public class ArticleRepository extends JdbcRepository {
         String userId = request.getUserId();
         String sql = "SELECT * FROM article WHERE article_id IN \n" +
                 "(SELECT article_id FROM cms.audience\n" +
-                "WHERE dept_id = (SELECT dept_id FROM user WHERE user_id = ?));";
+                "WHERE dept_id = (SELECT dept_id FROM user WHERE user_id = ?)) " +
+                "ORDER BY publish_time DESC;";
 
         return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
-
     public List<Article> getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
         String userId = request.getUserId();
-        String sql = "SELECT * FROM article WHERE user_id = ?;";
+        String sql = "SELECT * FROM article WHERE user_id = ? " +
+                "ORDER BY publish_time DESC;";
 
         return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
@@ -100,7 +101,7 @@ public class ArticleRepository extends JdbcRepository {
     public List<Article> getArticlesByIds(List<Long> articleIds) {
         String sql = "SELECT * FROM article WHERE article_id IN (" +
                 articleIds.stream().map(String::valueOf).collect(Collectors.joining(",")) +
-                ")";
+                ") ORDER BY publish_time DESC";
 
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
@@ -129,11 +130,6 @@ public class ArticleRepository extends JdbcRepository {
     public boolean isArticleLike(Long articleId, Long userId) {
         String sql = "SELECT COUNT(*) > 0 FROM article_like WHERE article_id = ? AND user_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{articleId, userId}, Boolean.class);
-    }
-
-    public List<GetMyArticlesResponse> getMyPublishedArticles(GetMyArticlesRequest request) {
-
-        return null;
     }
 
     public boolean updateArticle(Article article) {
