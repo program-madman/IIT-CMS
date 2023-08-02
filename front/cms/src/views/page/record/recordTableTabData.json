@@ -6,29 +6,22 @@
     "head": [
       {
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "User Type",
-        "value": "userType"
+        "value": "user_type"
       },{
         "text": "Department",
-        "value": "deptName"
+        "value": "dept_name"
       },{
         "text": "Role",
-        "value": "roleName"
+        "value": "role_name"
       },{
         "text": "Title",
         "value": "title"
       }
     ],
     "data": [
-      {
-        "userName": "guanghui",
-        "userType": "1",
-        "deptName": "jjjjjjjj",
-        "roleName": "yyyyyyyyy",
-        "title": " 返回返回"
-      }
     ]
   },{
     "index": 1,
@@ -37,13 +30,13 @@
     "head": [
       {
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "Browsed Time",
-        "value": "browsedTime"
+        "value": "browsed_time"
       },{
         "text": "Category Name",
-        "value": "categoryName"
+        "value": "category_name"
       },{
         "text": "Title",
         "value": "title"
@@ -52,10 +45,10 @@
         "value": "content"
       },{
         "text": "Publish Time",
-        "value": "publishTime"
+        "value": "publish_time"
       },{
         "text": "Update Time",
-        "value": "updateTime"
+        "value": "update_time"
       }
     ],
     "data": [
@@ -67,16 +60,16 @@
     "head": [
       {
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "Comment Content",
-        "value": "commentContent"
+        "value": "comment_content"
       },{
         "text": "Comment Time",
-        "value": "commentTime"
+        "value": "comment_time"
       },{
         "text": "CategoryName",
-        "value": "categoryName"
+        "value": "category_name"
       },{
         "text": "Title",
         "value": "title"
@@ -92,10 +85,10 @@
     "head": [
       {
         "text": "From User",
-        "value": "fromUser"
+        "value": "from_user"
       },{
         "text": "To User",
-        "value": "toUser"
+        "value": "to_user"
       },{
         "text": "Title",
         "value": "title"
@@ -104,7 +97,7 @@
         "value": "content"
       },{
         "text": "Send Time",
-        "value": "sendTime"
+        "value": "send_time"
       }
     ],
     "data": [
@@ -116,16 +109,16 @@
     "head": [
       {
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "Title",
         "value": "title"
       },{
         "text": "Operate Type",
-        "value": "operateType"
+        "value": "operate_type"
       },{
         "text": "Operate Time",
-        "value": "operateTime"
+        "value": "operate_time"
       }
     ],
     "data": [
@@ -136,14 +129,14 @@
     "tabName": "record_Statistic_User",
     "head": [
       {
-        "text": "User",
-        "value": "totalUser"
+        "text": "User Type",
+        "value": "user_type"
       },{
         "text": "Total Sign In Count",
-        "value": "totalSignInCount"
+        "value": "total_sign_in_count"
       },{
         "text": "Total Publish Article Total Count",
-        "value": "totalPublishArticleTotalCount"
+        "value": "total_publish_aritcle_total_count"
       }
     ],
     "data": [
@@ -158,10 +151,10 @@
         "value": "title"
       },{
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "Read Time",
-        "value": "readTime"
+        "value": "read_time"
       }
     ],
     "data": [
@@ -173,16 +166,16 @@
     "head": [
       {
         "text": "File Name",
-        "value": "fileName"
+        "value": "file_name"
       },{
         "text": "File Type",
-        "value": "fileType"
+        "value": "file_type"
       },{
         "text": "Size",
         "value": "size"
       },{
         "text": "Attach Time",
-        "value": "attachTime"
+        "value": "attach_time"
       },{
         "text": "Title",
         "value": "title"
@@ -200,10 +193,10 @@
         "value": "title"
       },{
         "text": "User",
-        "value": "userName"
+        "value": "user_name"
       },{
         "text": "Like Time",
-        "value": "likeTime"
+        "value": "like_time"
       }
     ],
     "data": [
@@ -215,19 +208,19 @@
     "head": [
       {
         "text": "Total Article",
-        "value": "totalArticle"
+        "value": "total_article"
       },{
         "text": "Like",
-        "value": "likeCount"
+        "value": "article_total_like"
       },{
         "text": "Favorite",
-        "value": "favoriteCount"
+        "value": "article_total_favorite"
       },{
         "text": "Browsed Count",
-        "value": "browsedCount"
+        "value": "article_total_count"
       },{
         "text": "Comment Count",
-        "value": "commentCount"
+        "value": "article_total_comment"
       }
     ],
     "data": [

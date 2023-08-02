@@ -25,11 +25,11 @@ module.exports = {
   // },
 
   productionSourceMap: false,
-  outputDir: path.resolve(__dirname, "./mymessage"),
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/mymessage/'
-    : '/',
-  // publicPath: '/mymessage/',
+  // outputDir: path.resolve(__dirname, "./mymessage"),
+  // publicPath: process.env.NODE_ENV === 'production'
+  //   ? '/mymessage/'
+  //   : '/',
+  publicPath: '/',
   
  
   configureWebpack: config => {

@@ -29,6 +29,19 @@ export const getAllArticle = (query) => {
     })
 }
 
+//web端-2.1.获取全部文章列表
+export const like = (articleId) => {
+    console.log(articleId);
+    return request({
+        url: 'article/likeArticle',
+        headers: {
+            "Content-Type": "application/json",
+            "token": store.state.user.userInfo.token,
+        },
+        method: 'post',
+        data: {"articleId":articleId},
+    })
+}
 
 
 //web端-2.2.获取我的发布文章列表

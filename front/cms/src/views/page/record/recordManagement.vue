@@ -16,8 +16,7 @@
           v-for="tabItem in tabItems"
           :key="'tab_' + tabItem.value">
         <v-card flat>
-<!--          <v-card-text>{{ tabItem.value }}</v-card-text>-->
-                    <recordDetails :table-data="tabItem.data" :head-data="tabItem.head" />
+          <recordDetails :table-data="tabItem.data" :head-data="tabItem.head" />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -32,7 +31,7 @@ import {
   listComment, listLike,
   listMessage,
   listOperate, listRead,
-  listSend,
+  listUser,
   listUserStatistic
 } from "@/api/recordApi";
 export default {
@@ -49,7 +48,7 @@ export default {
   methods: {
     initTabItems(){
       this.tabItems = recordTableTabData;
-      listSend().then(res => {
+      listUser().then(res => {
         this.tabItems[0].data = res.data;
       })
       listBrowse().then(res => {

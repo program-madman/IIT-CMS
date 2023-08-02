@@ -42,8 +42,6 @@
               <div class="mt-2 mb-1 ml-4 pa-0 pb-3 caption">
                   <template> 
                       <button
-                      v-bind="attrs"
-                      v-on="on"
                       class="article-operator-text"
                       @click.stop="favorite(item)"
                     >
@@ -54,14 +52,16 @@
                       </v-icon>
                       {{ item.favorite  ? "favorite" : "favorite" }}
                     </button>
-
-                <button
-                  class="article-operator-text ml-4">
-                  <v-icon class="article-operator-icon">
-                    mdi-thumb-up
-                  </v-icon>
-                  {{item.like}}
-                </button>
+                    
+                      <button
+                        @click.stop="articleLike(item)"
+                        class="article-operator-text ml-4">
+                        <v-icon class="article-operator-icon">
+                          mdi-thumb-up
+                          {{ item.isLike ? "mdi-thumb-up" : "mdi-thumb-up-outline"}}
+                        </v-icon>
+                        {{item.like}}
+                      </button>
                   </template> 
               </div>
             </div>
@@ -74,7 +74,7 @@
 
 <script>
 import "@/assets/css/article.css";
-import {  getAllArticle,addOrRemoveFavorite,getMyFavArticles,getMyArticle } from "@/api/getData.js";
+import {  getAllArticle,addOrRemoveFavorite,getMyFavArticles,getMyArticle,like } from "@/api/getData.js";
 import { EventBus } from "@/utils/event-bus";
 import {
   highLightText,
@@ -212,7 +212,6 @@ export default {
         });
     },
 
-
     fillArticle(res) {
       let aTemp = [];
           res.data.forEach((item) => {
@@ -234,6 +233,8 @@ export default {
             dTemp["favorite"] = item.isFav;
             //点赞数
             dTemp["like"] = item.likes
+
+            dTemp["isLike"] = item.isLike
             //收藏操作选择状态寄存
             dTemp["favoriteSelect"] = null;
             aTemp.push(dTemp);
@@ -267,6 +268,20 @@ export default {
           }
         }).catch()
     },
+
+    articleLike(item) {
+      like(item.id).then((resp) => {
+          if (resp.code === '200') {
+            if(item.isLike) {
+              item.like--
+            }else {
+              item.like++
+            }
+            item.isLike = !item.isLike
+          }
+        }).catch()
+    },
+
   },
   
   //过滤文字

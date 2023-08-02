@@ -1,13 +1,12 @@
 import request from "../config/myAxios"
 import store from '@/store';
 
-export const listSend = () => {
+export const listUser = () => {
   return request({
-    url: 'message/record/send',
+    url: 'query/getUsers',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -15,11 +14,10 @@ export const listSend = () => {
 
 export const listBrowse = () => {
   return request({
-    url: 'message/record/browse',
+    url: 'query/getUserBrowsedHistory',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -27,11 +25,10 @@ export const listBrowse = () => {
 
 export const listComment = () => {
   return request({
-    url: 'message/record/comment',
+    url: 'query/getUserComments',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -39,11 +36,10 @@ export const listComment = () => {
 
 export const listMessage = () => {
   return request({
-    url: 'message/record/message',
+    url: 'query/getMessages',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -51,11 +47,10 @@ export const listMessage = () => {
 
 export const listOperate = () => {
   return request({
-    url: 'message/record/operate',
+    url: 'query/getOperateHistory',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -63,11 +58,10 @@ export const listOperate = () => {
 
 export const listUserStatistic = () => {
   return request({
-    url: 'message/record/userStatistic',
+    url: 'query/getTotalUserStatistics',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -75,11 +69,10 @@ export const listUserStatistic = () => {
 
 export const listRead = () => {
   return request({
-    url: 'message/record/read',
+    url: 'query/getArticleReadStatusDetails',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -87,11 +80,10 @@ export const listRead = () => {
 
 export const listAttachment = () => {
   return request({
-    url: 'message/record/attachment',
+    url: 'query/getAttachmentDetails',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -99,11 +91,10 @@ export const listAttachment = () => {
 
 export const listLike = () => {
   return request({
-    url: 'message/record/like',
+    url: 'query/getLikeDetails',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })
@@ -111,11 +102,10 @@ export const listLike = () => {
 
 export const listArticleStatistic = () => {
   return request({
-    url: 'message/record/articleStatistic',
+    url: 'query/getArticleStatistics',
     headers: {
-      "authorization": store.state.user.authorization,
-      "position":store.state.user.position,
-      "ticket":store.state.user.ticket,
+      "Content-Type": "application/json",
+      "token": store.state.user.userInfo.token,
     },
     method: 'get'
   })

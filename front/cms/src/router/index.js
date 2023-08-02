@@ -178,8 +178,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  //base: process.env.BASE_URL,
-  base: "/mymessage/",//部署的子路径
+  base: process.env.BASE_URL,
+  // base: "/mymessage/",//部署的子路径
   scrollBehavior: () => ({ y: 0 }),
   routes
 })
