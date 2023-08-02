@@ -52,10 +52,10 @@ export default {
         this.tabItems[1].data = res.data;
       })
       listTopThreeArticleMonth().then(res => {
-        this.tabItems[2].data = res.data;
+        this.tabItems[2].data = res.result;
       })
       listNoBrowsedUserYear().then(res => {
-        this.tabItems[3].data = res.data;
+        this.tabItems[3].data = res.result;
       })
     }
   }

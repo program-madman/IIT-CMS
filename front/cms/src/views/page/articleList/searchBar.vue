@@ -8,6 +8,7 @@
       style="display: inline-flex"
     >
       <v-combobox
+        v-if="1>2"
         style="height: 40px;"
         v-model="select"
         :items="departments"
@@ -21,7 +22,7 @@
         style="height: 40px;"
         v-model="distributeSelect"
         :items="distributeDate"
-        :label="$t('publish_date')"
+        label="public date"
         outlined
         flat
         hide-details

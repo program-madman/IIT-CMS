@@ -16,14 +16,14 @@
             </v-row>
             <v-row class="mt-2 ml-4 mr-4 mb-0">
                 <span class="text-caption grey--text text--darken-1 mr-6" >
-                   From: <span style="color: #1867c0">{{ backData.data.department }}</span>
+                   From: <span style="color: #1867c0">{{ backData.data.authorName }}</span>
                 </span>
 
                 <span class="text-caption grey--text text--darken-1">Publish Time:<span style="color: #1867c0">{{ backData.data.publishTime }}</span></span>
                 <span class="text-caption grey--text text--darken-1 ml-5">Read: <span style="color: #1867c0">{{backData.data.readCount}}</span></span>
                 <span class="text-caption grey--text text--darken-1 ml-5"> Reply:<span style="color: #1867c0">{{ backData.data.replyCount }}</span></span>
                 <span class="text-caption grey--text text--darken-1 ml-5"> Browsed:<span style="color: #1867c0">{{backData.data.browseCount}}</span></span>
-                <span class="text-caption grey--text text--darken-1 ml-5"> Browsed:<span style="color: #1867c0">{{backData.data.likeCount}}</span></span>
+                <span class="text-caption grey--text text--darken-1 ml-5"> Like:<span style="color: #1867c0">{{backData.data.likeCount}}</span></span>
             </v-row>
             <v-row class="ml-4 mt-4 mr-4 mb-0" align="center">
                 <span class="text-caption grey--text text--darken-1">Article Send To:</span>
@@ -115,14 +115,14 @@
                 <span class="text-body-2 grey--text text--darken-4">Change Log</span>
             </v-row>
             <div class="mt-4 ml-4 mr-4 mb-4 ">
-                <div v-for="(item,jindex) in changHistory" :key="jindex">
+                <div v-for="(item,jindex) in backData.data.changeHistoryResponseList" :key="jindex">
                     <v-divider v-if="item.divider" :key="jindex" ></v-divider>
                     <v-list-item v-else :key="jindex" dense class="mt-2">
                         <v-row>
-                            <span class="text-body-2 grey--text text--darken-2">{{ item.createTime }}</span>
-                            <span class="text-body-2 grey--text text--darken-2 ml-2">{{ item.operateUsername }}</span>
-                            <span class="text-body-2 grey--text text--darken-2 ml-2">{{ item.operateDepartment }}</span>
-                            <span class="text-body-2 grey--text text--darken-4 ml-2">{{ item.operateType }}</span>
+                            <span class="text-body-2 grey--text text--darken-2">{{ item.operationTime }}</span>
+                            <span class="text-body-2 grey--text text--darken-2 ml-2">{{ item.operatorName }}</span>
+                            
+                            <span class="text-body-2 grey--text text--darken-4 ml-2">{{ item.operationType }}</span>
                         </v-row>
                     </v-list-item>
                 </div>

@@ -255,7 +255,7 @@ export default {
       this.loading = false;
       for (let i = 0; i < response.length; i++) {
         let message = response[i];
-        let date = message.sendTime.split(".");
+        let date = message.sendTime.split("T");
         let key = "";
         console.log("######## date =========> ####### " + JSON.stringify(date));
         if (date != null && typeof key != undefined && date.length >= 2) {
