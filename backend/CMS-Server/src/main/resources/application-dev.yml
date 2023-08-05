@@ -21,4 +21,7 @@ logging:
     org.springframework.jdbc.core.JdbcTemplate: DEBUG
   file:
     name: "cms.log"
+  pattern:
+    console: "%logger{0} - %msg%n"
+
 
