@@ -1,14 +1,16 @@
 <configuration>
+    <conversionRule conversionWord="customMsg" converterClass="com.iit.project.cms.CMSServer.common.CustomMessageConverter" />
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>cms.log</file>
         <encoder>
-            <pattern>%logger{0} - %msg%n</pattern>
+            <!-- Use the custom converter in the pattern layout -->
+            <pattern>%customMsg%n</pattern>
         </encoder>
-        <!-- 设置无缓冲，实时写入文件 -->
         <immediateFlush>true</immediateFlush>
     </appender>
 
     <root level="info">
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE" />
     </root>
 </configuration>

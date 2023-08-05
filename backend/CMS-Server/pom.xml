@@ -79,7 +79,6 @@
             <artifactId>java-jwt</artifactId>
             <version>4.4.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -94,6 +93,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-core</artifactId>
+            <version>0.1.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
