@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Viewer</title>
+</head>
+<body>
+<div id="logContainer" style="width: 500px; height: 300px; overflow: auto; border: 1px solid #ccc;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function getLogContent() {
+        axios.get('http://localhost:8080/getLog')
+            .then(response => {
+                const logContent = response.data;
+                const logContainer = document.getElementById('logContainer');
+                logContainer.innerHTML = logContent;
+                logContainer.scrollTop = logContainer.scrollHeight;
+            })
+            .catch(error => console.error('Error fetching log content:', error));
+    }
+
+    setInterval(getLogContent, 1000);
+</script>
+</body>
+</html>
