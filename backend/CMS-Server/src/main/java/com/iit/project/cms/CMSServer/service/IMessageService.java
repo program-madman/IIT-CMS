@@ -12,6 +12,7 @@ public interface IMessageService {
     BaseResponse sendMessageToUsers(SendMsgRequest request);
 
     BaseResponse getAllMessages(Long uid);
+    BaseResponse getAllMessagesOneSql(Long uid);
 
     BaseResponse getAllMessagesSendByMe(Long uid);
 

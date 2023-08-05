@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,6 @@ public class ArticleRepository extends JdbcRepository {
                     "VALUES (?, ?, ?, ?)";
             int r = jdbcTemplate.update(articleSql, article.getUserId(), article.getTitle(),
                     article.getContent(), article.getCategoryName());
-            log.info("insert article result : " + r);
             // Get the generated article_id
             Long articleId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
 
@@ -90,12 +87,50 @@ public class ArticleRepository extends JdbcRepository {
         return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
+    public List<GetAllArticlesResponse> getAllArticlesOneSql(GetAllArticlesRequest request) {
+        String userId = request.getUserId();
+        String sql = "SELECT a.article_id AS articleId, a.title AS articleTitle, a.content AS articleContent, " +
+                "d.dept_name AS authorDeptName, DATE_FORMAT(a.publish_time, '%Y-%m-%d %H:%i:%s') AS publishTime, " +
+                "a.category_name AS articleCategory, " +
+                "(SELECT COUNT(*) FROM attachment WHERE article_id = a.article_id) AS attachmentTotalCount, " +
+                "(SELECT COUNT(*) FROM article_like WHERE article_id = a.article_id AND user_id = ?) AS isLike, " +
+                "(SELECT COUNT(*) FROM article_like WHERE article_id = a.article_id) AS likes, " +
+                "(SELECT COUNT(*) FROM article_read_status WHERE article_id = a.article_id AND user_id = ?) AS isRead, " +
+                "(SELECT COUNT(*) FROM favorite WHERE article_id = a.article_id AND user_id = ?) AS isFav " +
+                "FROM article a " +
+                "LEFT JOIN department d ON a.user_id = d.dept_id " +
+                "WHERE a.article_id IN (SELECT article_id FROM audience WHERE dept_id = (SELECT dept_id FROM user WHERE user_id = ?)) " +
+                "ORDER BY a.publish_time DESC";
+
+        return jdbcTemplate.query(sql, new Object[]{userId, userId, userId, userId},
+                BeanPropertyRowMapper.newInstance(GetAllArticlesResponse.class));
+    }
+
     public List<Article> getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
         String userId = request.getUserId();
         String sql = "SELECT * FROM article WHERE user_id = ? " +
                 "ORDER BY publish_time DESC;";
 
         return jdbcTemplate.query(sql, new Object[]{userId}, BeanPropertyRowMapper.newInstance(Article.class));
+    }
+
+    public List<GetAllArticlesResponse> getAllArticlesPublishedByMeOneSql(GetAllArticlesRequest request) {
+        String userId = request.getUserId();
+        String sql = "SELECT a.article_id AS articleId, a.title AS articleTitle, a.content AS articleContent, " +
+                "d.dept_name AS authorDeptName, DATE_FORMAT(a.publish_time, '%Y-%m-%d %H:%i:%s') AS publishTime, " +
+                "a.category_name AS articleCategory, " +
+                "(SELECT COUNT(*) FROM attachment WHERE article_id = a.article_id) AS attachmentTotalCount, " +
+                "(SELECT COUNT(*) FROM article_like WHERE article_id = a.article_id) AS likes, " +
+                "(SELECT COUNT(*) FROM article_like WHERE article_id = a.article_id AND user_id = ?) AS isLike, " +
+                "(SELECT COUNT(*) FROM article_read_status WHERE article_id = a.article_id AND user_id = ?) AS isRead, " +
+                "(SELECT COUNT(*) FROM favorite WHERE article_id = a.article_id AND user_id = ?) AS isFav " +
+                "FROM article a " +
+                "LEFT JOIN department d ON a.user_id = d.dept_id " +
+                "WHERE a.user_id = ? " +
+                "ORDER BY a.publish_time DESC";
+
+        return jdbcTemplate.query(sql, new Object[]{userId, userId, userId, userId},
+                BeanPropertyRowMapper.newInstance(GetAllArticlesResponse.class));
     }
 
     public List<Article> getArticlesByIds(List<Long> articleIds) {

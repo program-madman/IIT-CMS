@@ -62,6 +62,12 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    public BaseResponse getAllMessagesOneSql(Long uid) {
+        List<GetMessageResponse> allMessages = messageRepository.getAllMessagesOneSql();
+        return BaseResponse.success(allMessages);
+    }
+
+    @Override
     public BaseResponse getAllMessagesSendByMe(Long uid) {
         List<Message> messagesSentByUser = messageRepository.getMessagesSentByUser(uid);
         List<GetMessageResponse> responseList = new ArrayList<>();
@@ -129,10 +135,8 @@ public class MessageService implements IMessageService {
 
     @Override
     public BaseResponse sendMessageToDept(SendMsgRequest request) {
-        log.info(request.toString());
         List<Message> messageList = new ArrayList<>();
         List<User> users = userRepository.getUsersByDeptId(request.getToDeptId());
-        log.info("users in dept: " + request.getToDeptId() + "  is : " + users);
         if (CollectionUtils.isEmpty(users)) {
             return BaseResponse.error("Dept is empty!");
         }

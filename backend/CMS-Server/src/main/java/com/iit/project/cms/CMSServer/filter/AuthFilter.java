@@ -32,8 +32,6 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        log.info("request URI: " + request.getRequestURI());
-
         //login & register
         if (request.getRequestURI().equals(URL_NO_AUTH_LOGIN) ||
                 request.getRequestURI().equals(URL_NO_AUTH_REGISTER)) {
@@ -56,13 +54,11 @@ public class AuthFilter implements Filter {
 
         //token
         String tokenInHeader = request.getHeader(KEY_HEADER_TOKEN);
-        log.info("token in header : " + tokenInHeader);
 
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             String headerValue = request.getHeader(headerName);
-            log.info(headerName + ": " + headerValue);
         }
         if (tokenInHeader == null) {
             authFailed(response);
@@ -104,7 +100,6 @@ public class AuthFilter implements Filter {
     private User extractUserFromToken(String token) {
         DecodedJWT decode = JWT.decode(token);
         String user = decode.getClaim(KEY_USER).asString();
-        log.info("user : " + user);
         return new Gson().fromJson(user, User.class);
     }
 }

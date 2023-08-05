@@ -1,7 +1,6 @@
 package com.iit.project.cms.CMSServer.controller;
 
 import com.iit.project.cms.CMSServer.common.BaseResponse;
-import com.iit.project.cms.CMSServer.common.CommonResult;
 import com.iit.project.cms.CMSServer.dto.AddToMyFavRequest;
 import com.iit.project.cms.CMSServer.dto.*;
 import com.iit.project.cms.CMSServer.service.IArticleService;
@@ -28,13 +27,13 @@ public class ArticleController {
     public BaseResponse getAllArticles(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
         GetAllArticlesRequest request = new GetAllArticlesRequest();
         request.setUserId(uid);
-        return articleService.getAllArticles(request);
+        return articleService.getAllArticlesOneSql(request);
     }
     @RequestMapping(value = "/getAllArticlesPublishedByMe")
     public BaseResponse getAllArticlesPublishedByMe(@RequestHeader(KEY_HEADER_USER_ID) String uid) {
         GetAllArticlesRequest request = new GetAllArticlesRequest();
         request.setUserId(uid);
-        return articleService.getAllArticlesPublishedByMe(request);
+        return articleService.getAllArticlesPublishedByMeOneSql(request);
     }
 
     @RequestMapping(value = "/getArticleById")
@@ -88,7 +87,7 @@ public class ArticleController {
     }
     @RequestMapping(value = "/getMyFavArticles")
     public BaseResponse getMyFavArticles(@RequestHeader(KEY_HEADER_USER_ID) Long uid) {
-        return articleService.getMyFavArticles(uid);
+        return articleService.getMyFavArticlesOneSql(uid);
     }
 
     @RequestMapping(value = "/getAllArticleCategories")

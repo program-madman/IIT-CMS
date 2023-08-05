@@ -59,9 +59,6 @@ public class ArticleService implements IArticleService {
     public BaseResponse getAllArticles(GetAllArticlesRequest request) {
         List<GetAllArticlesResponse> list = new ArrayList<>();
         List<Article> allArticles = articleRepository.getAllArticles(request);
-        for (Article allArticle : allArticles) {
-            log.info("article id is : " + allArticle.getArticleId() + "   time: " + allArticle.getPublishTime());
-        }
         for (Article article : allArticles) {
             GetAllArticlesResponse response = new GetAllArticlesResponse();
             response.setArticleId(article.getArticleId());
@@ -80,6 +77,10 @@ public class ArticleService implements IArticleService {
         return BaseResponse.success(list);
     }
 
+    @Override
+    public BaseResponse getAllArticlesOneSql(GetAllArticlesRequest request) {
+        return BaseResponse.success(articleRepository.getAllArticlesOneSql(request));
+    }
 
     @Override
     public BaseResponse getAllArticlesPublishedByMe(GetAllArticlesRequest request) {
@@ -105,6 +106,11 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
+    public BaseResponse getAllArticlesPublishedByMeOneSql(GetAllArticlesRequest request) {
+        return BaseResponse.success(articleRepository.getAllArticlesPublishedByMeOneSql(request));
+    }
+
+    @Override
     public BaseResponse getArticleById(GetArticleDetailRequest request) {
         GetArticleDetailResponse article = articleRepository.getArticleById(request);
         article.setCommentList(getCommentListByArticleId(article.getArticleId()));
@@ -115,6 +121,10 @@ public class ArticleService implements IArticleService {
         return BaseResponse.success(article);
     }
 
+    @Override
+    public BaseResponse getArticleByIdOneSql(GetArticleDetailRequest request) {
+        return null;
+    }
 
 
     @Override
@@ -219,13 +229,18 @@ public class ArticleService implements IArticleService {
         return BaseResponse.success(responseList);
     }
 
+    @Override
+    public BaseResponse getMyFavArticlesOneSql(Long uid) {
+        List<GetFavArticlesResponse> favoriteArticles = favoriteRepository.getMyFavArticlesOneSql(uid);
+        return BaseResponse.success(favoriteArticles);
+    }
+
 
 
     private List<CommentResponse> getCommentListByArticleId(Long articleId) {
         List<Comment> comments = commentRepository.getCommentsByArticleId(articleId);
         List<CommentResponse> commentResponseList = new ArrayList<>();
         for (Comment comment : comments) {
-            log.info(comment.toString());
             CommentResponse r = new CommentResponse();
             r.setCommentId(comment.getCommentId());
             r.setCommentTime(comment.getPublishTime());

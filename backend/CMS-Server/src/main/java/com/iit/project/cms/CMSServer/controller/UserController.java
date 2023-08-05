@@ -59,7 +59,6 @@ public class UserController {
     @RequestMapping("/createUser")
     private BaseResponse createUser(@RequestParam long id, @RequestParam String name) {
         User user = new User();
-        log.info(user.toString());
         return userService.createUser(user);
     }
 

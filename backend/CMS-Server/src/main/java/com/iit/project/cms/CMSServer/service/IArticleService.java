@@ -7,8 +7,10 @@ import com.iit.project.cms.CMSServer.dto.*;
 public interface IArticleService {
 
     BaseResponse getAllArticles(GetAllArticlesRequest request);
+    BaseResponse getAllArticlesOneSql(GetAllArticlesRequest request);
 
     BaseResponse getArticleById(GetArticleDetailRequest request);
+    BaseResponse getArticleByIdOneSql(GetArticleDetailRequest request);
 
     BaseResponse createArticle(CreateArticleRequest request);
 
@@ -27,6 +29,8 @@ public interface IArticleService {
     BaseResponse getAllArticleCategories();
 
     BaseResponse getMyFavArticles(Long uid);
+    BaseResponse getMyFavArticlesOneSql(Long uid);
 
     BaseResponse getAllArticlesPublishedByMe(GetAllArticlesRequest request);
+    BaseResponse getAllArticlesPublishedByMeOneSql(GetAllArticlesRequest request);
 }
